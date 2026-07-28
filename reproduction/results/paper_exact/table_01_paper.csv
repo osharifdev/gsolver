@@ -1,0 +1,12 @@
+# exact values printed in paper Table I (PAPER_TABLE)
+trajectory,sigma,mean_NEES
+helix,1e-4,0.03
+helix,1e-3,1.533
+helix,1e-2,3.925
+helix,1e-1,4.51
+helix,1e-0,4.694
+sphere,1e-4,0.03
+sphere,1e-3,1.542
+sphere,1e-2,4.187
+sphere,1e-1,4.589
+sphere,1e-0,6.515

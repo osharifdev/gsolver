@@ -1,0 +1,8 @@
+# digitised approximation from published figure
+operation,method,q1_us,q3_us,median_us,whisker_low_us,whisker_high_us
+var_to_fac,gsolver,1.201,1.877,,0.745,2.89
+fac_to_var,gsolver,0.808,2.469,,0.425,4.938
+interpolation,gsolver,4.351,4.434,,4.227,4.558
+var_to_fac,hyperion,1.335,1.436,,1.254,1.587
+fac_to_var,hyperion,3.189,3.369,,3.017,3.639
+interpolation,hyperion,2.658,2.711,,2.597,2.789

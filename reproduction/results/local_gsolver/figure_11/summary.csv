@@ -1,0 +1,2 @@
+input,noise,iterations,threads,n_poses,n_landmark_meas,load_ms,build_ms,solve_ms,avg_iter_ms,peak_rss_kb
+/home/os717/gsolver/examples/data/datasets/charuco/printing_room_0.g2o,0.1,50,16,94,617,3.21947,8.51387,149.254,2.21028,13312

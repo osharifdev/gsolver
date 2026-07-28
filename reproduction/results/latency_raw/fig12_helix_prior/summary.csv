@@ -1,0 +1,6 @@
+operation,n,mean_us,median_us,std_us,min_us,max_us,p5_us,p25_us,p75_us,p95_us,graph,config,n_poses,n_factors,warmup_iters,threads
+fac_to_var,5000,4.74404,2.41,2.74029,1.97,36.61,2.02,2.13,7.5,7.87,/home/os717/gsolver/examples/data/datasets/synthetic/prior/trajectories_1hz/noise_ig0.001_n0.001_helix.g2o,helix,600,1199,10,16
+factor_update,5000,6.40487,3.05,3.88848,2.1,26.9,2.5,2.69,10.16,11.48,/home/os717/gsolver/examples/data/datasets/synthetic/prior/trajectories_1hz/noise_ig0.001_n0.001_helix.g2o,helix,600,1199,10,16
+interpolation,5000,32.5512,50.25,21.1286,7.91,58.351,7.99,8.16,50.68,51.25,/home/os717/gsolver/examples/data/datasets/synthetic/prior/trajectories_1hz/noise_ig0.001_n0.001_helix.g2o,helix,600,1199,10,16
+var_to_fac,5000,2.38492,2.31,0.302397,2.06,7.39,2.22,2.27,2.36,3.02,/home/os717/gsolver/examples/data/datasets/synthetic/prior/trajectories_1hz/noise_ig0.001_n0.001_helix.g2o,helix,600,1199,10,16
+var_update,5000,4.76288,4.71,0.395131,4.19,10.82,4.46,4.6,4.84,5.12,/home/os717/gsolver/examples/data/datasets/synthetic/prior/trajectories_1hz/noise_ig0.001_n0.001_helix.g2o,helix,600,1199,10,16

@@ -1,0 +1,31 @@
+method,metric,readout_s,paper_value,local_value,local_variant,notes
+ours,ATE_m,0,0.671,0.668,SE3-aligned (unaligned=1.301),alignment inferred from readout-0 agreement
+ours,ARE_rad,0,0.007,0.0074,SE3-aligned,
+ours,MRE_px,0,1.704,1.47,"stereo3 [u_l,v,disp] (2D=1.25)",excluded 0.93% of projections
+zspline,ATE_m,0,0.692,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,ARE_rad,0,0.007,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,MRE_px,0,1.717,,,MISSING_BASELINE (Hyperion not runnable)
+ours,ATE_m,0.0001,0.676,76139.048,SE3-aligned (unaligned=76309.88),alignment inferred from readout-0 agreement
+ours,ARE_rad,0.0001,0.007,1.9514,SE3-aligned,
+ours,MRE_px,0.0001,1.708,2.57,"stereo3 [u_l,v,disp] (2D=2.295)",excluded 2.68% of projections
+zspline,ATE_m,0.0001,94.51,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,ARE_rad,0.0001,0.194,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,MRE_px,0.0001,2.099,,,MISSING_BASELINE (Hyperion not runnable)
+ours,ATE_m,0.001,0.676,21.01,SE3-aligned (unaligned=21.126),alignment inferred from readout-0 agreement
+ours,ARE_rad,0.001,0.008,0.3131,SE3-aligned,
+ours,MRE_px,0.001,1.709,3.096,"stereo3 [u_l,v,disp] (2D=2.881)",excluded 1.08% of projections
+zspline,ATE_m,0.001,1963.04,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,ARE_rad,0.001,0.508,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,MRE_px,0.001,1.884,,,MISSING_BASELINE (Hyperion not runnable)
+ours,ATE_m,0.01,0.684,5.388,SE3-aligned (unaligned=5.455),alignment inferred from readout-0 agreement
+ours,ARE_rad,0.01,0.007,0.1517,SE3-aligned,
+ours,MRE_px,0.01,1.715,2.022,"stereo3 [u_l,v,disp] (2D=1.783)",excluded 1.02% of projections
+zspline,ATE_m,0.01,200.168,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,ARE_rad,0.01,0.35,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,MRE_px,0.01,2.301,,,MISSING_BASELINE (Hyperion not runnable)
+ours,ATE_m,0.1,0.726,0.662,SE3-aligned (unaligned=1.307),alignment inferred from readout-0 agreement
+ours,ARE_rad,0.1,0.008,0.0081,SE3-aligned,
+ours,MRE_px,0.1,1.844,1.427,"stereo3 [u_l,v,disp] (2D=1.206)",excluded 0.80% of projections
+zspline,ATE_m,0.1,733.028,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,ARE_rad,0.1,1.577,,,MISSING_BASELINE (Hyperion not runnable)
+zspline,MRE_px,0.1,8.142,,,MISSING_BASELINE (Hyperion not runnable)
