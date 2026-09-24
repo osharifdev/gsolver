@@ -48,6 +48,7 @@ DIAG = [  # regularizer diagnostics: (base directory, variant directory, eps or 
     ("charuco_ba/init", "charuco_ba/init_eps1e-7", "all sites 1e-7"),
     ("kitti06_prefix/conv", "kitti06_prefix/conv_eps1e-7", "all sites 1e-7"),
     ("kitti06_prefix/conv", "kitti06_prefix/conv_eps1e-8", "all sites 1e-8"),
+    ("kitti06_full/conv", "kitti06_full/conv_eps1e-7", "all sites 1e-7"),
 ]
 UNFROZEN = [("charuco_islam", E / "charuco_islam/unfrozen_run/unfrozen"),
             ("kitti06_prefix", E / "kitti06_prefix/unfrozen_run/unfrozen")]

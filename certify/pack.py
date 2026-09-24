@@ -94,10 +94,13 @@ def pack(path):
         iters = np.load(path / "states_iters.npy") if (path / "states_iters.npy").exists() else np.arange(Z.shape[0])
         want = list(SNAPSHOT_ITERS)
         if (path / "gateA.json").exists():
-            c = json.loads((path / "gateA.json").read_text())["curves"].get("non_single_edge", {})
-            if c.get("floor_reached") and c.get("t_floor") is not None:
-                want.append(int(c["t_floor"]))
-                st["floor_iteration"] = np.array(int(c["t_floor"]))
+            curves = json.loads((path / "gateA.json").read_text())["curves"]
+            # the state at the floor of every flat curve (non-single-edge blocks, poses, resolvable blocks)
+            for name in ("non_single_edge", "poses", "resolvable"):
+                c = curves.get(name, {})
+                if c.get("floor_reached") and c.get("t_floor") is not None:
+                    want.append(int(c["t_floor"]))
+                    st["floor_iteration_" + name] = np.array(int(c["t_floor"]))
         want.append(int(iters[-1]))
         for t in sorted(set(want)):
             j = np.searchsorted(iters, t)

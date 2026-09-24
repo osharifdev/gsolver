@@ -54,8 +54,37 @@ def _exp(x):
     return T
 
 
+def gs_log_so3(R):
+    """gsolver/maths/geometry3d.h:94-124 logMapSO3, transcribed with its branch conditions as written
+    (small-angle branch 0.5 - (tr-3)^2/12 when tr - 3 >= -1e-7, i.e. theta <~ 3.2e-4)."""
+    tr = np.trace(R)
+    if tr + 1.0 < 1e-10:
+        if abs(R[2, 2] + 1.0) > 1e-5:
+            return (np.pi / np.sqrt(2 + 2 * R[2, 2])) * np.array([R[0, 2], R[1, 2], 1.0 + R[2, 2]])
+        if abs(R[1, 1] + 1.0) > 1e-5:
+            return (np.pi / np.sqrt(2 + 2 * R[1, 1])) * np.array([R[0, 1], 1.0 + R[1, 1], R[2, 1]])
+        return (np.pi / np.sqrt(2 + 2 * R[0, 0])) * np.array([1.0 + R[0, 0], R[1, 0], R[2, 0]])
+    tr_3 = tr - 3.0
+    if tr_3 < -1e-7:
+        theta = np.arccos((tr - 1.0) / 2.0)
+        magnitude = theta / (2.0 * np.sin(theta))
+    else:
+        magnitude = 0.5 - tr_3 * tr_3 / 12.0
+    return magnitude * np.array([R[2, 1] - R[1, 2], R[0, 2] - R[2, 0], R[1, 0] - R[0, 1]])
+
+
+def _iso_inv(T):
+    """Eigen::Isometry3d::inverse(): (R^T, -R^T t). G-solver's rotations are not exactly orthonormal
+    (the small-angle branch of expMapSO3, geometry3d.h:85-86, is first order), so this differs from a
+    general 4x4 inverse by O(|R^T R - I|)."""
+    Ti = np.eye(4)
+    Ti[:3, :3] = T[:3, :3].T
+    Ti[:3, 3] = -T[:3, :3].T @ T[:3, 3]
+    return Ti
+
+
 def _log(T):
-    return np.concatenate([T[:3, 3], so3_log(T[None, :3, :3])[0]])
+    return np.concatenate([T[:3, 3], gs_log_so3(T[:3, :3])])
 
 
 def interpolate(times, T, v, qc_diag, tau):
@@ -77,7 +106,7 @@ def interpolate(times, T, v, qc_diag, tau):
     A = np.zeros((6, 6))
     A[:3, :3] = R
     A[3:, 3:] = R
-    gn = np.concatenate([_log(np.linalg.inv(Ti) @ Tn), A @ v[idx + 1]])
+    gn = np.concatenate([_log(_iso_inv(Ti) @ Tn), A @ v[idx + 1]])
     Tt = Ti @ _exp(Lam[:6] @ gi + Psi[:6] @ gn)
     R = Ti[:3, :3].T @ Tt[:3, :3]
     A = np.zeros((6, 6))

@@ -1,0 +1,37 @@
+validating charuco_islam/frac025
+validating charuco_islam/frac050
+validating charuco_islam/frac100
+validating charuco_ba/init
+validating charuco_ba/end
+validating kitti06_prefix/init
+validating kitti06_prefix/conv
+validating diagnostic charuco_ba/end_eps1e-5
+validating diagnostic charuco_ba/end_eps1e-7
+validating diagnostic charuco_ba/end_eps1e-8
+validating diagnostic charuco_ba/end_eps1e-9
+validating diagnostic charuco_ba/end_eps1e-12
+validating diagnostic charuco_ba/end_site_belief
+validating diagnostic charuco_ba/end_site_v2f
+validating diagnostic charuco_ba/end_site_marg
+validating diagnostic charuco_ba/end_site_f2v
+validating diagnostic charuco_islam/frac025_eps1e-7
+validating diagnostic charuco_islam/frac050_eps1e-7
+validating diagnostic charuco_islam/frac100_eps1e-7
+validating diagnostic charuco_ba/init_eps1e-7
+validating diagnostic kitti06_prefix/conv_eps1e-7
+validating diagnostic kitti06_prefix/conv_eps1e-8
+validating unfrozen charuco_islam/unfrozen_run/unfrozen/it001
+validating unfrozen charuco_islam/unfrozen_run/unfrozen/it002
+validating unfrozen charuco_islam/unfrozen_run/unfrozen/it005
+validating unfrozen charuco_islam/unfrozen_run/unfrozen/it010
+validating unfrozen charuco_islam/unfrozen_run/unfrozen/it020
+validating unfrozen charuco_islam/unfrozen_run/unfrozen/it050
+validating unfrozen charuco_islam/unfrozen_run/unfrozen/it100
+validating unfrozen kitti06_prefix/unfrozen_run/unfrozen/it001
+validating unfrozen kitti06_prefix/unfrozen_run/unfrozen/it002
+validating unfrozen kitti06_prefix/unfrozen_run/unfrozen/it005
+validating unfrozen kitti06_prefix/unfrozen_run/unfrozen/it010
+validating unfrozen kitti06_prefix/unfrozen_run/unfrozen/it020
+validating unfrozen kitti06_prefix/unfrozen_run/unfrozen/it050
+validating unfrozen kitti06_prefix/unfrozen_run/unfrozen/it100
+done

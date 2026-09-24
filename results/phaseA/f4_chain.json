@@ -1,0 +1,9 @@
+{
+ "poses": 600,
+ "rel_err_G_median": 4.854108518021379e-12,
+ "rel_err_G_max": 9.98807218577087e-12,
+ "rel_err_F_median": 4.941971128082707e-12,
+ "rel_err_F_max": 1.117724415680877e-11,
+ "max_abs_dev_in_units_of_eps": 7.735274266451597,
+ "literal_Hkk_plus_message_rel_err_median": 0.107021834121342
+}

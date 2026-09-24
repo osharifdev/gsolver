@@ -1,0 +1,3 @@
+validating kitti06_full/conv
+validating diagnostic kitti06_full/conv_eps1e-7
+done
