@@ -18,3 +18,7 @@ __pycache__/
 # Build/distribution
 dist/
 *.egg-info/
+
+# Certification work (Phase A+): build tree and exported models (large, not versioned)
+build-*/
+exports/

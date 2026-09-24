@@ -1,0 +1,283 @@
+/**
+ * @file certify_charuco.cpp
+ * @brief Phase A driver for the ChArUco experiments: normal run, snapshot, freeze, export.
+ *
+ * The graph construction and normal schedule replicate examples/cpp/apps/charuco_experiment_islam.cpp
+ * (--mode islam) and charuco_experiment_ba.cpp (--mode ba) statement for statement; with no freeze
+ * flag the trajectory written by --tum is byte-identical to the shipped drivers' output.
+ *
+ * Usage:
+ *   certify_charuco --mode islam|ba --g2o PATH --out DIR [options]
+ *     --tum PATH                   write the normal-run trajectory (writeTUM) at the end
+ *     --noise S                    ba: initial-guess perturbation std (shipped default 0.0)
+ *     --fraction F                 islam: snapshot after the iteration run on round(F*N) poses
+ *                                  (F = 1: after the final BA)
+ *     --freeze-at N                ba: snapshot after N normal iterations (0 = before any iteration)
+ *     --dynamic-schedule           GbpSolver::dynamic_schedule_ (performance only, bit-identical)
+ *     --freeze                     freeze at the snapshot, export the model, run frozen iterations
+ *     --frozen-iters T             frozen iterations (default 3000)
+ *     --frozen-eps E               frozen-mode regularizer (default 1e-6, as in G-solver)
+ *     --frozen-eps-sites SPEC      diagnostic per-site override, e.g. "marg=1e-7,f2v=1e-6"
+ *     --dump-stride S              state dump: every iteration up to 1000, then every S-th, and the last
+ *     --unfrozen-export-iters L    comma list of normal-run iterations to export (charts at beliefs)
+ */
+
+#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <random>
+#include <set>
+#include <string>
+
+#include "common/data_types.h"
+#include "common/experiment_config.h"
+#include "common/factor_graph_builder.h"
+#include "common/g2o_parser.h"
+#include "common/tum_writer.h"
+
+#include "certify_common.h"
+
+using namespace gsolver;
+using namespace examples;
+
+// Verbatim from charuco_experiment_islam.cpp
+void predictAndAddNewPose(FactorGraph& factor_graph, double new_timestamp, double previous_timestamp) {
+  auto pose_nodes                       = factor_graph.getPoseVariableNodes();
+  std::shared_ptr<SE3PoseVel> prev_pose = std::dynamic_pointer_cast<SE3PoseVel>(pose_nodes.back());
+
+  double dt                        = new_timestamp - previous_timestamp;
+  Eigen::Isometry3d delta_pose     = expMapSE3(prev_pose->mu_.vel * dt);
+  Eigen::Isometry3d predicted_pose = prev_pose->mu_.pose * delta_pose;
+
+  Eigen::Vector<double, 6> velocity = logMapSE3(delta_pose) / dt;
+
+  PoseInit new_pose;
+  new_pose.timestamp  = new_timestamp;
+  new_pose.pose       = predicted_pose;
+  new_pose.covariance = Eigen::Matrix<double, 6, 6>::Identity();
+
+  Eigen::Matrix<double, 12, 12> sigma = Eigen::Matrix<double, 12, 12>::Identity() * 3.0;
+  add_pose_variable_node(factor_graph, new_pose, velocity, sigma);
+}
+
+// Verbatim from charuco_experiment_ba.cpp
+void perturbPoses(std::vector<PoseInit>& poses, double noise_std, int seed = 42) {
+  if (noise_std == 0.0)
+    return;
+
+  std::default_random_engine gen(seed);
+  std::normal_distribution<double> trans_noise(0.0, noise_std);
+  std::normal_distribution<double> rot_noise(0.0, noise_std * 0.1);
+
+  for (auto& pose : poses) {
+    Eigen::Vector<double, 6> delta;
+    delta << trans_noise(gen), trans_noise(gen), trans_noise(gen), rot_noise(gen), rot_noise(gen), rot_noise(gen);
+    pose.pose = pose.pose * expMapSE3(delta);
+    pose.covariance += Eigen::Matrix<double, 6, 6>::Identity() * (1.0 / noise_std);
+  }
+}
+
+struct Args {
+  std::string mode, g2o, out, tum;
+  double noise = 0.0, fraction = 1.0, frozen_eps = 1e-6;
+  std::string eps_sites;
+  int freeze_at = -1, frozen_iters = 3000, dump_stride = 1;
+  bool freeze = false, dynamic_schedule = false;
+  std::vector<int> unfrozen_iters;
+};
+
+static Args parse(int argc, char** argv) {
+  Args a;
+  for (int i = 1; i < argc; ++i) {
+    std::string k = argv[i];
+    auto next     = [&]() -> std::string {
+      if (i + 1 >= argc)
+        throw std::runtime_error("missing value for " + k);
+      return argv[++i];
+    };
+    if (k == "--mode") a.mode = next();
+    else if (k == "--g2o") a.g2o = next();
+    else if (k == "--out") a.out = next();
+    else if (k == "--tum") a.tum = next();
+    else if (k == "--noise") a.noise = std::stod(next());
+    else if (k == "--fraction") a.fraction = std::stod(next());
+    else if (k == "--freeze-at") a.freeze_at = std::stoi(next());
+    else if (k == "--freeze") a.freeze = true;
+    else if (k == "--dynamic-schedule") a.dynamic_schedule = true;
+    else if (k == "--frozen-iters") a.frozen_iters = std::stoi(next());
+    else if (k == "--frozen-eps") a.frozen_eps = std::stod(next());
+    else if (k == "--dump-stride") a.dump_stride = std::stoi(next());
+    else if (k == "--frozen-eps-sites") a.eps_sites = next();
+    else if (k == "--unfrozen-export-iters") a.unfrozen_iters = certify::parseIntList(next());
+    else throw std::runtime_error("unknown argument " + k);
+  }
+  if ((a.mode != "islam" && a.mode != "ba") || a.g2o.empty() || a.out.empty())
+    throw std::runtime_error("usage: certify_charuco --mode islam|ba --g2o PATH --out DIR [options]");
+  return a;
+}
+
+// Snapshot: freeze the graph, export the frozen model, run frozen iterations with state dumps.
+static void freezeAndRun(FactorGraph& graph, GbpSolver& solver, const Args& a, certify::Json meta, bool f2v_valid) {
+  gsolver::setFrozenRegularizer(a.frozen_eps);
+  certify::applySiteOverrides(a.eps_sites);
+  solver.freeze(graph, f2v_valid);
+  meta.boolean("factor_messages_valid_at_freeze", f2v_valid);
+  certify::exportModel(graph, a.out, certify::Charts::Frozen, meta);
+  const double secs = certify::runFrozen(graph, solver, a.frozen_iters, a.out, 1000, a.dump_stride);
+  std::ofstream(a.out + "/frozen_run.json") << "{\"frozen_iters\": " << a.frozen_iters << ", \"wall_s\": " << secs
+                                            << ", \"frozen_regularizer\": " << certify::jsonNum(a.frozen_eps) << "}\n";
+  std::cout << "frozen: " << a.frozen_iters << " iterations in " << secs << " s -> " << a.out << std::endl;
+}
+
+static void maybeExportUnfrozen(FactorGraph& graph, const Args& a, int iteration, certify::Json meta) {
+  if (std::find(a.unfrozen_iters.begin(), a.unfrozen_iters.end(), iteration) == a.unfrozen_iters.end())
+    return;
+  char name[32];
+  snprintf(name, sizeof(name), "/unfrozen/it%03d", iteration);
+  meta.integer("normal_iteration", iteration);
+  certify::exportModel(graph, a.out + name, certify::Charts::Beliefs, meta);
+}
+
+int run_islam(const Args& a) {
+  auto params = loadExperimentParams(getDefaultConfigPath(), "printing_room");
+  const int iterations_per_pose = 1;
+  const int final_ba_iterations = 10;
+
+  std::vector<PoseInit> poses;
+  std::vector<OdometryMeas> odometry;
+  std::vector<PriorMeas> priors;
+  std::vector<LandmarkMeas> landmarks;
+  parseG2OFile(a.g2o, poses, odometry, priors, landmarks);
+
+  std::set<double> stamps;
+  for (auto& l : landmarks)
+    stamps.insert(l.timestamp);
+  const int n_total     = static_cast<int>(stamps.size());
+  const int n_snapshot  = static_cast<int>(std::lround(a.fraction * n_total));
+  const bool final_snap = (n_snapshot >= n_total);
+
+  FactorGraph factor_graph;
+  GbpSolver solver(SolverScheduleType::SYNCHRONOUS);
+  solver.dynamic_schedule_ = a.dynamic_schedule;
+
+  double current_timestamp = landmarks[0].timestamp;
+  PoseInit first_pose;
+  first_pose.timestamp  = current_timestamp;
+  first_pose.pose       = Eigen::Isometry3d::Identity();
+  first_pose.covariance = Eigen::Matrix<double, 6, 6>::Identity();
+  Eigen::Vector<double, 6> zero_velocity   = Eigen::Vector<double, 6>::Zero();
+  Eigen::Matrix<double, 12, 12> init_sigma = Eigen::Matrix<double, 12, 12>::Identity() * 3.0;
+  add_pose_variable_node(factor_graph, first_pose, zero_velocity, init_sigma);
+
+  std::string prior_id = "PRIOR_ANCHOR_" + timestampToString(current_timestamp);
+  auto anchor_prior =
+    std::make_shared<SE3PoseVelPrior>(prior_id, Eigen::Isometry3d::Identity(), Eigen::Matrix<double, 6, 6>::Identity() * 1e-12);
+  factor_graph.addFactorNode(anchor_prior, {factor_graph.variable_nodes_[0]->id_});
+
+  certify::Json meta;
+  meta.str("dataset", "charuco_islam").str("g2o", a.g2o).str("config", "printing_room");
+  meta.set("qc_diag", certify::jsonArray(std::vector<double>(params.qc_diag.data(), params.qc_diag.data() + 6)));
+  meta.num("snapshot_fraction", a.fraction).integer("snapshot_poses", n_snapshot).integer("sequence_poses", n_total);
+  meta.str("gauge", "PRIOR_ANCHOR factor on the first pose, covariance 1e-12*I (precision 1e12), shipped driver");
+
+  int iteration  = 0;
+  int pose_count = 1;
+  for (const auto& landmark : landmarks) {
+    if (landmark.timestamp == current_timestamp) {
+      add_landmark_factor(factor_graph, landmark);
+    } else if (landmark.timestamp > current_timestamp) {
+      for (int iter = 0; iter < iterations_per_pose; ++iter) {
+        solver.performIteration(factor_graph);
+        ++iteration;
+        maybeExportUnfrozen(factor_graph, a, iteration, meta);
+      }
+      if (a.freeze && !final_snap && pose_count == n_snapshot) {
+        meta.integer("normal_iterations_before_freeze", iteration);
+        meta.str("snapshot", "after the iteration on " + std::to_string(pose_count) + " poses");
+        freezeAndRun(factor_graph, solver, a, meta, true);
+        return 0;
+      }
+      predictAndAddNewPose(factor_graph, landmark.timestamp, current_timestamp);
+      add_gp_prior_factor_node(factor_graph, current_timestamp, landmark.timestamp, params.qc_diag);
+      add_landmark_factor(factor_graph, landmark);
+      current_timestamp = landmark.timestamp;
+      pose_count++;
+    } else {
+      std::cerr << "Landmarks are not sorted by timestamp" << std::endl;
+      return 1;
+    }
+  }
+  for (int iter = 0; iter < final_ba_iterations; ++iter) {
+    solver.performIteration(factor_graph);
+    ++iteration;
+    maybeExportUnfrozen(factor_graph, a, iteration, meta);
+  }
+  if (a.freeze && final_snap) {
+    meta.integer("normal_iterations_before_freeze", iteration);
+    meta.str("snapshot", "end of the normal run (after the final BA)");
+    freezeAndRun(factor_graph, solver, a, meta, true);
+    return 0;
+  }
+  if (!a.tum.empty()) {
+    std::ofstream output_file(a.tum);
+    writeTUM(factor_graph, output_file);
+  }
+  return 0;
+}
+
+int run_ba(const Args& a) {
+  auto params = loadExperimentParams(getDefaultConfigPath(), "printing_room");
+
+  std::vector<PoseInit> poses;
+  std::vector<OdometryMeas> odometry;
+  std::vector<PriorMeas> priors;
+  std::vector<LandmarkMeas> landmarks;
+  parseG2OFile(a.g2o, poses, odometry, priors, landmarks);
+
+  perturbPoses(poses, a.noise);
+
+  FactorGraph factor_graph;
+  add_pose_variable_nodes(factor_graph, poses);
+  add_gp_prior_factor_nodes(factor_graph, params.qc_diag);
+  add_landmark_factors(factor_graph, landmarks);
+  fix_first_pose(factor_graph);
+
+  GbpSolver solver(SolverScheduleType::SYNCHRONOUS);
+  solver.dynamic_schedule_ = a.dynamic_schedule;
+
+  certify::Json meta;
+  meta.str("dataset", "charuco_ba").str("g2o", a.g2o).str("config", "printing_room").num("noise", a.noise);
+  meta.set("qc_diag", certify::jsonArray(std::vector<double>(params.qc_diag.data(), params.qc_diag.data() + 6)));
+  meta.str("gauge", "PRIOR_ANCHOR factor on the first pose, covariance 1e-6*I (precision 1e6), shipped driver");
+
+  for (int i = 0; i < params.num_iterations; ++i) {
+    if (a.freeze && i == a.freeze_at) {
+      meta.integer("normal_iterations_before_freeze", i);
+      freezeAndRun(factor_graph, solver, a, meta, i > 0);
+      return 0;
+    }
+    solver.performIteration(factor_graph);
+    maybeExportUnfrozen(factor_graph, a, i + 1, meta);
+  }
+  if (a.freeze && a.freeze_at == params.num_iterations) {
+    meta.integer("normal_iterations_before_freeze", params.num_iterations);
+    freezeAndRun(factor_graph, solver, a, meta, true);
+    return 0;
+  }
+  if (!a.tum.empty()) {
+    std::ofstream output_file(a.tum);
+    writeTUM(factor_graph, output_file);
+  }
+  return 0;
+}
+
+int main(int argc, char** argv) {
+  try {
+    Args a = parse(argc, argv);
+    certify::makeDirs(a.out);
+    return a.mode == "islam" ? run_islam(a) : run_ba(a);
+  } catch (const std::exception& e) {
+    std::cerr << "error: " << e.what() << std::endl;
+    return 2;
+  }
+}

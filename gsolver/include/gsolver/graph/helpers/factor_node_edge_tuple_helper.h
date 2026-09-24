@@ -70,6 +70,21 @@ namespace gsolver {
       return RestFactorEdgeTuple::computeJointDistribution(Lambdaprime, offset + edge_size);
     }
 
+    // Frozen mode: stack the incoming message means (tangent coordinates in the fixed charts)
+    template <int VariablesDim_>
+    void fillMessageTau(Eigen::Vector<double, VariablesDim_>& tau, int offset) {
+      tau.segment(offset, CurrentVariableType::LieDim) = current_edge_->variable_to_factor_message_.tau_;
+      RestFactorEdgeTuple::template fillMessageTau<VariablesDim_>(tau, offset + CurrentVariableType::LieDim);
+    }
+
+    // Frozen mode: mark the edges of a factor created after the freeze
+    void markEdgesFrozen() {
+      current_edge_->frozen_                          = true;
+      current_edge_->variable_to_factor_message_.tau_ = CurrentVariableType::VectorLieDim::Zero();
+      current_edge_->factor_to_variable_message_.tau_ = CurrentVariableType::VectorLieDim::Zero();
+      RestFactorEdgeTuple::markEdgesFrozen();
+    }
+
     // Send message from factor node to variable node
     template <int VariablesDim_, int out_offset_ = 0>
     void sendMessage(std::string variable_id,
@@ -82,7 +97,7 @@ namespace gsolver {
         static const int b_size     = total_size - a_size;         // Size of the remaining edges
         // Send the message to the variable node
         current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
-          factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_.mu_);
+          factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
         return;
       }
       static const int next_out_offset = out_offset_ + CurrentVariableType::LieDim;
@@ -101,7 +116,7 @@ namespace gsolver {
       static const int next_out_offset = out_offset_ + CurrentVariableType::LieDim;
       // Send the message to the variable node
       current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
-        factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_.mu_);
+        factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
       // Send messages to the rest of the variable nodes
       RestFactorEdgeTuple::template sendAllMessages<VariablesDim_, next_out_offset>(
         factor_eta, factor_Lambdaprime, conditioned_Lambdaprime);
@@ -156,6 +171,19 @@ namespace gsolver {
       return Lambdaprime;
     }
 
+    // Frozen mode: stack the incoming message means (tangent coordinates in the fixed charts)
+    template <int VariablesDim_>
+    void fillMessageTau(Eigen::Vector<double, VariablesDim_>& tau, int offset) {
+      tau.segment(offset, CurrentVariableType::LieDim) = current_edge_->variable_to_factor_message_.tau_;
+    }
+
+    // Frozen mode: mark the edges of a factor created after the freeze
+    void markEdgesFrozen() {
+      current_edge_->frozen_                          = true;
+      current_edge_->variable_to_factor_message_.tau_ = CurrentVariableType::VectorLieDim::Zero();
+      current_edge_->factor_to_variable_message_.tau_ = CurrentVariableType::VectorLieDim::Zero();
+    }
+
     // Send message from factor node to variable node
     template <int VariablesDim_, int out_offset_ = 0>
     void sendMessage(std::string variable_id,
@@ -168,7 +196,7 @@ namespace gsolver {
         static const int b_size     = total_size - a_size;         // Size of the remaining edges
         // Send the message to the variable node
         current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
-          factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_.mu_);
+          factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
         return;
       }
       throw std::runtime_error("variable id not found");
@@ -184,7 +212,7 @@ namespace gsolver {
       static const int b_size     = total_size - a_size;         // Size of the remaining edges
       // Send the message to the variable node
       current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
-        factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_.mu_);
+        factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
       return;
     }
   };

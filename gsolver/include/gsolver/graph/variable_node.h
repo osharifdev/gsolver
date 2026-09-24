@@ -31,6 +31,18 @@ namespace gsolver {
     void sendAllMessages() override;
     void updateMuAndSigma() override;
 
+    // Frozen (linear) mode, see certify/FREEZE_MODE.md. While frozen_ is true the variable keeps one
+    // fixed linearization point mu_lin_, its state is the tangent coordinate z_ relative to mu_lin_,
+    // and every message mean is a tangent coordinate (Message::tau_) in that same chart.
+    bool frozen_ = false;
+    EstimateType mu_lin_;
+    VectorLieDim z_ = VectorLieDim::Zero();
+    std::vector<EstimateType> mu_msg_stash_;
+
+    void beginFreeze() override;
+    void restoreMessageMeans() override;
+    void endFreeze(bool factor_messages_valid) override;
+
     // For each new VariableNode, implement the following functions:
     virtual const VectorLieDim boxminus(const EstimateType& mu_inward) = 0;
     virtual const EstimateType boxplus(const VectorLieDim& tau)        = 0;

@@ -12,6 +12,7 @@ project(gsolver
 option(GSOLVER_BUILD_EXAMPLES "Build example executables" OFF)
 option(GSOLVER_BUILD_PYTHON   "Build Python bindings"     OFF)
 option(GSOLVER_BUILD_TESTS    "Build tests"               OFF)
+option(GSOLVER_BUILD_CERTIFY  "Build certification drivers (certify/cpp)" OFF)
 
 # =============================================================================
 # Global Settings
@@ -95,6 +96,11 @@ if(GSOLVER_BUILD_PYTHON)
     FetchContent_MakeAvailable(nanobind)
     
     add_subdirectory(python)
+endif()
+
+# --- Certification drivers ---
+if(GSOLVER_BUILD_CERTIFY)
+    add_subdirectory(certify/cpp)
 endif()
 
 # --- Tests ---

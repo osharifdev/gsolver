@@ -15,7 +15,15 @@ namespace gsolver {
   template <int Dim_, typename... VariableTypes_>
   void FactorNode<Dim_, VariableTypes_...>::updateFactor() {
     // Update the error and Jacobian
-    updateErrorAndJacobian();
+    if (frozen_) {
+      // Frozen mode: the linear model at the fixed point, evaluated at the incoming message means
+      VectorVariablesDim tau_in;
+      edges_.template fillMessageTau<VariablesDim_>(tau_in, 0);
+      error_ = error_lin_ + J_lin_ * tau_in;
+      J_     = J_lin_;
+    } else {
+      updateErrorAndJacobian();
+    }
     // Compute the k factor for robust estimation
     // double k = kRHuber(sqrt(error_.transpose() * Sigma_.inverse() * error_));
     double k = 1;
@@ -38,6 +46,26 @@ namespace gsolver {
   void FactorNode<Dim_, VariableTypes_...>::sendAllMessages() {
     // iterate over all edges and send messages to all connected variable nodes
     edges_.template sendAllMessages<VariablesDim_>(eta_, Lambdaprime_, Lambdaprime_conditioned_);
+  }
+
+  // Frozen (linear) mode, see certify/FREEZE_MODE.md -------------------------------------------------
+
+  template <int Dim_, typename... VariableTypes_>
+  void FactorNode<Dim_, VariableTypes_...>::freezeLinearization() {
+    // VariableNode::beginFreeze() has pointed every incoming message mean at the variable's fixed
+    // linearization point, so the factor's own error/Jacobian code is evaluated at that point.
+    updateErrorAndJacobian();
+    error_lin_ = error_;
+    J_lin_     = J_;
+    frozen_    = true;
+  }
+
+  template <int Dim_, typename... VariableTypes_>
+  void FactorNode<Dim_, VariableTypes_...>::freezeNewFactor() {
+    // A factor created after the freeze: its edges were initialized by createEdge() with the variables'
+    // mu_ (== mu_lin_, never remapped in frozen mode), so it linearizes at the fixed point directly.
+    freezeLinearization();
+    edges_.markEdgesFrozen();
   }
 
 } // namespace gsolver

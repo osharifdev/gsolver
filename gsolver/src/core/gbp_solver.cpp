@@ -6,6 +6,26 @@ namespace gsolver {
   }
 
   void GbpSolver::performIteration(FactorGraph& factor_graph) {
+    if (schedule_type_ == SolverScheduleType::SYNCHRONOUS && dynamic_schedule_) {
+      // Same four phases as below, dynamically scheduled (performance only, bit-identical results)
+#pragma omp parallel for schedule(dynamic, 16)
+      for (auto& factor_node : factor_graph.factor_nodes_) {
+        factor_node->updateFactor();
+      }
+#pragma omp parallel for schedule(dynamic, 16)
+      for (auto& factor_node : factor_graph.factor_nodes_) {
+        factor_node->sendAllMessages();
+      }
+#pragma omp parallel for schedule(dynamic, 16)
+      for (auto& variable_node : factor_graph.variable_nodes_) {
+        variable_node->updateMuAndSigma();
+      }
+#pragma omp parallel for schedule(dynamic, 16)
+      for (auto& variable_node : factor_graph.variable_nodes_) {
+        variable_node->sendAllMessages();
+      }
+      return;
+    }
     if (schedule_type_ == SolverScheduleType::SYNCHRONOUS) {
 // Update factors
 // std::cout << "Update Factors" << std::endl;
@@ -65,6 +85,21 @@ namespace gsolver {
     } else if (schedule_type_ == SolverScheduleType::ASYNCHRONOUS) {
       // Implement asynchronous schedule with attention
       // ...
+    }
+  }
+
+  void GbpSolver::freeze(FactorGraph& factor_graph, bool factor_messages_valid) {
+    // 1. fix mu_lin_ = mu_ for every variable and point its outgoing message means at it
+    for (auto& variable_node : factor_graph.variable_nodes_) {
+      variable_node->beginFreeze();
+    }
+    // 2. every factor evaluates its own error and Jacobian at the fixed points and becomes linear
+    for (auto& factor_node : factor_graph.factor_nodes_) {
+      factor_node->freezeLinearization();
+    }
+    // 3. restore the message means and move all messages into the fixed charts
+    for (auto& variable_node : factor_graph.variable_nodes_) {
+      variable_node->endFreeze(factor_messages_valid);
     }
   }
 

@@ -2,6 +2,9 @@
 
 #include <Eigen/Dense>
 
+#include <gsolver/core/frozen_mode.h>
+#include <gsolver/graph/edge.h>
+
 namespace gsolver {
 
   // compute the marginalization using the Shur complement
@@ -9,7 +12,8 @@ namespace gsolver {
   static void marginalize(Eigen::Vector<double, a_size + b_size>& eta,
                           Eigen::Matrix<double, a_size + b_size, a_size + b_size>& Lambdaprime,
                           Eigen::Vector<double, a_size>& eta_marg,
-                          Eigen::Matrix<double, a_size, a_size>& Lambdaprime_marg) {
+                          Eigen::Matrix<double, a_size, a_size>& Lambdaprime_marg,
+                          double regularizer = 1e-6) {
     // Split eta into blocks a and b
     Eigen::Vector<double, a_size> ea = eta.head(a_size);
     Eigen::Vector<double, b_size> eb = eta.tail(b_size);
@@ -19,7 +23,7 @@ namespace gsolver {
     Eigen::Matrix<double, b_size, a_size> ba = Lambdaprime.block(a_size, 0, b_size, a_size);
     Eigen::Matrix<double, b_size, b_size> bb = Lambdaprime.block(a_size, a_size, b_size, b_size);
     // Ensure that bb is invertible
-    bb += Eigen::Matrix<double, b_size, b_size>::Identity() * 1e-6;
+    bb += Eigen::Matrix<double, b_size, b_size>::Identity() * regularizer;
 
     // Marginalize
     eta_marg         = ea - ab * bb.inverse() * eb;
@@ -31,7 +35,8 @@ namespace gsolver {
   static Message<VariableType> computeMessage(Eigen::Vector<double, a_size + b_size>& factor_eta,
                                               Eigen::Matrix<double, a_size + b_size, a_size + b_size>& factor_Lambdaprime,
                                               Eigen::Matrix<double, a_size + b_size, a_size + b_size>& conditioned_Lambdaprime,
-                                              typename VariableType::EstimateType& mu_to_update) {
+                                              const Message<VariableType>& message_in,
+                                              bool frozen = false) {
     // Define the types
     using EstimateType          = typename VariableType::EstimateType;
     static const int total_size = a_size + b_size; // Total size of the joint distribution
@@ -62,16 +67,25 @@ namespace gsolver {
       Lambdaprime_C.block(0, a_offset, total_size, a_size) = col_temp;
 
       // compute the marginalization using the Shur complement
-      marginalize<a_size, b_size>(eta_C, Lambdaprime_C, eta_M, Lambdaprime_M);
+      marginalize<a_size, b_size>(eta_C, Lambdaprime_C, eta_M, Lambdaprime_M, frozen ? frozen_eps_marg : 1e-6);
     }
 
     // ensure that the Lambdaprime_marg is invertible
-    Lambdaprime_M += Eigen::Matrix<double, a_size, a_size>::Identity() * 1e-6;
+    Lambdaprime_M += Eigen::Matrix<double, a_size, a_size>::Identity() * (frozen ? frozen_eps_f2v : 1e-6);
 
     // Update the estimate to send
     Eigen::Vector<double, a_size> tau                    = Lambdaprime_M.inverse() * eta_M;
-    EstimateType mu_outward                              = VariableType::boxplus(mu_to_update, tau);
     Eigen::Matrix<double, a_size, a_size> Lambda_outward = Lambdaprime_M;
+
+    if (frozen) {
+      // Frozen mode: the mean stays in the fixed chart of the variable (no boxplus remap)
+      Message<VariableType> message;
+      message.Lambda_ = Lambda_outward;
+      message.mu_     = message_in.mu_; // unused in frozen mode; keeps the field initialized
+      message.tau_    = message_in.tau_ + tau;
+      return message;
+    }
+    EstimateType mu_outward = VariableType::boxplus(message_in.mu_, tau);
 
     // Return the message
     Message<VariableType> message;

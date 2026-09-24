@@ -56,6 +56,16 @@ namespace gsolver {
     // Update error and Jacobian of the factor
     // This function should be implemented in the derived class
     virtual void updateErrorAndJacobian() = 0;
+
+    // Frozen (linear) mode, see certify/FREEZE_MODE.md. While frozen_ is true, updateFactor() uses the
+    // linear model error_lin_ + J_lin_ * tau (tau = incoming message means in the variables' fixed
+    // charts) instead of calling updateErrorAndJacobian().
+    bool frozen_               = false;
+    VectorErrorDim error_lin_  = VectorErrorDim::Zero();
+    MatrixJacobianDim J_lin_   = MatrixJacobianDim::Zero();
+
+    void freezeLinearization() override;
+    void freezeNewFactor() override;
   };
 
 } // namespace gsolver

@@ -1,3 +1,4 @@
+#include <gsolver/core/frozen_mode.h>
 #include <gsolver/graph/variable_node.h>
 
 namespace gsolver {
@@ -36,10 +37,15 @@ namespace gsolver {
 
       // Access messages from edges (TODO: replace with appropriate getter methods based on your edge structure)
       const MatrixLieDim& Lambdaprime_inward = edges_[i]->factor_to_variable_message_.Lambda_;
-      const EstimateType_ mu_inward          = edges_[i]->factor_to_variable_message_.mu_;
 
-      // Project to the tangent space
-      VectorLieDim tangent_delta_mu_inward = boxminus(mu_inward);
+      // Project to the tangent space (frozen mode: the message mean already is a coordinate in the fixed chart)
+      VectorLieDim tangent_delta_mu_inward;
+      if (frozen_) {
+        tangent_delta_mu_inward = edges_[i]->factor_to_variable_message_.tau_ - z_;
+      } else {
+        const EstimateType_ mu_inward = edges_[i]->factor_to_variable_message_.mu_;
+        tangent_delta_mu_inward       = boxminus(mu_inward);
+      }
 
       // Compute the Lambda and eta
       MatrixLieDim tangent_Lambda_inward = Lambdaprime_inward;
@@ -49,9 +55,16 @@ namespace gsolver {
       tangent_Lambdaprime += tangent_Lambda_inward;
     }
     // Ensure that the tangent_Lambdaprime is invertible
-    tangent_Lambdaprime += MatrixLieDim::Identity() * 1e-6; // Add a small perturbation to make it invertible
+    tangent_Lambdaprime += MatrixLieDim::Identity() * (frozen_ ? frozen_eps_v2f : 1e-6); // Add a small perturbation to make it invertible
     // get the perturbation to be applied to the current estimate
     tangent_delta_mu = tangent_Lambdaprime.inverse() * tangent_eta;
+
+    if (frozen_) {
+      // Frozen mode: the outgoing mean stays in the fixed chart (no boxplus remap)
+      edges_[outedge_id]->variable_to_factor_message_.Lambda_ = tangent_Lambdaprime;
+      edges_[outedge_id]->variable_to_factor_message_.tau_    = z_ + tangent_delta_mu;
+      return;
+    }
 
     // compute the new estimate in the manifold
     EstimateType_ mu_outward         = boxplus(tangent_delta_mu);
@@ -95,10 +108,15 @@ namespace gsolver {
 
       // Access messages from edges (TODO: replace with appropriate getter methods based on your edge structure)
       const MatrixLieDim& Lambdaprime_inward = edges_[i]->factor_to_variable_message_.Lambda_;
-      const EstimateType_ mu_inward          = edges_[i]->factor_to_variable_message_.mu_;
 
-      // Project to the tangent space
-      VectorLieDim tangent_delta_mu_inward = boxminus(mu_inward);
+      // Project to the tangent space (frozen mode: the message mean already is a coordinate in the fixed chart)
+      VectorLieDim tangent_delta_mu_inward;
+      if (frozen_) {
+        tangent_delta_mu_inward = edges_[i]->factor_to_variable_message_.tau_ - z_;
+      } else {
+        const EstimateType_ mu_inward = edges_[i]->factor_to_variable_message_.mu_;
+        tangent_delta_mu_inward       = boxminus(mu_inward);
+      }
 
       // Compute the Lambda and eta
       MatrixLieDim tangent_Lambda_inward = Lambdaprime_inward;
@@ -108,9 +126,16 @@ namespace gsolver {
       tangent_Lambdaprime += tangent_Lambda_inward;
     }
     // Ensure that the tangent_Lambdaprime is invertible
-    tangent_Lambdaprime += MatrixLieDim::Identity() * 1e-6; // Add a small perturbation to make it invertible
+    tangent_Lambdaprime += MatrixLieDim::Identity() * (frozen_ ? frozen_eps_v2f : 1e-6); // Add a small perturbation to make it invertible
     // get the perturbation to be applied to the current estimate
     tangent_delta_mu = tangent_Lambdaprime.inverse() * tangent_eta;
+
+    if (frozen_) {
+      // Frozen mode: the outgoing mean stays in the fixed chart (no boxplus remap)
+      edges_[outedge_id]->variable_to_factor_message_.Lambda_ = tangent_Lambdaprime;
+      edges_[outedge_id]->variable_to_factor_message_.tau_    = z_ + tangent_delta_mu;
+      return;
+    }
 
     // compute the new estimate in the manifold
     EstimateType_ mu_outward         = boxplus(tangent_delta_mu);
@@ -143,10 +168,15 @@ namespace gsolver {
     for (size_t i = 0; i < edges_.size(); ++i) {
       // Access messages from edges (replace with appropriate getter methods based on your edge structure)
       const MatrixLieDim& Lambdaprime_inward = edges_[i]->factor_to_variable_message_.Lambda_;
-      const EstimateType_ mu_inward          = edges_[i]->factor_to_variable_message_.mu_;
 
-      // Handle the pose
-      VectorLieDim tangent_delta_mu_inward = boxminus(mu_inward);
+      // Handle the pose (frozen mode: the message mean already is a coordinate in the fixed chart)
+      VectorLieDim tangent_delta_mu_inward;
+      if (frozen_) {
+        tangent_delta_mu_inward = edges_[i]->factor_to_variable_message_.tau_ - z_;
+      } else {
+        const EstimateType_ mu_inward = edges_[i]->factor_to_variable_message_.mu_;
+        tangent_delta_mu_inward       = boxminus(mu_inward);
+      }
 
       // Compute the Lambda and eta
       MatrixLieDim tangent_Lambda_inward = Lambdaprime_inward;
@@ -156,14 +186,61 @@ namespace gsolver {
       tangent_Lambdaprime += tangent_Lambda_inward;
     }
     // Ensure that the tangent_Lambdaprime is invertible
-    tangent_Lambdaprime += MatrixLieDim::Identity() * 1e-6; // Add a small perturbation to make it invertible
+    tangent_Lambdaprime += MatrixLieDim::Identity() * (frozen_ ? frozen_eps_belief : 1e-6); // Add a small perturbation to make it invertible
     // get the perturbation to be applied to the current estimate
     tangent_delta_mu = tangent_Lambdaprime.inverse() * tangent_eta;
+
+    if (frozen_) {
+      // Frozen mode: the state is z_ in the fixed chart; mu_ is not remapped (it stays at mu_lin_)
+      z_                       = z_ + tangent_delta_mu;
+      MatrixLieDim Lambdaprime = tangent_Lambdaprime;
+      Sigma_                   = Lambdaprime.inverse();
+      return;
+    }
 
     // compute and update the estimate in the manifold
     mu_                      = boxplus(tangent_delta_mu);
     MatrixLieDim Lambdaprime = tangent_Lambdaprime;
     Sigma_                   = Lambdaprime.inverse();
+  }
+
+  // Frozen (linear) mode, see certify/FREEZE_MODE.md -------------------------------------------------
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  void VariableNode<Dim_, EstimateType_, EdgeType_>::beginFreeze() {
+    // The fixed linearization point is the belief mean at the freeze instant. Every factor reads its
+    // linearization point from the incoming variable-to-factor message mean, so those means are pointed
+    // at mu_lin_ while the factors linearize; restoreMessageMeans() puts the original means back.
+    mu_lin_ = mu_;
+    mu_msg_stash_.clear();
+    mu_msg_stash_.reserve(edges_.size());
+    for (auto& edge : edges_) {
+      mu_msg_stash_.push_back(edge->variable_to_factor_message_.mu_);
+      edge->variable_to_factor_message_.mu_ = mu_lin_;
+    }
+  }
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  void VariableNode<Dim_, EstimateType_, EdgeType_>::restoreMessageMeans() {
+    for (size_t i = 0; i < edges_.size(); ++i) {
+      edges_[i]->variable_to_factor_message_.mu_ = mu_msg_stash_[i];
+    }
+    mu_msg_stash_.clear();
+  }
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  void VariableNode<Dim_, EstimateType_, EdgeType_>::endFreeze(bool factor_messages_valid) {
+    restoreMessageMeans();
+    // One-time chart change of every stored message mean into the fixed chart at mu_lin_ (== mu_ here).
+    // Precisions are kept as they are: G-solver never transports precisions between charts.
+    for (auto& edge : edges_) {
+      edge->variable_to_factor_message_.tau_ = boxminus(edge->variable_to_factor_message_.mu_);
+      edge->factor_to_variable_message_.tau_ =
+        factor_messages_valid ? boxminus(edge->factor_to_variable_message_.mu_) : VectorLieDim::Zero();
+      edge->frozen_ = true;
+    }
+    z_      = VectorLieDim::Zero();
+    frozen_ = true;
   }
 
 } // namespace gsolver
