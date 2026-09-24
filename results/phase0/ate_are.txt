@@ -1,0 +1,7 @@
+stereo_ba_kitti06          matched=1101 nonfinite=0 ate=1.301351 are=0.013562 ate_aligned=0.667959 are_aligned=0.007374
+stereo_ba_kitti06_omp16    matched=1101 nonfinite=0 ate=1.301351 are=0.013562 ate_aligned=0.667959 are_aligned=0.007374
+multicam8_kitti06          matched=1101 nonfinite=0 ate=1.307512 are=0.013536 ate_aligned=0.667193 are_aligned=0.007520
+rs_kitti06_0.1             matched=1101 nonfinite=0 ate=1.307111 are=0.014010 ate_aligned=0.662227 are_aligned=0.008073
+rs_kitti06_0.01            matched=1101 nonfinite=0 ate=5.455182 are=0.147486 ate_aligned=5.387885 are_aligned=0.151748
+rs_kitti06_0.001           matched=1101 nonfinite=0 ate=21.126233 are=0.313623 ate_aligned=21.009782 are_aligned=0.313064
+rs_kitti06_0.0001          matched=1101 nonfinite=0 ate=76309.879724 are=0.254298 ate_aligned=76139.047813 are_aligned=1.951381

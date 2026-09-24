@@ -1,0 +1,219 @@
+-- The CXX compiler identification is GNU 11.5.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Fetching Eigen3...
+CMake Warning (dev) at /usr/share/cmake/Modules/FetchContent.cmake:1282 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  CMakeLists.txt:46 (FetchContent_Declare)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+-- The C compiler identification is GNU 11.5.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test EIGEN_COMPILER_SUPPORT_CPP11
+-- Performing Test EIGEN_COMPILER_SUPPORT_CPP11 - Success
+-- Performing Test COMPILER_SUPPORT_std=cpp03
+-- Performing Test COMPILER_SUPPORT_std=cpp03 - Success
+-- Performing Test standard_math_library_linked_to_automatically
+-- Performing Test standard_math_library_linked_to_automatically - Success
+-- Standard libraries to link to explicitly: none
+-- Performing Test COMPILER_SUPPORT_WERROR
+-- Performing Test COMPILER_SUPPORT_WERROR - Success
+-- Performing Test COMPILER_SUPPORT_pedantic
+-- Performing Test COMPILER_SUPPORT_pedantic - Success
+-- Performing Test COMPILER_SUPPORT_Wall
+-- Performing Test COMPILER_SUPPORT_Wall - Success
+-- Performing Test COMPILER_SUPPORT_Wextra
+-- Performing Test COMPILER_SUPPORT_Wextra - Success
+-- Performing Test COMPILER_SUPPORT_Wundef
+-- Performing Test COMPILER_SUPPORT_Wundef - Success
+-- Performing Test COMPILER_SUPPORT_Wcastalign
+-- Performing Test COMPILER_SUPPORT_Wcastalign - Success
+-- Performing Test COMPILER_SUPPORT_Wcharsubscripts
+-- Performing Test COMPILER_SUPPORT_Wcharsubscripts - Success
+-- Performing Test COMPILER_SUPPORT_Wnonvirtualdtor
+-- Performing Test COMPILER_SUPPORT_Wnonvirtualdtor - Success
+-- Performing Test COMPILER_SUPPORT_Wunusedlocaltypedefs
+-- Performing Test COMPILER_SUPPORT_Wunusedlocaltypedefs - Success
+-- Performing Test COMPILER_SUPPORT_Wpointerarith
+-- Performing Test COMPILER_SUPPORT_Wpointerarith - Success
+-- Performing Test COMPILER_SUPPORT_Wwritestrings
+-- Performing Test COMPILER_SUPPORT_Wwritestrings - Success
+-- Performing Test COMPILER_SUPPORT_Wformatsecurity
+-- Performing Test COMPILER_SUPPORT_Wformatsecurity - Success
+-- Performing Test COMPILER_SUPPORT_Wshorten64to32
+-- Performing Test COMPILER_SUPPORT_Wshorten64to32 - Failed
+-- Performing Test COMPILER_SUPPORT_Wlogicalop
+-- Performing Test COMPILER_SUPPORT_Wlogicalop - Success
+-- Performing Test COMPILER_SUPPORT_Wenumconversion
+-- Performing Test COMPILER_SUPPORT_Wenumconversion - Success
+-- Performing Test COMPILER_SUPPORT_Wcpp11extensions
+-- Performing Test COMPILER_SUPPORT_Wcpp11extensions - Failed
+-- Performing Test COMPILER_SUPPORT_Wdoublepromotion
+-- Performing Test COMPILER_SUPPORT_Wdoublepromotion - Success
+-- Performing Test COMPILER_SUPPORT_Wshadow
+-- Performing Test COMPILER_SUPPORT_Wshadow - Success
+-- Performing Test COMPILER_SUPPORT_Wnopsabi
+-- Performing Test COMPILER_SUPPORT_Wnopsabi - Success
+-- Performing Test COMPILER_SUPPORT_Wnovariadicmacros
+-- Performing Test COMPILER_SUPPORT_Wnovariadicmacros - Success
+-- Performing Test COMPILER_SUPPORT_Wnolonglong
+-- Performing Test COMPILER_SUPPORT_Wnolonglong - Success
+-- Performing Test COMPILER_SUPPORT_fnochecknew
+-- Performing Test COMPILER_SUPPORT_fnochecknew - Success
+-- Performing Test COMPILER_SUPPORT_fnocommon
+-- Performing Test COMPILER_SUPPORT_fnocommon - Success
+-- Performing Test COMPILER_SUPPORT_fstrictaliasing
+-- Performing Test COMPILER_SUPPORT_fstrictaliasing - Success
+-- Performing Test COMPILER_SUPPORT_wd981
+-- Performing Test COMPILER_SUPPORT_wd981 - Failed
+-- Performing Test COMPILER_SUPPORT_wd2304
+-- Performing Test COMPILER_SUPPORT_wd2304 - Failed
+-- Performing Test COMPILER_SUPPORT_STRICTANSI
+-- Performing Test COMPILER_SUPPORT_STRICTANSI - Failed
+-- Performing Test COMPILER_SUPPORT_Qunusedarguments
+-- Performing Test COMPILER_SUPPORT_Qunusedarguments - Failed
+-- Performing Test COMPILER_SUPPORT_ansi
+-- Performing Test COMPILER_SUPPORT_ansi - Success
+-- Performing Test COMPILER_SUPPORT_OPENMP
+-- Performing Test COMPILER_SUPPORT_OPENMP - Success
+-- Found unsuitable Qt version "" from NOTFOUND
+-- Looking for a Fortran compiler
+-- Looking for a Fortran compiler - /usr/bin/f95
+-- The Fortran compiler identification is GNU 11.5.0
+-- Detecting Fortran compiler ABI info
+-- Detecting Fortran compiler ABI info - done
+-- Check for working Fortran compiler: /usr/bin/f95 - skipped
+-- Could NOT find CHOLMOD (missing: CHOLMOD_INCLUDES CHOLMOD_LIBRARIES) 
+-- Could NOT find UMFPACK (missing: UMFPACK_INCLUDES UMFPACK_LIBRARIES) 
+-- Could NOT find KLU (missing: KLU_INCLUDES KLU_LIBRARIES) 
+-- Could NOT find SuperLU (missing: SUPERLU_INCLUDES SUPERLU_LIBRARIES SUPERLU_VERSION_OK) (Required is at least version "4.0")
+-- Checking for one of the modules 'hwloc'
+-- A version of Pastix has been found but pastix_nompi.h does not exist in the include directory. Because Eigen tests require a version without MPI, we disable the Pastix backend.
+-- Could NOT find SPQR (missing: SPQR_INCLUDES SPQR_LIBRARIES) 
+-- Found unsuitable Qt version "" from NOTFOUND
+-- Performing Test COMPILER_SUPPORT_FASTMATH
+-- Performing Test COMPILER_SUPPORT_FASTMATH - Success
+-- Could NOT find Boost (missing: Boost_INCLUDE_DIR) (Required is at least version "1.53.0")
+-- Found Threads: TRUE  
+-- Could NOT find GoogleHash (missing: GOOGLEHASH_INCLUDES GOOGLEHASH_COMPILE) 
+-- Could NOT find Adolc (missing: ADOLC_INCLUDES ADOLC_LIBRARIES) 
+-- Could NOT find MPFR (missing: MPFR_INCLUDES MPFR_LIBRARIES MPFR_VERSION_OK) (Required is at least version "1.0.0")
+-- Found PkgConfig: /usr/bin/pkg-config (found version "1.7.3") 
+-- Could NOT find FFTW (missing: FFTW_INCLUDES FFTW_LIBRARIES) 
+-- Found CUDA: /usr/local/cuda (found suitable version "13.2", minimum required is "7.0") 
+-- Found unsuitable Qt version "" from NOTFOUND
+-- Qt4 not found, so disabling the mandelbrot and opengl demos
+-- Could NOT find CHOLMOD (missing: CHOLMOD_INCLUDES CHOLMOD_LIBRARIES) 
+-- Could NOT find UMFPACK (missing: UMFPACK_INCLUDES UMFPACK_LIBRARIES) 
+-- Could NOT find KLU (missing: KLU_INCLUDES KLU_LIBRARIES) 
+-- Could NOT find SuperLU (missing: SUPERLU_INCLUDES SUPERLU_LIBRARIES SUPERLU_VERSION_OK) (Required is at least version "4.0")
+-- Checking for one of the modules 'hwloc'
+-- A version of Pastix has been found but pastix_nompi.h does not exist in the include directory. Because Eigen tests require a version without MPI, we disable the Pastix backend.
+-- ************************************************************
+-- ***    Eigen's unit tests configuration summary          ***
+-- ************************************************************
+-- 
+-- Build type:        Release
+-- Build site:        ee-kraken
+-- Build string:      linux-5.14.0-611.49.1.el9_7.x86_64-g++-11.5.0-sse2-64bit
+-- Enabled backends:  
+-- Disabled backends: CHOLMOD,  UMFPACK,  KLU,  SuperLU,  PaStiX,  METIS,  SPQR,  Qt4 support,  Boost.Multiprecision,  GoogleHash,  Adolc,  MPFR C++,  fftw,  OpenGL, 
+-- Default order:     Column-major
+-- Maximal matrix/vector size: 320
+-- SSE2:              Using architecture defaults
+-- SSE3:              Using architecture defaults
+-- SSSE3:             Using architecture defaults
+-- SSE4.1:            Using architecture defaults
+-- SSE4.2:            Using architecture defaults
+-- AVX:               Using architecture defaults
+-- AVX2:              Using architecture defaults
+-- FMA:               Using architecture defaults
+-- AVX512:            Using architecture defaults
+-- AVX512DQ:          Using architecture defaults
+-- Altivec:           Using architecture defaults
+-- VSX:               Using architecture defaults
+-- MIPS MSA:          Using architecture defaults
+-- ARM NEON:          Using architecture defaults
+-- ARMv8 NEON:        Using architecture defaults
+-- S390X ZVECTOR:     Using architecture defaults
+-- C++11:             OFF
+-- SYCL:              OFF
+-- CUDA:              OFF
+-- HIP:               OFF
+-- 
+CXX:               /usr/bin/c++
+ CXX_VERSION:       c++ (GCC) 11.5.0 20240719 (Red Hat 11.5.0-11)
+ CXX_FLAGS:         -isystem /home/os717/gsolver-deps/install/include -std=c++03 -pedantic -Wall -Wextra -Wundef -Wcast-align -Wchar-subscripts -Wnon-virtual-dtor -Wunused-local-typedefs -Wpointer-arith -Wwrite-strings -Wformat-security -Wlogical-op -Wenum-conversion -Wdouble-promotion -Wshadow -Wno-psabi -Wno-variadic-macros -Wno-long-long -fno-check-new -fno-common -fstrict-aliasing -ansi
+ Sparse lib flags:   
+
+-- ************************************************************
+-- 
+-- Configured Eigen 3.4.0
+-- 
+-- Available targets (use: make TARGET):
+-- ---------+--------------------------------------------------------------
+-- Target   |   Description
+-- ---------+--------------------------------------------------------------
+-- install  | Install Eigen. Headers will be installed to:
+--          |     <CMAKE_INSTALL_PREFIX>/<INCLUDE_INSTALL_DIR>
+--          |   Using the following values:
+--          |     CMAKE_INSTALL_PREFIX: /usr/local
+--          |     INCLUDE_INSTALL_DIR:  include/eigen3
+--          |   Change the install location of Eigen headers using:
+--          |     cmake . -DCMAKE_INSTALL_PREFIX=yourprefix
+--          |   Or:
+--          |     cmake . -DINCLUDE_INSTALL_DIR=yourdir
+-- doc      | Generate the API documentation, requires Doxygen & LaTeX
+-- check    | Build and run the unit-tests. Read this page:
+--          |   http://eigen.tuxfamily.org/index.php?title=Tests
+-- blas     | Build BLAS library (not the same thing as Eigen)
+-- uninstall| Remove files installed by the install target
+-- ---------+--------------------------------------------------------------
+-- 
+-- Fetching Rerun SDK...
+CMake Warning (dev) at /usr/share/cmake/Modules/FetchContent.cmake:1282 (message):
+  The DOWNLOAD_EXTRACT_TIMESTAMP option was not given and policy CMP0135 is
+  not set.  The policy's OLD behavior will be used.  When using a URL
+  download, the timestamps of extracted files should preferably be that of
+  the time of extraction, otherwise code that depends on the extracted
+  contents might not be rebuilt if the URL changes.  The OLD behavior
+  preserves the timestamps from the archive instead, but this is usually not
+  what you want.  Update your project to the NEW behavior or specify the
+  DOWNLOAD_EXTRACT_TIMESTAMP option with a value of true to avoid this
+  robustness issue.
+Call Stack (most recent call first):
+  CMakeLists.txt:59 (FetchContent_Declare)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+Compiler: GNU 11.5.0 (/usr/bin/c++)
+-- Rerun SDK install version: 0.38.1
+-- Found OpenMP_CXX: -fopenmp (found version "4.5") 
+-- Found OpenMP: TRUE (found version "4.5")  
+CMake Error at /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:230 (message):
+  Could NOT find Python (missing: Python_INCLUDE_DIRS Python_LIBRARIES
+  Development Development.Module Development.Embed) (found suitable version
+  "3.12.12", minimum required is "3.8")
+Call Stack (most recent call first):
+  /usr/share/cmake/Modules/FindPackageHandleStandardArgs.cmake:600 (_FPHSA_FAILURE_MESSAGE)
+  /usr/share/cmake/Modules/FindPython/Support.cmake:3766 (find_package_handle_standard_args)
+  /usr/share/cmake/Modules/FindPython.cmake:580 (include)
+  CMakeLists.txt:86 (find_package)
+
+
+-- Configuring incomplete, errors occurred!

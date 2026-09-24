@@ -1,0 +1,54 @@
+=== charuco_islam: /usr/bin/time -v $BUILD_DIR/examples/cpp/charuco_experiment_islam /home/os717/gsolver/examples/data/datasets/charuco/printing_room_0.g2o /home/os717/gsolver/results/phase0/charuco_islam.tum
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:05.42
+	Maximum resident set size (kbytes): 12800
+=== charuco_ba_noise0: /usr/bin/time -v $BUILD_DIR/examples/cpp/charuco_experiment_ba /home/os717/gsolver/examples/data/datasets/charuco/printing_room_0.g2o /home/os717/gsolver/results/phase0/charuco_ba_noise0.tum 0.0
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.66
+	Maximum resident set size (kbytes): 15360
+=== charuco_ba_noise0.1: /usr/bin/time -v $BUILD_DIR/examples/cpp/charuco_experiment_ba /home/os717/gsolver/examples/data/datasets/charuco/printing_room_0.g2o /home/os717/gsolver/results/phase0/charuco_ba_noise0.1.tum 0.1
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.66
+	Maximum resident set size (kbytes): 15360
+=== charuco_islam_omp16: OMP_NUM_THREADS=16 /usr/bin/time -v $BUILD_DIR/examples/cpp/charuco_experiment_islam /home/os717/gsolver/examples/data/datasets/charuco/printing_room_0.g2o /home/os717/gsolver/results/phase0/charuco_islam_omp16.tum
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.12
+	Maximum resident set size (kbytes): 14848
+=== stereo_ba_kitti06: /usr/bin/time -v $BUILD_DIR/examples/cpp/stereo_visual /home/os717/gsolver/examples/data/datasets/stereo_visual/multirobot/06.g2o /home/os717/gsolver/examples/data/datasets/stereo_visual/gt/06.tum /home/os717/gsolver/results/phase0/stereo_ba_kitti06.tum kitti_05
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:05.18
+	Maximum resident set size (kbytes): 1281776
+=== stereo_ba_kitti06_omp16: OMP_NUM_THREADS=16 /usr/bin/time -v $BUILD_DIR/examples/cpp/stereo_visual /home/os717/gsolver/examples/data/datasets/stereo_visual/multirobot/06.g2o /home/os717/gsolver/examples/data/datasets/stereo_visual/gt/06.tum /home/os717/gsolver/results/phase0/stereo_ba_kitti06_omp16.tum kitti_05
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:04.17
+	Maximum resident set size (kbytes): 1281780
+=== multicam8_kitti06: /usr/bin/time -v $BUILD_DIR/examples/cpp/stereo_visual /home/os717/gsolver/examples/data/datasets/stereo_visual/multirobot/06.g2o /home/os717/gsolver/examples/data/datasets/stereo_visual/gt/06.tum /home/os717/gsolver/results/phase0/multicam8_kitti06.tum kitti_05 8
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:57.99
+	Maximum resident set size (kbytes): 1264784
+=== rs_kitti06_0.1: /usr/bin/time -v $BUILD_DIR/examples/cpp/stereo_visual /home/os717/gsolver/examples/data/datasets/stereo_visual/rolling_shutter/kitti_06_0.1.g2o /home/os717/gsolver/examples/data/datasets/stereo_visual/gt/06.tum /home/os717/gsolver/results/phase0/rs_kitti06_0.1.tum kitti_05
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:28.99
+	Maximum resident set size (kbytes): 1313784
+=== rs_kitti06_0.01: /usr/bin/time -v $BUILD_DIR/examples/cpp/stereo_visual /home/os717/gsolver/examples/data/datasets/stereo_visual/rolling_shutter/kitti_06_0.01.g2o /home/os717/gsolver/examples/data/datasets/stereo_visual/gt/06.tum /home/os717/gsolver/results/phase0/rs_kitti06_0.01.tum kitti_05
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:28.45
+	Maximum resident set size (kbytes): 1318396
+=== rs_kitti06_0.001: /usr/bin/time -v $BUILD_DIR/examples/cpp/stereo_visual /home/os717/gsolver/examples/data/datasets/stereo_visual/rolling_shutter/kitti_06_0.001.g2o /home/os717/gsolver/examples/data/datasets/stereo_visual/gt/06.tum /home/os717/gsolver/results/phase0/rs_kitti06_0.001.tum kitti_05
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:27.38
+	Maximum resident set size (kbytes): 1319376
+=== rs_kitti06_0.0001: /usr/bin/time -v $BUILD_DIR/examples/cpp/stereo_visual /home/os717/gsolver/examples/data/datasets/stereo_visual/rolling_shutter/kitti_06_0.0001.g2o /home/os717/gsolver/examples/data/datasets/stereo_visual/gt/06.tum /home/os717/gsolver/results/phase0/rs_kitti06_0.0001.tum kitti_05
+exit=0
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:28.40
+	Maximum resident set size (kbytes): 1318908
+stereo_ba_kitti06          matched=1101 nonfinite=0 ate=1.301351 are=0.013562 ate_aligned=0.667959 are_aligned=0.007374
+stereo_ba_kitti06_omp16    matched=1101 nonfinite=0 ate=1.301351 are=0.013562 ate_aligned=0.667959 are_aligned=0.007374
+multicam8_kitti06          matched=1101 nonfinite=0 ate=1.307512 are=0.013536 ate_aligned=0.667193 are_aligned=0.007520
+rs_kitti06_0.1             matched=1101 nonfinite=0 ate=1.307111 are=0.014010 ate_aligned=0.662227 are_aligned=0.008073
+rs_kitti06_0.01            matched=1101 nonfinite=0 ate=5.455182 are=0.147486 ate_aligned=5.387885 are_aligned=0.151748
+rs_kitti06_0.001           matched=1101 nonfinite=0 ate=21.126233 are=0.313623 ate_aligned=21.009782 are_aligned=0.313064
+rs_kitti06_0.0001          matched=1101 nonfinite=0 ate=76309.879724 are=0.254298 ate_aligned=76139.047813 are_aligned=1.951381
+=== thread-count independence (byte comparison of outputs)
+charuco_islam: 64 vs 16 threads identical
+stereo_ba: 64 vs 16 threads identical

@@ -1,0 +1,24 @@
+
+============================================================
+  Multi-Robot Stereo Visual SLAM
+============================================================
+
+[32m[2026-09-24 14:50:11.189] [INFO ] [StereoVisual] Robots: 1[0m
+[32m[2026-09-24 14:50:11.190] [INFO ] [StereoVisual] Trajectory: kitti_05 - KITTI sequence 05 - urban, medium loop[0m
+[32m[2026-09-24 14:50:11.190] [INFO ] [StereoVisual] [1/4] Loading stereo g2o: /home/os717/gsolver/examples/data/datasets/stereo_visual/rolling_shutter/kitti_06_0.01.g2o[0m
+[32m[2026-09-24 14:50:11.510] [INFO ] [StereoVisual] Loaded: 2379 poses, 45552 landmarks, 157588 stereo observations[0m
+[32m[2026-09-24 14:50:11.510] [INFO ] [StereoVisual] [2/4] Building 1 factor graph(s)...[0m
+[32m[2026-09-24 14:50:11.510] [INFO ] [StereoVisual] Robot 0: 2379 poses (0.207793s - 114.18s)[0m
+[32m[2026-09-24 14:50:11.772] [INFO ] [StereoVisual]   Robot 0: 45552 landmarks, 157588 observations[0m
+[32m[2026-09-24 14:50:27.268] [INFO ] [StereoVisual] [3/4] Running GBP (10 iterations per robot)...[0m
+[32m[2026-09-24 14:50:28.451] [INFO ] [StereoVisual] GBP iterations [███░░░░░░░░░░░░░░░░░░░░░░░░░░░] 10% (1/10)[0m[32m[2026-09-24 14:50:29.699] [INFO ] [StereoVisual] GBP iterations [██████░░░░░░░░░░░░░░░░░░░░░░░░] 20% (2/10)[0m[32m[2026-09-24 14:50:30.921] [INFO ] [StereoVisual] GBP iterations [█████████░░░░░░░░░░░░░░░░░░░░░] 30% (3/10)[0m[32m[2026-09-24 14:50:32.124] [INFO ] [StereoVisual] GBP iterations [████████████░░░░░░░░░░░░░░░░░░] 40% (4/10)[0m[32m[2026-09-24 14:50:33.320] [INFO ] [StereoVisual] GBP iterations [███████████████░░░░░░░░░░░░░░░] 50% (5/10)[0m[32m[2026-09-24 14:50:34.520] [INFO ] [StereoVisual] GBP iterations [██████████████████░░░░░░░░░░░░] 60% (6/10)[0m[32m[2026-09-24 14:50:35.697] [INFO ] [StereoVisual] GBP iterations [█████████████████████░░░░░░░░░] 70% (7/10)[0m[32m[2026-09-24 14:50:36.881] [INFO ] [StereoVisual] GBP iterations [████████████████████████░░░░░░] 80% (8/10)[0m[32m[2026-09-24 14:50:38.054] [INFO ] [StereoVisual] GBP iterations [███████████████████████████░░░] 90% (9/10)[0m[32m[2026-09-24 14:50:39.248] [INFO ] [StereoVisual] GBP iterations [██████████████████████████████] 100% (10/10)[0m
+[32m[2026-09-24 14:50:39.248] [INFO ] [StereoVisual] Optimization complete in 11979ms[0m
+[32m[2026-09-24 14:50:39.248] [INFO ] [StereoVisual] [4/4] GP-interpolating to GT timestamps and saving: /home/os717/gsolver/results/phase0/rs_kitti06_0.01.tum[0m
+[32m[2026-09-24 14:50:39.250] [INFO ] [StereoVisual] Total pose nodes collected: 2379[0m
+[32m[2026-09-24 14:50:39.251] [INFO ] [StereoVisual] Interpolating at 1101 GT timestamps[0m
+[32m[2026-09-24 14:50:39.292] [INFO ] [StereoVisual] Wrote 1101 poses to /home/os717/gsolver/results/phase0/rs_kitti06_0.01.tum[0m
+
+============================================================
+  Done
+============================================================
+

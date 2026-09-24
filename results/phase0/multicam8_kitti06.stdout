@@ -1,0 +1,39 @@
+
+============================================================
+  Multi-Robot Stereo Visual SLAM
+============================================================
+
+[32m[2026-09-24 14:47:44.171] [INFO ] [StereoVisual] Robots: 8[0m
+[32m[2026-09-24 14:47:44.171] [INFO ] [StereoVisual] Trajectory: kitti_05 - KITTI sequence 05 - urban, medium loop[0m
+[32m[2026-09-24 14:47:44.171] [INFO ] [StereoVisual] [1/4] Loading stereo g2o: /home/os717/gsolver/examples/data/datasets/stereo_visual/multirobot/06.g2o[0m
+[32m[2026-09-24 14:47:44.493] [INFO ] [StereoVisual] Loaded: 477 poses, 46196 landmarks, 157941 stereo observations[0m
+[32m[2026-09-24 14:47:44.493] [INFO ] [StereoVisual] [2/4] Building 8 factor graph(s)...[0m
+[32m[2026-09-24 14:47:44.493] [INFO ] [StereoVisual] Robot 0: 59 poses (0s - 11.5386s)[0m
+[32m[2026-09-24 14:47:44.506] [INFO ] [StereoVisual]   Robot 0: 7061 landmarks, 18564 observations[0m
+[32m[2026-09-24 14:47:44.862] [INFO ] [StereoVisual] Robot 1: 59 poses (11.8506s - 26.2035s)[0m
+[32m[2026-09-24 14:47:44.875] [INFO ] [StereoVisual]   Robot 1: 6714 landmarks, 17108 observations[0m
+[32m[2026-09-24 14:47:45.302] [INFO ] [StereoVisual] Robot 2: 59 poses (26.4114s - 38.7846s)[0m
+[32m[2026-09-24 14:47:45.315] [INFO ] [StereoVisual]   Robot 2: 6238 landmarks, 19476 observations[0m
+[32m[2026-09-24 14:47:45.813] [INFO ] [StereoVisual] Robot 3: 59 poses (38.9922s - 50.4165s)[0m
+[32m[2026-09-24 14:47:45.827] [INFO ] [StereoVisual]   Robot 3: 6236 landmarks, 23120 observations[0m
+[32m[2026-09-24 14:47:46.389] [INFO ] [StereoVisual] Robot 4: 59 poses (50.6247s - 62.2539s)[0m
+[32m[2026-09-24 14:47:46.401] [INFO ] [StereoVisual]   Robot 4: 6052 landmarks, 17092 observations[0m
+[32m[2026-09-24 14:47:46.827] [INFO ] [StereoVisual] Robot 5: 59 poses (62.4616s - 72.5291s)[0m
+[32m[2026-09-24 14:47:46.841] [INFO ] [StereoVisual]   Robot 5: 6306 landmarks, 22672 observations[0m
+[32m[2026-09-24 14:47:47.474] [INFO ] [StereoVisual] Robot 6: 59 poses (73.0488s - 85.3163s)[0m
+[32m[2026-09-24 14:47:47.487] [INFO ] [StereoVisual]   Robot 6: 6682 landmarks, 18553 observations[0m
+[32m[2026-09-24 14:47:47.997] [INFO ] [StereoVisual] Robot 7: 64 poses (85.4202s - 114.19s)[0m
+[32m[2026-09-24 14:47:48.011] [INFO ] [StereoVisual]   Robot 7: 11654 landmarks, 21356 observations[0m
+[32m[2026-09-24 14:47:48.938] [INFO ] [StereoVisual] Added 11784 landmark equality factors across 8 robots[0m
+[32m[2026-09-24 14:47:48.942] [INFO ] [StereoVisual] [3/4] Running GBP (10 iterations per robot)...[0m
+[32m[2026-09-24 14:48:00.049] [INFO ] [StereoVisual] GBP iterations [███░░░░░░░░░░░░░░░░░░░░░░░░░░░] 10% (1/10)[0m[32m[2026-09-24 14:48:11.365] [INFO ] [StereoVisual] GBP iterations [██████░░░░░░░░░░░░░░░░░░░░░░░░] 20% (2/10)[0m[32m[2026-09-24 14:48:22.737] [INFO ] [StereoVisual] GBP iterations [█████████░░░░░░░░░░░░░░░░░░░░░] 30% (3/10)[0m[32m[2026-09-24 14:48:34.036] [INFO ] [StereoVisual] GBP iterations [████████████░░░░░░░░░░░░░░░░░░] 40% (4/10)[0m[32m[2026-09-24 14:48:45.350] [INFO ] [StereoVisual] GBP iterations [███████████████░░░░░░░░░░░░░░░] 50% (5/10)[0m[32m[2026-09-24 14:48:56.689] [INFO ] [StereoVisual] GBP iterations [██████████████████░░░░░░░░░░░░] 60% (6/10)[0m[32m[2026-09-24 14:49:07.983] [INFO ] [StereoVisual] GBP iterations [█████████████████████░░░░░░░░░] 70% (7/10)[0m[32m[2026-09-24 14:49:19.243] [INFO ] [StereoVisual] GBP iterations [████████████████████████░░░░░░] 80% (8/10)[0m[32m[2026-09-24 14:49:30.503] [INFO ] [StereoVisual] GBP iterations [███████████████████████████░░░] 90% (9/10)[0m[32m[2026-09-24 14:49:41.780] [INFO ] [StereoVisual] GBP iterations [██████████████████████████████] 100% (10/10)[0m
+[32m[2026-09-24 14:49:41.780] [INFO ] [StereoVisual] Optimization complete in 112838ms[0m
+[32m[2026-09-24 14:49:41.780] [INFO ] [StereoVisual] [4/4] GP-interpolating to GT timestamps and saving: /home/os717/gsolver/results/phase0/multicam8_kitti06.tum[0m
+[32m[2026-09-24 14:49:41.782] [INFO ] [StereoVisual] Total pose nodes collected: 477[0m
+[32m[2026-09-24 14:49:41.783] [INFO ] [StereoVisual] Interpolating at 1101 GT timestamps[0m
+[32m[2026-09-24 14:49:41.823] [INFO ] [StereoVisual] Wrote 1101 poses to /home/os717/gsolver/results/phase0/multicam8_kitti06.tum[0m
+
+============================================================
+  Done
+============================================================
+

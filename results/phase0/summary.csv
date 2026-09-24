@@ -1,0 +1,12 @@
+run,experiment,settings,exit_status,wall_s,peak_rss_MB,cpu_percent,graph_build_s,solve_ms_printed,graph,matched,nonfinite,ate,are,ate_aligned,are_aligned
+charuco_islam,ChArUco incremental SLAM,defaults (64 threads),0,5.42,12.5,4852,0.0,5407,"118 variables, 711 factors",,,,,,
+charuco_islam_omp16,ChArUco incremental SLAM,OMP_NUM_THREADS=16,0,0.12,14.5,1488,0.0,116,"118 variables, 711 factors",,,,,,
+charuco_ba_noise0,ChArUco BA,noise 0.0 (README default),0,2.66,15.0,4853,0.01,2641,"118 variables, 711 factors",,,,,,
+charuco_ba_noise0.1,ChArUco BA,noise 0.1 (paper setting),0,2.66,15.0,4897,0.01,2639,"118 variables, 711 factors",,,,,,
+stereo_ba_kitti06,"Stereo BA KITTI 06, 1 camera",kitti_05 config (64 threads),0,125.18,1251.7,140,13.24,111251,,1101,0,1.301351,0.013562,0.667959,0.007374
+stereo_ba_kitti06_omp16,"Stereo BA KITTI 06, 1 camera","kitti_05, OMP_NUM_THREADS=16",0,124.17,1251.7,115,13.16,110312,,1101,0,1.301351,0.013562,0.667959,0.007374
+multicam8_kitti06,Multi-camera KITTI 06,8 cameras (README default),0,117.99,1235.1,305,4.45,112838,,1101,0,1.307512,0.013536,0.667193,0.00752
+rs_kitti06_0.1,Rolling shutter KITTI 06,readout 0.1 s (README default),0,28.99,1283.0,349,15.86,12400,,1101,0,1.307111,0.01401,0.662227,0.008073
+rs_kitti06_0.01,Rolling shutter KITTI 06,readout 0.01 s,0,28.45,1287.5,351,15.76,11979,,1101,0,5.455182,0.147486,5.387885,0.151748
+rs_kitti06_0.001,Rolling shutter KITTI 06,readout 0.001 s,0,27.38,1288.5,364,14.54,12128,,1101,0,21.126233,0.313623,21.009782,0.313064
+rs_kitti06_0.0001,Rolling shutter KITTI 06,readout 0.0001 s,0,28.4,1288.0,353,15.63,12084,,1101,0,76309.879724,0.254298,76139.047813,1.951381

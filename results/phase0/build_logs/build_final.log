@@ -1,0 +1,387 @@
+[  0%] Creating directories for 'arrow_cpp'
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/nb_func.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/nb_type.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/nb_static_property.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/nb_ft.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/nb_internals.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/common.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/nb_enum.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/trampoline.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/implicit.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/nb_ndarray.cpp.o
+[  0%] Building CXX object python/CMakeFiles/nanobind-static.dir/__/_deps/nanobind-src/src/error.cpp.o
+[  0%] Performing download step (download, verify and extract) for 'arrow_cpp'
+-- Downloading...
+   dst='$SCRATCH/build-fresh/_deps/rerun_sdk-build/arrow/src/apache-arrow-18.0.0.tar.gz'
+   timeout='none'
+   inactivity timeout='none'
+-- Using src='https://github.com/apache/arrow/releases/download/apache-arrow-18.0.0/apache-arrow-18.0.0.tar.gz'
+-- verifying file...
+       file='$SCRATCH/build-fresh/_deps/rerun_sdk-build/arrow/src/apache-arrow-18.0.0.tar.gz'
+-- Downloading... done
+-- extracting...
+     src='$SCRATCH/build-fresh/_deps/rerun_sdk-build/arrow/src/apache-arrow-18.0.0.tar.gz'
+     dst='$SCRATCH/build-fresh/_deps/rerun_sdk-build/arrow/src/arrow_cpp'
+-- extracting... [tar xfz]
+-- extracting... [analysis]
+-- extracting... [rename]
+-- extracting... [clean up]
+-- extracting... done
+[  0%] No update step for 'arrow_cpp'
+[  0%] Performing patch step for 'arrow_cpp'
+[  0%] Performing configure step for 'arrow_cpp'
+[  0%] Linking CXX static library libnanobind-static.a
+[  0%] Built target nanobind-static
+-- arrow_cpp configure command succeeded.  See also $SCRATCH/build-fresh/_deps/rerun_sdk-build/arrow/src/arrow_cpp-stamp/arrow_cpp-configure-*.log
+[  0%] Performing build step for 'arrow_cpp'
+-- arrow_cpp build command succeeded.  See also $SCRATCH/build-fresh/_deps/rerun_sdk-build/arrow/src/arrow_cpp-stamp/arrow_cpp-build-*.log
+[  0%] Performing install step for 'arrow_cpp'
+-- arrow_cpp install command succeeded.  See also $SCRATCH/build-fresh/_deps/rerun_sdk-build/arrow/src/arrow_cpp-stamp/arrow_cpp-install-*.log
+[  0%] Completed 'arrow_cpp'
+[  0%] Built target arrow_cpp
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/arrows3d.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/arrows2d_ext.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/arrows3d_ext.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/annotation_context.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/asset3d.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/arrows2d.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/bar_chart_ext.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/boxes2d.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/boxes2d_ext.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/boxes3d.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/asset3d_ext.cpp.o
+[  0%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/asset_video.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/asset_video_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/capsules3d_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/capsules3d.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/clear_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/bar_chart.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/clear.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/boxes3d_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/cylinders3d.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/coordinate_frame.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/cylinders3d_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/depth_image.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/depth_image_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/ellipses2d.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/ellipses2d_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/ellipsoids3d.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/ellipsoids3d_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/encoded_depth_image.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/encoded_image_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/encoded_image.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/gaussian_splats3d.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/geo_points.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/geo_line_strings.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/geo_points_ext.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/graph_edges.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/grid_map.cpp.o
+[  7%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/graph_nodes.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/instance_poses3d.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/image_ext.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/line_strips3d.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/image.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/line_strips2d.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/mcap_channel.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/mcap_message.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/measurements.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/mcap_schema.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/mcap_statistics.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/mesh3d.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/pinhole.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/pinhole_ext.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/points2d.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/points3d.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/recording_info.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/scalars.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/segmentation_image.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/segmentation_image_ext.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/series_lines.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/series_lines_ext.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/series_points.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/series_points_ext.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/state_change.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/state_configuration.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/tensor.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/tensor_ext.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/text_document.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/text_log.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/transform3d.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/transform3d_ext.cpp.o
+[ 14%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/transform_axes3d.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/video_frame_reference.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/video_stream.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/view_coordinates.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/view_coordinates_ext.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/volume3d.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/volume3d_ext.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/archetypes/voxel_grid_map.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/active_visualizers.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/background.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/card_layout.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/container_blueprint.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/dataframe_query.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/entity_behavior.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/eye_controls3d.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/force_center.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/force_collision_radius.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/force_link.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/force_many_body.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/force_position.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/graph_background.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/line_grid3d.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/map_background.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/map_zoom.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/near_clip_plane.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/panel_blueprint.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/plot_background.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/plot_interaction.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/plot_legend.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/previews_config.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/scalar_axis.cpp.o
+[ 21%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/spatial_information.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/table_blueprint.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/table_column.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/table_column_preview.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/table_layout.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/tensor_scalar_mapping.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/tensor_slice_selection.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/tensor_view_fit.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/text_document_format.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/text_log_columns.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/text_log_format.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/text_log_rows.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/time_axis.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/time_panel_blueprint.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/view_blueprint.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/view_contents.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/viewport_blueprint.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/visible_time_ranges.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/visual_bounds2d.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/archetypes/visualizer_instruction.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/background_kind.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/column_order.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/container_kind.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/corner2d.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/eye3d_kind.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/link_axis.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/loop_mode.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/map_provider.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/panel_state.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/play_state.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/points_display.cpp.o
+[ 28%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/table_cell_kind.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/table_layout_kind.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/tooltip_mode.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/components/view_fit.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/component_column_selector.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/component_source_kind.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/filter_by_range.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/filter_is_not_null.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/selected_columns.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/tensor_dimension_index_slider.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/text_log_column.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/text_log_column_kind.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/timeline_column.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/blueprint/encodings/visualizer_component_mapping.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/component_batch.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/component_column.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/component_type.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/component_type_registry.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/aggregation_policy.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/annotation_context.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/annotation_context_ext.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/channel_message_counts.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/color_ext.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/colormap.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/entity_path_ext.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/fill_mode.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/geo_line_string.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/geo_line_string_ext.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/graph_edge_ext.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/graph_node_ext.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/graph_type.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/half_size2d_ext.cpp.o
+[ 35%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/half_size3d_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/image_buffer_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/image_format_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/interpolation_mode.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/key_value_pairs.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/lat_lon_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/line_strip2d.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/line_strip3d.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/magnification_filter.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/marker_shape.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/media_type_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/mesh_face_rendering.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/name_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/pinhole_projection_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/point_shading.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/position2d_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/position3d_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/radius_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/resolution_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/scale3d_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/tensor_data_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/texcoord2d_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/text_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/text_log_level_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/transform_frame_id_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/transform_mat3x3_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/transform_relation.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/translation3d_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/triangle_indices_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/unit_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/vector2d_ext.cpp.o
+[ 42%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/vector3d_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/video_codec.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/video_timestamp_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/view_coordinates_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/components/voxel_index_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/config.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/demo_utils.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/absolute_time_range.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/angle.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/angle_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/annotation_info.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/annotation_info_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/blob.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/blob_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/bool.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/channel_count_pair.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/channel_datatype.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/class_description.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/class_description_map_elem.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/class_description_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/class_description_map_elem_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/class_id.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/color_model.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/dvec2d.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/dvec2d_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/entity_path.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/float32.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/float64.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/image_format.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/image_format_ext.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/ivec3d.cpp.o
+[ 50%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/ivec3d_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/keypoint_id.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/keypoint_pair.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/keypoint_pair_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/mat3x3.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/mat3x3_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/mat4x4.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/mat4x4_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/pixel_format.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/plane3d.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/quaternion.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/quaternion_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/range1d.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/range2d.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/rgba32.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/rgba32_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/rotation_axis_angle.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/rotation_axis_angle_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/spherical_harmonics3rgb.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/spherical_harmonics3rgb_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/tensor_buffer.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/tensor_buffer_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/tensor_data.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/tensor_data_ext.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/tensor_dimension_index_selection.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/tensor_dimension_selection.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/time_int.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/time_range.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/time_range_boundary.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uint16.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uint32.cpp.o
+[ 57%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uint64.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/utf8.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/utf8_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/utf8pair.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/utf8pair_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uuid.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uvec2d.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uvec2d_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uvec3d.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uvec3d_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/uvec4d.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/vec2d.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/vec2d_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/vec3d.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/vec3d_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/vec4d.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/vec4d_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/video_timestamp.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/view_coordinates.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/view_coordinates_ext.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/view_dir.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/encodings/visible_time_range.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/entity_path.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/error.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/log_sink.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/recording_stream.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/sdk_info.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/spawn.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/spawn_options.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/string_utils.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/time_column.cpp.o
+[ 64%] Building CXX object _deps/rerun_sdk-build/CMakeFiles/rerun_sdk.dir/src/rerun/timeline.cpp.o
+[ 71%] Linking CXX static library librerun_sdk.a
+[ 71%] Built target rerun_sdk
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/variables/se3_point.cpp.o
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/core/gbp_solver.cpp.o
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/variables/se3_posevel.cpp.o
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/factors/se3_posevel_point.cpp.o
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/variables/se3_pose.cpp.o
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/factors/se3_point_equality.cpp.o
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/factors/se3_posevel_prior.cpp.o
+[ 71%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/factors/se3_posevel_gp.cpp.o
+[ 78%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/factors/se3_posevel_posevel.cpp.o
+[ 78%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/factors/se3_posevel_stereo_point.cpp.o
+[ 78%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/factors/se3_posevel_pose.cpp.o
+[ 78%] Building CXX object gsolver/CMakeFiles/gsolver.dir/src/graph/types/instantiations.cpp.o
+[ 78%] Linking CXX static library libgsolver.a
+[ 78%] Built target gsolver
+[ 78%] Building CXX object examples/cpp/CMakeFiles/data_generator.dir/__/data/generators/src/data_generator.cpp.o
+[ 78%] Building CXX object examples/cpp/CMakeFiles/pgo_experiment.dir/apps/pgo_experiment.cpp.o
+[ 78%] Building CXX object examples/cpp/CMakeFiles/stereo_visual.dir/apps/stereo_visual.cpp.o
+[ 78%] Building CXX object examples/cpp/CMakeFiles/prior_experiment.dir/apps/prior_experiment.cpp.o
+[ 78%] Building CXX object examples/cpp/CMakeFiles/gp_hyperparam_trainer.dir/apps/gp_hyperparam_trainer.cpp.o
+[ 78%] Building CXX object examples/cpp/CMakeFiles/hyperparam_ablation_experiment.dir/apps/hyperparam_ablation_experiment.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/gsolver_module.cpp.o
+[ 78%] Building CXX object examples/cpp/CMakeFiles/charuco_experiment_islam.dir/apps/charuco_experiment_islam.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/bind_factor_graph.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/bind_variable_node_base.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/maths/bind_geometry3d.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/bind_factor_node_base.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/bind_edge_base.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/core/bind_gbp_solver.cpp.o
+[ 78%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/bind_edge.cpp.o
+[ 78%] Building CXX object examples/cpp/CMakeFiles/charuco_experiment_ba.dir/apps/charuco_experiment_ba.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/variables/bind_se3_posevel.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/factors/bind_se3_posevel_prior.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/variables/bind_se3_pose.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/factors/bind_se3_posevel_gp.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/factors/bind_se3_posevel_posevel.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/factors/bind_se3_posevel_pose.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/variables/bind_se3_point.cpp.o
+[ 85%] Building CXX object python/CMakeFiles/_gsolver.dir/graph/types/factors/bind_se3_posevel_point.cpp.o
+[ 85%] Linking CXX executable gp_hyperparam_trainer
+[ 85%] Built target gp_hyperparam_trainer
+[ 85%] Linking CXX executable data_generator
+[ 85%] Built target data_generator
+[ 85%] Linking CXX shared module _gsolver.cpython-39-x86_64-linux-gnu.so
+[ 85%] Built target _gsolver
+[ 85%] Linking CXX executable prior_experiment
+[ 85%] Linking CXX executable hyperparam_ablation_experiment
+[ 85%] Built target prior_experiment
+[ 85%] Built target hyperparam_ablation_experiment
+[ 92%] Linking CXX executable charuco_experiment_islam
+[100%] Linking CXX executable pgo_experiment
+[100%] Built target charuco_experiment_islam
+[100%] Linking CXX executable stereo_visual
+[100%] Linking CXX executable charuco_experiment_ba
+[100%] Built target pgo_experiment
+[100%] Built target stereo_visual
+[100%] Built target charuco_experiment_ba

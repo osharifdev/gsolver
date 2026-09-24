@@ -1,0 +1,22 @@
+
+============================================================
+  Incremental Charuco SLAM
+============================================================
+
+[32m[2026-09-24 14:43:23.852] [INFO ] [CharucoIncrSLAM] Loaded config for trajectory: printing_room[0m
+[32m[2026-09-24 14:43:23.852] [INFO ] [CharucoIncrSLAM] [1/5] Loading data from: /home/os717/gsolver/examples/data/datasets/charuco/printing_room_0.g2o[0m
+[32m[2026-09-24 14:43:23.855] [INFO ] [CharucoIncrSLAM] Found 617 landmark observations[0m
+[32m[2026-09-24 14:43:23.855] [INFO ] [CharucoIncrSLAM] [2/5] Initializing factor graph with first pose...[0m
+[32m[2026-09-24 14:43:23.855] [INFO ] [CharucoIncrSLAM] First pose anchored at origin (t=1.5)[0m
+[32m[2026-09-24 14:43:23.855] [INFO ] [CharucoIncrSLAM] [3/5] Running incremental optimization (1 iteration per pose)...[0m
+[32m[2026-09-24 14:43:28.734] [INFO ] [CharucoIncrSLAM] Incremental phase complete: 94 poses, 617 landmarks[0m
+[32m[2026-09-24 14:43:28.734] [INFO ] [CharucoIncrSLAM] [4/5] Running final bundle adjustment (10 iterations)...[0m
+[32m[2026-09-24 14:43:28.786] [INFO ] [CharucoIncrSLAM] Final BA [███░░░░░░░░░░░░░░░░░░░░░░░░░░░] 10% (1/10)[0m[32m[2026-09-24 14:43:28.839] [INFO ] [CharucoIncrSLAM] Final BA [██████░░░░░░░░░░░░░░░░░░░░░░░░] 20% (2/10)[0m[32m[2026-09-24 14:43:28.898] [INFO ] [CharucoIncrSLAM] Final BA [█████████░░░░░░░░░░░░░░░░░░░░░] 30% (3/10)[0m[32m[2026-09-24 14:43:28.945] [INFO ] [CharucoIncrSLAM] Final BA [████████████░░░░░░░░░░░░░░░░░░] 40% (4/10)[0m[32m[2026-09-24 14:43:28.997] [INFO ] [CharucoIncrSLAM] Final BA [███████████████░░░░░░░░░░░░░░░] 50% (5/10)[0m[32m[2026-09-24 14:43:29.052] [INFO ] [CharucoIncrSLAM] Final BA [██████████████████░░░░░░░░░░░░] 60% (6/10)[0m[32m[2026-09-24 14:43:29.105] [INFO ] [CharucoIncrSLAM] Final BA [█████████████████████░░░░░░░░░] 70% (7/10)[0m[32m[2026-09-24 14:43:29.158] [INFO ] [CharucoIncrSLAM] Final BA [████████████████████████░░░░░░] 80% (8/10)[0m[32m[2026-09-24 14:43:29.210] [INFO ] [CharucoIncrSLAM] Final BA [███████████████████████████░░░] 90% (9/10)[0m[32m[2026-09-24 14:43:29.263] [INFO ] [CharucoIncrSLAM] Final BA [██████████████████████████████] 100% (10/10)[0m
+[32m[2026-09-24 14:43:29.263] [INFO ] [CharucoIncrSLAM] Optimization complete in 5407ms[0m
+[32m[2026-09-24 14:43:29.263] [INFO ] [CharucoIncrSLAM] Final graph: 118 variables, 711 factors[0m
+[32m[2026-09-24 14:43:29.263] [INFO ] [CharucoIncrSLAM] [5/5] Saving results to: /home/os717/gsolver/results/phase0/charuco_islam.tum[0m
+
+============================================================
+  Done
+============================================================
+

@@ -1,0 +1,11 @@
+proxy: 477 poses, 45555 landmarks, 157941 stereo factors, N=142389 dof
+assemble H: 26.8 s, nnz=11.9M (142 MB CSR)
+oracle solve (Schur on landmarks): 11.4 s, residual 8.4e-12
+oracle marginals Sigma_ii for all 46032 blocks: 51.2 s
+block adjacency: 13.2 s
+pose     K=1: patch dof median     990 max    1689; time/patch median      7.3 ms  max     10.7 ms
+pose     K=2: patch dof median    3603 max    4710; time/patch median    136.1 ms  max    485.6 ms
+pose     K=3: patch dof median   41755 max   60060; time/patch median  20034.7 ms  max  76616.9 ms
+landmark K=1: patch dof median      33 max     135; time/patch median      0.6 ms  max      1.1 ms
+landmark K=2: patch dof median    1447 max    6144; time/patch median     12.8 ms  max    318.2 ms
+landmark K=3: patch dof median    3994 max    8913; time/patch median    198.9 ms  max   1723.5 ms
