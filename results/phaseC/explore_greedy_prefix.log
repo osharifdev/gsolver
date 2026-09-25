@@ -1,0 +1,12 @@
+kitti06_prefix_conv: 161 poses, floor 7.577e-02; oracle stop [0.62 0.65 0.68 0.73 0.78 0.84 0.88 0.91 0.94 0.96 1.   1.   1.   1.
+ 1.   1.   1.  ] at [1, 2, 3, 5, 7, 10, 15, 20, 30, 50, 70, 100, 150, 200, 300, 500, 1000]
+K=1        patch median  71.0 (p90  89.0, max 108) of 161 | rho(A) 0.5062 max row sum 1.031 | valid True ratio median 1.561 p95 3.294 max 3.99 | stop [0.5  0.59 0.59 0.64 0.67 0.73 0.75 0.8  0.87 0.94 0.98 1.   1.   1.
+ 1.   1.   1.  ]
+K=2        patch median 125.0 (p90 147.0, max 148) of 161 | rho(A) 0.0953 max row sum 0.168 | valid True ratio median 1.017 p95 1.201 max 1.24 | stop [0.62 0.65 0.67 0.7  0.76 0.83 0.87 0.89 0.94 0.96 1.   1.   1.   1.
+ 1.   1.   1.  ]
+greedy r=0.3 patch median  33.0 (p90  49.0, max  52) of 161 | rho(A) 0.2574 max row sum 0.300 | valid True ratio median 1.110 p95 2.573 max 2.87 | stop [0.52 0.58 0.6  0.66 0.71 0.78 0.82 0.88 0.9  0.96 1.   1.   1.   1.
+ 1.   1.   1.  ]
+greedy r=0.5 patch median  21.0 (p90  37.0, max  47) of 161 | rho(A) 0.4419 max row sum 0.500 | valid True ratio median 1.207 p95 3.127 max 3.73 | stop [0.26 0.35 0.43 0.57 0.66 0.71 0.75 0.88 0.9  0.94 1.   1.   1.   1.
+ 1.   1.   1.  ]
+greedy r=0.8 patch median  12.0 (p90  29.0, max  33) of 161 | rho(A) 0.7277 max row sum 0.799 | valid True ratio median 1.633 p95 4.644 max 6.20 | stop [0.   0.01 0.07 0.18 0.29 0.46 0.65 0.74 0.89 0.91 0.96 1.   1.   1.
+ 1.   1.   1.  ]

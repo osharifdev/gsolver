@@ -1,0 +1,82 @@
+{
+ "dataset": "kitti06_prefix_init",
+ "last_iteration": 3000,
+ "no_holding": {
+  "pose_floor": 0.18838132996199541,
+  "worst_pose": 18,
+  "median": 0.001943580860316613,
+  "n_poses_above_0_05": 11
+ },
+ "held": [
+  {
+   "tau": 1e-08,
+   "n_held": 1,
+   "pose_floor": 0.18776793156387525,
+   "worst_pose": 18,
+   "median": 0.0017264793158488008,
+   "n_poses_above_0_05": 9,
+   "clamped_at_linpoint_pose_floor": 1.2120894532046949,
+   "clamped_at_linpoint_worst_pose": 1
+  },
+  {
+   "tau": 1e-06,
+   "n_held": 4,
+   "pose_floor": 0.0811883188595979,
+   "worst_pose": 154,
+   "median": 0.001657487936093323,
+   "n_poses_above_0_05": 4,
+   "clamped_at_linpoint_pose_floor": 1.2489513712723024,
+   "clamped_at_linpoint_worst_pose": 1
+  },
+  {
+   "tau": 1e-05,
+   "n_held": 10,
+   "pose_floor": 0.05921199721184557,
+   "worst_pose": 1,
+   "median": 0.0013157306834397837,
+   "n_poses_above_0_05": 3,
+   "clamped_at_linpoint_pose_floor": 1.2874093556462247,
+   "clamped_at_linpoint_worst_pose": 1
+  },
+  {
+   "tau": 0.0001,
+   "n_held": 48,
+   "pose_floor": 0.001901297040546253,
+   "worst_pose": 112,
+   "median": 0.00026058819518265657,
+   "n_poses_above_0_05": 0,
+   "clamped_at_linpoint_pose_floor": 7.86242820606119,
+   "clamped_at_linpoint_worst_pose": 152
+  },
+  {
+   "tau": 0.001,
+   "n_held": 189,
+   "pose_floor": 0.0010513716173839833,
+   "worst_pose": 154,
+   "median": 8.429765940928036e-05,
+   "n_poses_above_0_05": 0,
+   "clamped_at_linpoint_pose_floor": 8.700480341948765,
+   "clamped_at_linpoint_worst_pose": 152
+  },
+  {
+   "tau": 0.01,
+   "n_held": 696,
+   "pose_floor": 0.00021724264332024091,
+   "worst_pose": 1,
+   "median": 3.727020447731696e-05,
+   "n_poses_above_0_05": 0,
+   "clamped_at_linpoint_pose_floor": 8.382455046598565,
+   "clamped_at_linpoint_worst_pose": 152
+  },
+  {
+   "tau": 0.1,
+   "n_held": 1835,
+   "pose_floor": 0.00022255341711704653,
+   "worst_pose": 1,
+   "median": 3.205543066106895e-05,
+   "n_poses_above_0_05": 0,
+   "clamped_at_linpoint_pose_floor": 8.678321236375343,
+   "clamped_at_linpoint_worst_pose": 152
+  }
+ ]
+}

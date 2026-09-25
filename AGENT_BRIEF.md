@@ -1,5 +1,13 @@
 # Agent Brief: Self-Certifying Gaussian Belief Propagation in G-solver
 
+> **Errata, 2026-09-25** (from Phase A, facts F3–F5; theorems unchanged)
+>
+> (i) **F4.** On the chain, $G_k=(H_{kk}-\Lambda^f_{kk})+\text{message}_{k+1\to k}$, where $\Lambda^f_{kk}$ is the forward GP factor's diagonal contribution to $H_{kk}$ and $\text{message}_{k+1\to k}$ is the stored factor-to-variable message of the GP factor $f(k,k+1)$ to $k$. The remark "$G_k=P_{kk}+$ message" in proof note §1.1 and brief §3 is wrong by that term. Lemma 1.4's seed $P_{mm}^-$ is exactly $H_{mm}-\Lambda^f_{mm}$, consistent with this. Nothing else changes. (Verified to relative error $10^{-11}$ on a 600-pose GP chain; `results/phaseA/f4_chain.json`.)
+>
+> (ii) **F3.** G-solver's interpolation is affine in the GP local variables, hence in tangent coordinates within a fixed chart only to first order. Theorem 5.6 applies to the linearized interpolant in the frozen charts. Phase E must report the interpolant's linearization error at observed tangent magnitudes as a caveat.
+>
+> (iii) **F5.** There is a factor of 2 in every stereo rotation Jacobian (`se3_posevel_stereo_point.cpp:77`). It is recorded and left unchanged: the certified model is the assembled one.
+
 You are the implementing and experimenting agent for a research project. This brief is complete and self-contained: it gives the mission, the rules, the proven theory in implementable form, the phased work plan with pass/fail gates, and the report format. The mathematics below has been proved and reviewed; treat every theorem as correct. Your job is to implement it faithfully, test that your implementation satisfies the theorems' invariants, measure how tight the bounds are on real G-solver graphs, and report honestly.
 
 Repository: `rvp-group/gsolver` (already available to you). Work on branch `certify`. Do all analysis in Python (NumPy, SciPy sparse) on data exported from G-solver; touch the C++ solver only to add instrumentation and, in Phase D, the stopping/sleep-wake schedule.

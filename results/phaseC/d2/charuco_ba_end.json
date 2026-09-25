@@ -1,0 +1,92 @@
+{
+ "dataset": "charuco_ba_end",
+ "export": "/home/os717/gsolver/exports/charuco_ba/end",
+ "d6_raw_vs_production_assembler": {
+  "max_abs_diff_H": 1.4901161193847656e-08,
+  "max_abs_H": 47823291.65686974,
+  "rel_diff_H": 3.115879454882133e-16,
+  "max_abs_diff_b": 4.547473508864641e-13,
+  "max_abs_b": 1331.7740237268863,
+  "nonzeros_outside_factor_blocks": 0
+ },
+ "d6_raw_vs_phaseA_model_npz": {
+  "max_abs_diff_H": 1.4901161193847656e-08,
+  "max_abs_H": 47823291.65686974,
+  "rel_diff_H": 3.115879454882133e-16,
+  "max_abs_diff_b": 4.547473508864641e-13,
+  "max_abs_b": 1331.7740237268863,
+  "nonzeros_outside_factor_blocks": 0
+ },
+ "models": [
+  {
+   "p_L": null,
+   "single_edge_in_export": null,
+   "single_edge_eliminated": null,
+   "single_edge_eliminated_by_kind": null,
+   "zero_information_excluded": 0,
+   "zero_information_by_kind": {
+    "pose": 0,
+    "marker": 0,
+    "landmark": 0
+   },
+   "landmark_priors": null,
+   "landmark_prior_missing_init": null,
+   "zero_jacobian_factors_dropped": {
+    "gp": 0,
+    "posevel_pose": 0,
+    "prior": 0
+   },
+   "n_blocks": 118,
+   "n_dof": 1272,
+   "n_poses": 94,
+   "n_landmarks": 0,
+   "n_markers": 24,
+   "d6_certified": {
+    "max_abs_diff_H": 1.4901161193847656e-08,
+    "max_abs_H": 47823291.65686974,
+    "rel_diff_H": 3.115879454882133e-16,
+    "max_abs_diff_b": 4.547473508864641e-13,
+    "max_abs_b": 1331.7740237268863,
+    "nonzeros_outside_factor_blocks": 0
+   },
+   "rel_residual": 5.9430344346877474e-15,
+   "lambda_max": 93114807.45805606,
+   "lambda_smallest": [
+    0.007422980666855824,
+    0.007702165909362685,
+    0.01621873918935849,
+    0.022459196075849494,
+    0.035516266189185686,
+    0.04697176751491461
+   ],
+   "lambda_min": 0.007422980666855824,
+   "near_null_threshold": 0.9311480745805606,
+   "near_null_dim": 82,
+   "pose_floor": {
+    "floor": 0.0007391325228332918,
+    "floor_reached": true,
+    "t_floor": 8960.0,
+    "rate": 0.9988635101351145,
+    "rate_window": [
+     1710.0,
+     7430.0
+    ],
+    "rate_tail": 1.0000000008736831,
+    "frac_increasing_steps": 0.2271794871794872,
+    "err_first": 49.01230778624081,
+    "err_min": 0.0007390804764619924,
+    "err_last": 0.0007391190956945264,
+    "T": 30000.0
+   },
+   "pose_floor_worst_block": {
+    "id": "POSE_3.600000000",
+    "pose_index": 4
+   },
+   "all_blocks_last_max": 0.0007391190956945266,
+   "landmarks_last_max": null,
+   "markers_last_max": 1.8791148394831201e-06
+  }
+ ],
+ "floor_pass": true,
+ "seconds": 1.1680218633264303
+}

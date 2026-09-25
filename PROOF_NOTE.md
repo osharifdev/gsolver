@@ -1,5 +1,13 @@
 # Proof Note: Self-Certifying GBP for Continuous-Time SLAM
 
+> **Errata, 2026-09-25** (from Phase A, facts F3–F5; theorems unchanged)
+>
+> (i) **F4.** On the chain, $G_k=(H_{kk}-\Lambda^f_{kk})+\text{message}_{k+1\to k}$, where $\Lambda^f_{kk}$ is the forward GP factor's diagonal contribution to $H_{kk}$ and $\text{message}_{k+1\to k}$ is the stored factor-to-variable message of the GP factor $f(k,k+1)$ to $k$. The remark "$G_k=P_{kk}+$ message" in proof note §1.1 and brief §3 is wrong by that term. Lemma 1.4's seed $P_{mm}^-$ is exactly $H_{mm}-\Lambda^f_{mm}$, consistent with this. Nothing else changes. (Verified to relative error $10^{-11}$ on a 600-pose GP chain; `results/phaseA/f4_chain.json`.)
+>
+> (ii) **F3.** G-solver's interpolation is affine in the GP local variables, hence in tangent coordinates within a fixed chart only to first order. Theorem 5.6 applies to the linearized interpolant in the frozen charts. Phase E must report the interpolant's linearization error at observed tangent magnitudes as a caveat.
+>
+> (iii) **F5.** There is a factor of 2 in every stereo rotation Jacobian (`se3_posevel_stereo_point.cpp:77`). It is recorded and left unchanged: the certified model is the assembled one.
+
 Version of 2026-09-24. Every result is stated against five checkable properties of G-solver (P1–P5), never against G-solver itself. No proof depends on a measurement; the measurements only select which theorem applies. Status tags: **[classical]** cited, not claimed; **[verified]** classical or elementary, checked line by line; **[new]** proved here; **[conditional]** proved here under a stated fact about G-solver still to be read off the code.
 
 ---

@@ -1,0 +1,10 @@
+kitti06_prefix_conv: D2 pose floor above 0.05 -- running anyway (--allow-floor-above-tol; flagged in summary.json)
+15:12:44 kitti06_prefix_conv: 13778 blocks, 42783 dof
+15:12:44 iterations: [1, 2, 3, 5, 7, 10, 15, 20, 30, 50, 70, 100, 150, 200, 300, 500, 700, 1000, 1500, 2000, 2500, 3000]
+15:12:57 oracle done (13.0s); max |err(H^-1 g) - err(x - xbar)| / err = 1.19e-09
+15:12:59 C1: rho(M) = 2.9055 (upper 2.9055), 1.4s
+15:13:55 C2: rho(Mhat) = 2.2764 (upper 2.2764), 55.8s
+15:14:42 C3 K=1: rho(A) = 2.1538 (upper 2.1538), patches 45.7s, global 0.89s
+15:21:26 C3 K=2: rho(A) = 1.7751 (upper 1.7751), patches 403.5s, global 0.27s
+16:29:23 C3 K=3: rho(A) = 1.3349 (upper 1.3349), patches 4052.6s, global 2.92s
+16:31:33 Krylov bounds on 2161 blocks, 129.6s

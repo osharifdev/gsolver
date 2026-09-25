@@ -1,0 +1,6 @@
+kitti06_prefix_init: full 13855 blocks -> reduced 161 blocks (18097 factors) in 67s
+C1 rho(M) = 2.2568
+C3 K=1: rho(A) = 0.5058, patch median 71 of 161 blocks, ratio median 1.303 p95 2.672 max 3.816, stop [0.   0.   0.06 0.38 0.52 0.57 0.71 0.71 0.78 0.86 0.89 0.99] (oracle [0.   0.   0.12 0.53 0.65 0.64 0.78 0.79 0.86 0.89 0.91 0.99])
+C3 K=2: rho(A) = 0.0956, patch median 125 of 161 blocks, ratio median 1.011 p95 1.190 max 1.519, stop [0.   0.   0.11 0.53 0.65 0.63 0.77 0.78 0.83 0.89 0.91 0.99] (oracle [0.   0.   0.12 0.53 0.65 0.64 0.78 0.79 0.86 0.89 0.91 0.99])
+C3 K=3: rho(A) = 0.0051, patch median 148 of 161 blocks, ratio median 1.000 p95 1.003 max 1.009, stop [0.   0.   0.11 0.53 0.65 0.64 0.78 0.79 0.86 0.89 0.91 0.99] (oracle [0.   0.   0.12 0.53 0.65 0.64 0.78 0.79 0.86 0.89 0.91 0.99])
+kitti06_prefix_init: done in 495s; 21 checks, 0 failed; floor 1.470e-01 (reached True)

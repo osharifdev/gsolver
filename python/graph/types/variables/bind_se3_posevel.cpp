@@ -65,7 +65,11 @@ namespace gsolver {
         .def_ro("id", &SE3PoseVel::id_, "Variable node ID")
         .def_rw("mu", &SE3PoseVel::mu_, "Current estimate")
         .def_rw("sigma", &SE3PoseVel::Sigma_, "Covariance matrix")
-        .def_rw("timestamp", &SE3PoseVel::timestamp_, "Timestamp");
+        .def_rw("timestamp", &SE3PoseVel::timestamp_, "Timestamp")
+        // Frozen (linear) mode instrumentation, see certify/FREEZE_MODE.md
+        .def_prop_ro("frozen", [](const SE3PoseVel& v) { return v.frozen_; }, "Frozen mode flag")
+        .def_prop_ro("mu_lin", [](const SE3PoseVel& v) { return v.mu_lin_; }, "Fixed linearization point")
+        .def_prop_ro("z", [](const SE3PoseVel& v) { return v.z_; }, "Frozen-mode state (tangent coordinates)");
     }
 
   } // namespace python

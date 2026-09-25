@@ -74,7 +74,11 @@ namespace gsolver {
           "mu",
           [](const MessageType& msg) { return MuAdapter::to_python(msg.mu_); },
           [](MessageType& msg, const PyMuType& value) { msg.mu_ = MuAdapter::from_python(value); },
-          "Mean state carried by the message");
+          "Mean state carried by the message")
+        .def_prop_ro(
+          "tau",
+          [](const MessageType& msg) { return msg.tau_; },
+          "Frozen mode only: message mean as tangent coordinates in the variable's fixed chart");
 
       nb::class_<EdgeType, EdgeBase>(m, edge_name, "Typed edge connecting a variable node and a factor node")
         .def(nb::init<>(), "Create an empty edge")
@@ -89,7 +93,9 @@ namespace gsolver {
           [](EdgeType& edge) -> MessageType& { return edge.factor_to_variable_message_; },
           [](EdgeType& edge, const MessageType& message) { edge.factor_to_variable_message_ = message; },
           "Message maintained by the factor node",
-          nb::rv_policy::reference_internal);
+          nb::rv_policy::reference_internal)
+        .def_prop_ro(
+          "frozen", [](const EdgeType& edge) { return edge.frozen_; }, "Frozen mode: messages live in tau");
     }
 
     void bind_edge(nb::module_& m) {

@@ -1,0 +1,17 @@
+  patches l K=1: 13617 blocks in 17s, median patch 3 blocks
+  patches p K=2: 161 blocks in 8s, median patch 572 blocks
+Kp=2 Kl=1: rho(A) = 2.1244 (upper 2.1244) | pose patch median 572 blocks, ~62 poses
+  patches p K=3: 161 blocks in 30s, median patch 6459 blocks
+Kp=3 Kl=1: rho(A) = 2.0309 (upper 2.0309) | pose patch median 6459 blocks, ~84 poses
+  patches p K=4: 161 blocks in 44s, median patch 7498 blocks
+Kp=4 Kl=1: rho(A) = 2.0271 (upper 2.0271) | pose patch median 7498 blocks, ~118 poses
+  patches p K=5: 161 blocks in 70s, median patch 10862 blocks
+Kp=5 Kl=1: rho(A) = 2.0244 (upper 2.0244) | pose patch median 10862 blocks, ~121 poses
+  patches p K=6: 161 blocks in 59s, median patch 11985 blocks
+Kp=6 Kl=1: rho(A) = 2.0242 (upper 2.0242) | pose patch median 11985 blocks, ~147 poses
+  patches l K=2: 13617 blocks in 232s, median patch 497 blocks
+Kp=2 Kl=2: rho(A) = 1.7751 (upper 1.7751) | pose patch median 572 blocks, ~62 poses
+Kp=3 Kl=2: rho(A) = 1.1662 (upper 1.1662) | pose patch median 6459 blocks, ~84 poses
+Kp=4 Kl=2: rho(A) = 1.0836 (upper 1.0836) | pose patch median 7498 blocks, ~118 poses
+Kp=5 Kl=2: rho(A) = 1.0177 (upper 1.0177) | pose patch median 10862 blocks, ~121 poses
+Kp=6 Kl=2: rho(A) = 1.0138 (upper 1.0138) | pose patch median 11985 blocks, ~147 poses

@@ -106,3 +106,16 @@ instead (ChArUco BA, frozen after its 50 normal iterations, `results/phaseA/`):
 
 The worst blocks are consecutive poses less than 1/30 s apart. For those pairs the GP prior makes D_i
 stiff (eigenvalues up to 5e7), so a raw offset of 6e-7 m reads as 7e-4 in the D-metric.
+
+## 5. Python bindings (Phase B)
+
+The frozen mode and the linear model of each factor are reachable from Python (`build-certify/python/_gsolver`; the
+certify package adds that directory to `sys.path`, see `certify/synth.py`). Only read access and the existing entry
+points are exposed; no solver code changed:
+
+- `GbpSolver.freeze(factor_graph, factor_messages_valid=True)`, `GbpSolver.dynamic_schedule` (read/write),
+  `set_frozen_regularizer(eps)`, `frozen_regularizers()` (`python/core/bind_gbp_solver.cpp`);
+- messages: `tau` (frozen-chart mean), edges: `frozen` (`python/graph/bind_edge.cpp`);
+- `SE3PoseVelGP`, `SE3PoseVelPrior`, `SE3PoseVelPose`, `SE3PoseVelPoint`: `J`, `error`, `Sigma`, `J_lin`, `error_lin`,
+  `frozen`; GP and prior factors also `edge(i)` (`python/graph/types/factors/factor_accessors.h`);
+- `SE3PoseVel`: `frozen`, `mu_lin`, `z` (`python/graph/types/variables/bind_se3_posevel.cpp`).

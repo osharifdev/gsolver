@@ -1,0 +1,12 @@
+charuco_islam_025 p_L None pose floor 9.891e-04 (reached True, t=542.0) lmin 3.116e-02 nn 344
+charuco_islam_050 p_L None pose floor 5.542e-04 (reached True, t=2220.0) lmin 1.323e-02 nn 626
+charuco_islam_100 p_L None pose floor 7.411e-04 (reached True, t=7020.0) lmin 7.395e-03 nn 1165
+charuco_ba_init p_L None pose floor 7.253e-04 (reached True, t=9090.0) lmin 7.396e-03 nn 81
+charuco_ba_end p_L None pose floor 7.391e-04 (reached True, t=8960.0) lmin 7.423e-03 nn 82
+kitti06_prefix_conv p_L 1e-07 pose floor 1.057e-01 (reached False, t=nan) lmin 1.000e-07 nn 7773
+kitti06_prefix_conv p_L 1e-06 pose floor 1.085e-01 (reached False, t=nan) lmin 1.000e-06 nn 7773
+kitti06_prefix_conv p_L 1e-05 pose floor 1.712e-01 (reached True, t=128.0) lmin 1.000e-05 nn 7773
+kitti06_prefix_init p_L 1e-07 pose floor 1.538e-01 (reached True, t=137.0) lmin 1.004e-07 nn 7794
+kitti06_prefix_init p_L 1e-06 pose floor 1.883e-01 (reached True, t=126.0) lmin 1.000e-06 nn 7794
+kitti06_prefix_init p_L 1e-05 pose floor 4.326e-01 (reached False, t=nan) lmin 1.000e-05 nn 7794
+kitti06_full_conv p_L 1e-07 pose floor 1.430e-01 (reached True, t=375.0) lmin 1.000e-07 nn 26502

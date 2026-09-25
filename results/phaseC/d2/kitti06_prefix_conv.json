@@ -1,0 +1,234 @@
+{
+ "dataset": "kitti06_prefix_conv",
+ "export": "/home/os717/gsolver/exports/kitti06_prefix161/conv",
+ "d6_raw_vs_production_assembler": {
+  "max_abs_diff_H": 8.344650268554688e-07,
+  "max_abs_H": 548020568.2479472,
+  "rel_diff_H": 1.5226892478202062e-15,
+  "max_abs_diff_b": 5.820766091346741e-11,
+  "max_abs_b": 345058211.5088836,
+  "nonzeros_outside_factor_blocks": 0
+ },
+ "models": [
+  {
+   "p_L": 1e-07,
+   "single_edge_in_export": 4243,
+   "single_edge_eliminated": 4240,
+   "single_edge_eliminated_by_kind": {
+    "landmark": 4240
+   },
+   "zero_information_excluded": 80,
+   "zero_information_by_kind": {
+    "pose": 0,
+    "marker": 0,
+    "landmark": 80
+   },
+   "landmark_priors": 13617,
+   "landmark_prior_missing_init": 0,
+   "zero_jacobian_factors_dropped": {
+    "gp": 0,
+    "stereo": 386
+   },
+   "n_blocks": 13778,
+   "n_dof": 42783,
+   "n_poses": 161,
+   "n_landmarks": 13617,
+   "n_markers": 0,
+   "rel_residual": 8.425646370726691e-17,
+   "lambda_max": 548192539.1967043,
+   "lambda_smallest": [
+    1.0000726096266689e-07,
+    1.0000776949415685e-07,
+    1.0001636031013188e-07,
+    1.0005528391801648e-07,
+    1.0005755885746121e-07,
+    1.0008206947702681e-07
+   ],
+   "lambda_min": 1.0000726096266689e-07,
+   "near_null_threshold": 5.481925391967043,
+   "near_null_dim": 7773,
+   "pose_floor": {
+    "floor": 0.1057383926104522,
+    "floor_reached": false,
+    "t_floor": NaN,
+    "rate": 0.9994347059206679,
+    "rate_window": [
+     10.0,
+     3000.0
+    ],
+    "rate_tail": 1.0002605842303,
+    "frac_increasing_steps": 0.24666666666666667,
+    "err_first": 11.85097973517292,
+    "err_min": 0.026005166010263595,
+    "err_last": 0.1057383926104522,
+    "T": 3000.0
+   },
+   "pose_floor_worst_block": {
+    "id": "POSE_33.269020000",
+    "pose_index": 150
+   },
+   "all_blocks_last_max": 4.245442267091822,
+   "landmarks_last_max": 4.245442267091822,
+   "markers_last_max": null,
+   "n_landmarks_obs_info_below_10pL": 20,
+   "obs_info_min_eig_quantiles": [
+    7.303269095533477e-12,
+    0.0003721048010491851,
+    0.051524240894394266,
+    3.566565018593811
+   ]
+  },
+  {
+   "p_L": 1e-06,
+   "single_edge_in_export": 4243,
+   "single_edge_eliminated": 4240,
+   "single_edge_eliminated_by_kind": {
+    "landmark": 4240
+   },
+   "zero_information_excluded": 80,
+   "zero_information_by_kind": {
+    "pose": 0,
+    "marker": 0,
+    "landmark": 80
+   },
+   "landmark_priors": 13617,
+   "landmark_prior_missing_init": 0,
+   "zero_jacobian_factors_dropped": {
+    "gp": 0,
+    "stereo": 386
+   },
+   "n_blocks": 13778,
+   "n_dof": 42783,
+   "n_poses": 161,
+   "n_landmarks": 13617,
+   "n_markers": 0,
+   "d6_certified": {
+    "max_abs_diff_H": 8.940696716308594e-07,
+    "max_abs_H": 547940829.4216099,
+    "rel_diff_H": 1.6316901819026935e-15,
+    "max_abs_diff_b": 5.820766091346741e-11,
+    "max_abs_b": 396551.3166417091,
+    "nonzeros_outside_factor_blocks": 0
+   },
+   "rel_residual": 9.735473670690091e-17,
+   "lambda_max": 548192539.1967058,
+   "lambda_smallest": [
+    1.00000726096267e-06,
+    1.0000077694940287e-06,
+    1.000016360310135e-06,
+    1.0000552839180042e-06,
+    1.0000575588574245e-06,
+    1.000082069477019e-06
+   ],
+   "lambda_min": 1.00000726096267e-06,
+   "near_null_threshold": 5.481925391967058,
+   "near_null_dim": 7773,
+   "pose_floor": {
+    "floor": 0.10847650297757354,
+    "floor_reached": false,
+    "t_floor": NaN,
+    "rate": 0.9994191412073272,
+    "rate_window": [
+     10.0,
+     3000.0
+    ],
+    "rate_tail": 1.0002454659489295,
+    "frac_increasing_steps": 0.24333333333333335,
+    "err_first": 11.85212848473606,
+    "err_min": 0.03863349217082035,
+    "err_last": 0.10847650297757354,
+    "T": 3000.0
+   },
+   "pose_floor_worst_block": {
+    "id": "POSE_33.269020000",
+    "pose_index": 150
+   },
+   "all_blocks_last_max": 13.676059885256544,
+   "landmarks_last_max": 13.676059885256544,
+   "markers_last_max": null,
+   "n_landmarks_obs_info_below_10pL": 28,
+   "obs_info_min_eig_quantiles": [
+    7.303269095533477e-12,
+    0.0003721048010491851,
+    0.051524240894394266,
+    3.566565018593811
+   ]
+  },
+  {
+   "p_L": 1e-05,
+   "single_edge_in_export": 4243,
+   "single_edge_eliminated": 4240,
+   "single_edge_eliminated_by_kind": {
+    "landmark": 4240
+   },
+   "zero_information_excluded": 80,
+   "zero_information_by_kind": {
+    "pose": 0,
+    "marker": 0,
+    "landmark": 80
+   },
+   "landmark_priors": 13617,
+   "landmark_prior_missing_init": 0,
+   "zero_jacobian_factors_dropped": {
+    "gp": 0,
+    "stereo": 386
+   },
+   "n_blocks": 13778,
+   "n_dof": 42783,
+   "n_poses": 161,
+   "n_landmarks": 13617,
+   "n_markers": 0,
+   "rel_residual": 1.3715035167179594e-16,
+   "lambda_max": 548192539.1967041,
+   "lambda_smallest": [
+    1.0000007260962633e-05,
+    1.0000007769493894e-05,
+    1.0000016360310087e-05,
+    1.000005528391773e-05,
+    1.0000057558857644e-05,
+    1.0000082069477056e-05
+   ],
+   "lambda_min": 1.0000007260962633e-05,
+   "near_null_threshold": 5.481925391967041,
+   "near_null_dim": 7773,
+   "pose_floor": {
+    "floor": 0.1712195163333376,
+    "floor_reached": true,
+    "t_floor": 128.0,
+    "rate": 0.9995793799501503,
+    "rate_window": [
+     10.0,
+     3000.0
+    ],
+    "rate_tail": 1.000007963837583,
+    "frac_increasing_steps": 0.19833333333333333,
+    "err_first": 11.855791066042043,
+    "err_min": 0.16826520616948598,
+    "err_last": 0.17148517263280286,
+    "T": 3000.0
+   },
+   "pose_floor_worst_block": {
+    "id": "POSE_34.519020000",
+    "pose_index": 154
+   },
+   "all_blocks_last_max": 43.32684066579731,
+   "landmarks_last_max": 43.32684066579731,
+   "markers_last_max": null,
+   "n_landmarks_obs_info_below_10pL": 72,
+   "obs_info_min_eig_quantiles": [
+    7.303269095533477e-12,
+    0.0003721048010491851,
+    0.051524240894394266,
+    3.566565018593811
+   ]
+  }
+ ],
+ "pose_solution_change_vs_1e-6": {
+  "1e-07": 0.04970986042656162,
+  "1e-06": 0.0,
+  "1e-05": 0.15023227946548748
+ },
+ "insensitive": false,
+ "floor_pass": false,
+ "seconds": 571.6541711259633
+}

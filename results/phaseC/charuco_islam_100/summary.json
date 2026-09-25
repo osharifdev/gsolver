@@ -1,0 +1,571 @@
+{
+ "dataset": "charuco_islam_100",
+ "snapshot": "100",
+ "res": {
+  "name": "charuco_islam_100",
+  "n_blocks": 118,
+  "n_dof": 1272,
+  "iters": [
+   1,
+   2,
+   3,
+   5,
+   7,
+   10,
+   15,
+   20,
+   30,
+   50,
+   70,
+   100,
+   150,
+   200,
+   300,
+   500,
+   700,
+   1000,
+   1500,
+   2000,
+   2500,
+   3000,
+   7020,
+   30000
+  ],
+  "pose_floor": 0.0007410645101210176,
+  "t_floor": 7020.0,
+  "counts": {
+   "single_edge_eliminated": null,
+   "single_edge_eliminated_by_kind": null,
+   "zero_information_excluded": 0,
+   "landmark_priors": null
+  },
+  "rho_M": 1.6406753156409737,
+  "rho_M_upper": 1.6406753156412295,
+  "C1_iterations": null,
+  "rho_Mhat": 3.908457865326949,
+  "rho_Mhat_upper": 3.9084578653282867,
+  "timing": {
+   "oracle_s": 0.9417988173663616,
+   "C1_s": 0.024371664971113205,
+   "C2_s": 78.53207693062723,
+   "C3_K1_patches_s": 1.1235128194093704,
+   "C3_K2_patches_s": 8.66421532817185,
+   "C3_K3_patches_s": 14.210955725982785,
+   "krylov_s": 1.4233441147953272,
+   "total_s": 119.66265542432666,
+   "global_s": 0.023531898856163025
+  },
+  "oracle_err_consistency": 2.504417363569976e-07,
+  "cov_rechecked_blocks": 0
+ },
+ "gate": {
+  "pose_floor": 0.0007410645101210176,
+  "gated_entries": 2278,
+  "gated_pose_entries": 1925,
+  "ratios": {
+   "E_C1": {
+    "all": {
+     "n": 0,
+     "median": NaN,
+     "p95": NaN,
+     "max": NaN
+    },
+    "poses": {
+     "n": 0,
+     "median": NaN,
+     "p95": NaN,
+     "max": NaN
+    }
+   },
+   "E_C2": {
+    "all": {
+     "n": 0,
+     "median": NaN,
+     "p95": NaN,
+     "max": NaN
+    },
+    "poses": {
+     "n": 0,
+     "median": NaN,
+     "p95": NaN,
+     "max": NaN
+    }
+   }
+  },
+  "shares": {},
+  "rho": {
+   "M": 1.6406753156409737,
+   "M_upper": 1.6406753156412295,
+   "Mhat": 3.908457865326949,
+   "Mhat_upper": 3.9084578653282867,
+   "A_C3_K1": 15.388450637555545,
+   "A_C3_K1_upper": 15.388450637564958,
+   "A_C3_K2": 6.789869494890498,
+   "A_C3_K2_upper": 6.789869494890532,
+   "A_C3_K3": 6.635319124150004,
+   "A_C3_K3_upper": 6.6353191241501435,
+   "A_C4_w1_K1": 15.30039582721874,
+   "A_C4_w1_K1_upper": 15.300395827227439,
+   "A_C4_w1_K2": 23.68716159801423,
+   "A_C4_w1_K2_upper": 23.687556230036822,
+   "A_C4_w1_K3": 17.944038878415995,
+   "A_C4_w1_K3_upper": 17.94403888146667,
+   "A_C4_w3_K1": 33.26521954948802,
+   "A_C4_w3_K1_upper": 33.26521954948801,
+   "A_C4_w3_K2": 47.64834465088446,
+   "A_C4_w3_K2_upper": 47.64834465090121,
+   "A_C4_w3_K3": 30.94820038390652,
+   "A_C4_w3_K3_upper": 30.948200383986663
+  },
+  "radii": {
+   "K": 3,
+   "frac_mu_lo_ge_half_lam_min_poses": 1.0,
+   "frac_mu_lo_ge_half_lam_min_all": 1.0,
+   "frac_mu_hi_cut_le_4_lam_max_poses": 0.425531914893617,
+   "frac_mu_hi_best_le_4_lam_max_poses": 0.425531914893617,
+   "mu_lo_over_lam_min_poses": {
+    "n": 94,
+    "median": 0.99777512959967,
+    "p95": 0.9999315472025005,
+    "max": 0.9999999999975735
+   },
+   "mu_hi_cut_over_lam_max_poses": {
+    "n": 40,
+    "median": 1.0000460156342381,
+    "p95": 1.0006384505746313,
+    "max": 1.0091629824585255
+   },
+   "lam_min_oracle_poses": {
+    "n": 94,
+    "median": 2.9213812595729074,
+    "p95": 5.915451152557087,
+    "max": 39.05062484792509
+   },
+   "lam_max_oracle_poses": {
+    "n": 94,
+    "median": 6924.794880064757,
+    "p95": 1917773.4039529213,
+    "max": 7245949.02572244
+   },
+   "krylov_blocks": 118
+  },
+  "psibar": {
+   "w1_K1": [
+    0.9253535788361478,
+    6.126869165143198,
+    11.769840156102223,
+    20.212033500577974,
+    549286.1299093454
+   ],
+   "w1_K2": [
+    0.830638772545791,
+    5.888932728524524,
+    11.073867888611897,
+    18.93709953609568,
+    439808.4894455447
+   ],
+   "w1_K3": [
+    0.830638772545791,
+    5.525057065508724,
+    10.281392818516562,
+    17.78585722516321,
+    268728.5510943106
+   ],
+   "w3_K1": [
+    0.9355240328956557,
+    33.65816716791609,
+    80.20253887680056,
+    266.6078253222757,
+    78411.41112249138
+   ],
+   "w3_K2": [
+    0.9355240328956557,
+    25.660675404128398,
+    54.68510465158096,
+    194.47270941781596,
+    47261.22786873506
+   ],
+   "w3_K3": [
+    0.9355240328956557,
+    24.974225844331162,
+    50.93296457392296,
+    162.03331986357057,
+    42290.74514389918
+   ]
+  },
+  "hubs": {
+   "w1_K1": {
+    "theta_S": 322.4642341379694,
+    "theta_S_oracle": 322.4642341379694,
+    "hub_window": "whole graph",
+    "HSS_dim": 144,
+    "hub_note": "C4 rho(A) >= 1"
+   },
+   "w1_K2": {
+    "theta_S": 322.4642341379694,
+    "theta_S_oracle": 322.4642341379694,
+    "hub_window": "whole graph",
+    "HSS_dim": 144,
+    "hub_note": "C4 rho(A) >= 1"
+   },
+   "w1_K3": {
+    "theta_S": 322.4642341379694,
+    "theta_S_oracle": 322.4642341379694,
+    "hub_window": "whole graph",
+    "HSS_dim": 144,
+    "hub_note": "C4 rho(A) >= 1"
+   },
+   "w3_K1": {
+    "theta_S": 322.4642341379694,
+    "theta_S_oracle": 322.4642341379694,
+    "hub_window": "whole graph",
+    "HSS_dim": 144,
+    "hub_note": "C4 rho(A) >= 1"
+   },
+   "w3_K2": {
+    "theta_S": 322.4642341379694,
+    "theta_S_oracle": 322.4642341379694,
+    "hub_window": "whole graph",
+    "HSS_dim": 144,
+    "hub_note": "C4 rho(A) >= 1"
+   },
+   "w3_K3": {
+    "theta_S": 322.4642341379694,
+    "theta_S_oracle": 322.4642341379694,
+    "hub_window": "whole graph",
+    "HSS_dim": 144,
+    "hub_note": "C4 rho(A) >= 1"
+   }
+  }
+ },
+ "worst": {
+  "largest_err_last_iter": {
+   "block": "POSE_3.600000000",
+   "kind": "pose",
+   "err": 0.0007410565465871088,
+   "iter": 30000
+  }
+ },
+ "timing": {
+  "oracle_s": 0.9417988173663616,
+  "C1_s": 0.024371664971113205,
+  "C2_s": 78.53207693062723,
+  "C3_K1_patches_s": 1.1235128194093704,
+  "C3_K2_patches_s": 8.66421532817185,
+  "C3_K3_patches_s": 14.210955725982785,
+  "krylov_s": 1.4233441147953272,
+  "total_s": 119.66265542432666,
+  "global_s": 0.023531898856163025,
+  "C3_K1_per_block_ms": {
+   "local_median": 9.08759981393814,
+   "local_max": 72.18516431748867,
+   "coeff_median": 2.0041773095726967,
+   "cut_median": 3.278907388448715,
+   "total_median": 14.964012429118156,
+   "total_p95": 75.37713935598728,
+   "patch_blocks_median": 10.0,
+   "patch_dofs_median": 78.0,
+   "patch_dofs_max": 618.0,
+   "global_solve_s": 0.008241450414061546
+  },
+  "C3_K2_per_block_ms": {
+   "local_median": 91.57188516110182,
+   "local_max": 536.1642111092806,
+   "coeff_median": 2.0086700096726418,
+   "cut_median": 17.829446122050285,
+   "total_median": 129.8506772145629,
+   "total_p95": 497.8572657331817,
+   "patch_blocks_median": 58.0,
+   "patch_dofs_median": 624.0,
+   "patch_dofs_max": 1092.0,
+   "global_solve_s": 0.007449205964803696
+  },
+  "C3_K3_per_block_ms": {
+   "local_median": 149.16498214006424,
+   "local_max": 638.2317617535591,
+   "coeff_median": 2.032788470387459,
+   "cut_median": 61.629487201571465,
+   "total_median": 186.36956717818975,
+   "total_p95": 725.8902140893041,
+   "patch_blocks_median": 83.0,
+   "patch_dofs_median": 876.0,
+   "patch_dofs_max": 1242.0,
+   "global_solve_s": 0.006933342665433884
+  },
+  "C1_per_block_ms": 0.20653953365350172,
+  "C2_per_block_ms": 665.5260756832816,
+  "C4_w1_K1_per_supernode_s": 0.022221903118522877,
+  "C4_w1_K2_per_supernode_s": 0.02938402681908709,
+  "C4_w1_K3_per_supernode_s": 0.03954490327692412,
+  "C4_w3_K1_per_supernode_s": 0.04562149697449058,
+  "C4_w3_K2_per_supernode_s": 0.060607038729358464,
+  "C4_w3_K3_per_supernode_s": 0.06553871679352596
+ },
+ "invariants": [
+  {
+   "check": "C1 one-step u <= nu + M u",
+   "n": 2832,
+   "worst": -0.009014917381960736,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_18.766666667 (pose) iter 3000"
+  },
+  {
+   "check": "C2 one-step u <= nu + M u",
+   "n": 2832,
+   "worst": -0.14912485373729098,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_18.733333333 (pose) iter 700"
+  },
+  {
+   "check": "C3 one-step u <= s + A u K=1",
+   "n": 2832,
+   "worst": -0.26912305299847783,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_35.166666667 (pose) iter 7"
+  },
+  {
+   "check": "C3 one-step u <= s + A u K=2",
+   "n": 2832,
+   "worst": -0.19069703359320425,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_16.433333333 (pose) iter 1000"
+  },
+  {
+   "check": "C3 one-step u <= s + A u K=3",
+   "n": 2832,
+   "worst": -0.06271776837863989,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block LANDMARK_15 (marker) iter 3000"
+  },
+  {
+   "check": "C4 one-step (supernode) w=1 K=1",
+   "n": 2256,
+   "worst": -0.1270070936595725,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "Prop3.6 coefficient <= bound w=1 K=1",
+   "n": 184,
+   "worst": -0.7682287110226588,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "C4 one-step (supernode) w=1 K=2",
+   "n": 2256,
+   "worst": -0.19986576676218804,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "Prop3.6 coefficient <= bound w=1 K=2",
+   "n": 182,
+   "worst": -0.9872267079520621,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "C4 one-step (supernode) w=1 K=3",
+   "n": 2256,
+   "worst": -0.18359051517074082,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "Prop3.6 coefficient <= bound w=1 K=3",
+   "n": 180,
+   "worst": -0.9996873203962505,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "C4 one-step (supernode) w=3 K=1",
+   "n": 768,
+   "worst": -0.003120645670603545,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "Prop3.6 coefficient <= bound w=3 K=1",
+   "n": 60,
+   "worst": -0.967520758456533,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "C4 one-step (supernode) w=3 K=2",
+   "n": 768,
+   "worst": -0.0016323269427673897,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "Prop3.6 coefficient <= bound w=3 K=2",
+   "n": 58,
+   "worst": -0.9998932959020804,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "C4 one-step (supernode) w=3 K=3",
+   "n": 768,
+   "worst": -0.0008051494325000324,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "Prop3.6 coefficient <= bound w=3 K=3",
+   "n": 56,
+   "worst": -0.9999984757456651,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "trivial lower <= Sigma",
+   "n": 118,
+   "worst": -5.482548600724791e-12,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "patch lower <= Sigma K=1",
+   "n": 118,
+   "worst": -9.431230266316854e-15,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "cut upper >= Sigma K=1",
+   "n": 6,
+   "worst": 1.2112668969424354e-16,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "patch lower <= Sigma K=2",
+   "n": 118,
+   "worst": -2.4446248449974493e-18,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "cut upper >= Sigma K=2",
+   "n": 47,
+   "worst": 1.801146169007242e-17,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "patch lower monotone K=2",
+   "n": 118,
+   "worst": -1.0190293077972294e-14,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "cut upper monotone K=2",
+   "n": 6,
+   "worst": 5.761316168611773e-17,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "patch lower <= Sigma K=3",
+   "n": 118,
+   "worst": 3.453970628880515e-17,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "cut upper >= Sigma K=3",
+   "n": 55,
+   "worst": 1.7045530376776373e-17,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "patch lower monotone K=3",
+   "n": 118,
+   "worst": 2.3167066825447416e-18,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "cut upper monotone K=3",
+   "n": 47,
+   "worst": 7.953355554625682e-18,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "krylov lower <= Sigma l=3",
+   "n": 118,
+   "worst": -3.572309602133848e-14,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "krylov lower <= Sigma l=5",
+   "n": 118,
+   "worst": -3.586691637853135e-14,
+   "tol": 1e-09,
+   "ok": true,
+   "where": "block POSE_1.500000000 (pose)"
+  },
+  {
+   "check": "krylov monotone l=3->5",
+   "n": 118,
+   "worst": 2.401597971895931e-17,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "global lb1 <= g^T H^-1 g",
+   "n": 24,
+   "worst": -0.36190219391561806,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  },
+  {
+   "check": "global lb5 <= g^T H^-1 g",
+   "n": 24,
+   "worst": -0.12990243824654998,
+   "tol": 1e-09,
+   "ok": true,
+   "where": ""
+  }
+ ],
+ "certs_rows": 8496
+}

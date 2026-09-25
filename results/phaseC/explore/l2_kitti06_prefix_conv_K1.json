@@ -1,0 +1,17 @@
+{
+ "dataset": "kitti06_prefix_conv",
+ "K": 1,
+ "l1_row_sum_poses_median": 8.051592886819979,
+ "l1_row_sum_landmarks_median": 1.4209404039856224,
+ "gamma_sqrtN_poses_median": 9.077184793812064,
+ "gamma_poses_median": 0.5253013757959004,
+ "n_ext_poses_median": 293.0,
+ "r_l2_all": [
+  4.92238510820139,
+  4.92238510820139
+ ],
+ "r_l2_grouped": [
+  3.319387025468423,
+  3.319387025468423
+ ]
+}
