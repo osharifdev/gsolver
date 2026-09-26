@@ -2,6 +2,8 @@
 
 Branch `certify`. Date 2026-09-25. This report replaces the earlier "stopped at D2" version. After that stop you decided (14:43) to continue Phase C and to explore beyond the brief where the data called for it. The time-stamped reasoning is in `25_09_2026_PROGRESS.md`. All runs used `OMP_NUM_THREADS=16` and the dynamic OpenMP schedule (D5). Tolerance and thresholds are as fixed in the brief and in the Phase A review: invariants at 1e-9 relative, η = 0.1, δ = 0.05.
 
+**Update, 2026-09-26.** Added the decision-driven patches (I1b) on the prefix and on KITTI full, and the one-factorization statistical-metric script (§1 items 4–5, §3.6, §3.7, §4, §6, §7). Phase B's sweep has finished and Gate B passes (`reports/phaseB.md`).
+
 ## 1. Five-line summary
 
 1. **What was run.**
@@ -23,11 +25,11 @@ Branch `certify`. Date 2026-09-25. This report replaces the earlier "stopped at 
    - E/e median 1.23–1.56 at K = 1 and 1.003–1.02 at K = 2.
    - At K = 2 the certified stop fraction is within 0–4 points of the oracle at every iteration. The certified μ_lo is within 3e-5 of λ_min (median, K = 1), so S_lo is effectively exact.
    - C1 on the same model is still vacuous (ρ(M) = 2.25–2.71): the gain comes from exact local solves.
+   - **Decision-driven patches** grow a pose's patch only while its stop decision is open (§3.7). On KITTI full their certified stop fraction is within 1.4 points of the oracle at every iteration, the same decisions as K = 3, with median patches of 73–87 poses instead of 274. All certificates are valid.
 5. **Open problems.**
-   - Patch size: K = 1 spans 27 % of KITTI full and 44 % of the prefix.
+   - Patch size: K = 1 spans 27 % of KITTI full and 44 % of the prefix. Decision-driven patches reduce this to about 80 poses, but they depend on the residual, so a solver must refactorize a pose's patch whenever it changes. That cost is not measured.
    - The cut upper bound exists for only 13–48 % of KITTI-full poses.
    - Landmark certificates by back-substitution are about 3× loose.
-   - Certificate-driven grown patches help on the prefix but not on KITTI full.
    - Early exit against G-solver's live schedule is not measured yet (Phase D).
 
 ## 2. Gate status (brief §9, Gate C)
@@ -175,7 +177,10 @@ Prefix, cap (161 poses):
 | K = 1 | 50 % | 59 | 59 | 64 | 67 | 73 | 75 | 80 | 87 | 94 | 98 | 100 |
 | K = 2 | 62 | 65 | 67 | 70 | 76 | 83 | 87 | 89 | 94 | 96 | 100 | 100 |
 | K = 3 | 62 | 65 | 68 | 73 | 78 | 84 | 88 | 91 | 94 | 96 | 100 | 100 |
+| decision-driven (§3.7), median patch 33 | 62 | 64 | 66 | 72 | · | 84 | · | 89 | · | 96 | · | · |
 | oracle | 62 | 65 | 68 | 73 | 78 | 84 | 88 | 91 | 94 | 96 | 100 | 100 |
+
+(· = not evaluated.)
 
 Prefix, it. 0 (cold start from ORB-SLAM3 values):
 
@@ -192,7 +197,10 @@ KITTI full, cap (477 poses; the normal run had not converged at the cap, with ma
 | K = 1 | 0 % | 0 | 1 | 3 | 10 | 29 | 54 | 77 | 94 | 100 |
 | K = 2 | 2 | 5 | 10 | 16 | 34 | 47 | 65 | 81 | 95 | 100 |
 | K = 3 | 6 | 8 | 11 | 19 | 37 | 48 | 65 | 82 | 95 | 100 |
+| decision-driven (§3.7), median patch 73–87 | 5 | 8 | 11 | 19 | 37 | 47 | 65 | 81 | 94 | · |
 | oracle | 6 | 8 | 11 | 20 | 37 | 48 | 65 | 82 | 95 | 100 |
+
+K = 1 / 2 / 3 patches have median sizes 128 / 210 / 274 poses.
 
 These fractions show how close the certificate comes to perfect knowledge. They are not savings against G-solver's schedule: sleeping poses change GBP's trajectory, and the frozen-run length is not a baseline. Phase D measures savings.
 
@@ -216,6 +224,28 @@ These fractions show how close the certificate comes to perfect knowledge. They 
 - Prefix: grown patches beat K = 1 on every axis.
 - KITTI full: they halve the patch but are looser and stop later. All valid.
 
+**Decision-driven patches (I1b).** Why the grown patches stop late on KITTI full: at iterations 50–100 most errors sit close to the threshold (median error 0.5 at iteration 70, against a threshold of about 0.48). With exterior errors c_j ≈ e_i, the leak Σ_j a_ij c_j is about (row sum) · e_i. So a pose within 10 % of its threshold needs a row sum of about 0.1, which means a big patch. Most poses are far from the threshold, however, and need no such patch. So each pose grows only while its decision is open:
+- Start from the grown r = 0.3 patch. The base certificate c⁰ is C3 on those patches (valid).
+- At the evaluated iteration, pose i stops growing once its row sum is ≤ r and one of these holds:
+  - s_i + Σ_j a_ij c⁰_j ≤ threshold (decided: stop);
+  - s_i ≥ threshold (decided: continue);
+  - the leak is below θ · s_i (nothing left to gain).
+- Otherwise it adds the exterior blocks with the largest a_ij c⁰_j, up to a cap of 250 poses and 40 growth steps.
+- The certificate is plain C3 on the final patches. Theorem 3.5 holds for any patches fixed when the certificate is evaluated, so patches that depend on the residual keep validity; the prediction s_i + Σ_j a_ij c⁰_j only steers the growth. ρ(A) ≤ max row sum ≤ r is certified node by node.
+- Parameters were fixed before any run: r = 0.3, θ = 0.02, cap 250, 40 steps.
+
+| Run | Patch median (mean), max | ρ(A) | E/e median / 95 % / max | Certified stop / oracle | Closest certificate to its error |
+|---|---|---|---|---|---|
+| prefix, cap | 33 (34–35), max 83 | 0.250–0.257 | 1.01–1.18 / 1.02–2.74 / 2.87 | iterations 1 / 2 / 3 / 5 / 10 / 20 / 50: 62 / 64 / 66 / 72 / 84 / 89 / 96 % against 62 / 65 / 68 / 73 / 84 / 91 / 96 % | E ≥ 1.008 e |
+| KITTI full | 73–87 (75–98), max 259 | 0.241–0.271 | 1.11–2.01 / 1.17–4.32 / 5.43 | iterations 1 / 10 / 20 / 30 / 50 / 70 / 100 / 150 / 200: 5 / 8 / 11 / 19 / 37 / 47 / 65 / 81 / 94 % against 6 / 8 / 11 / 20 / 37 / 48 / 65 / 82 / 95 % | E ≥ 1.007 e |
+
+- **Valid at every iteration** in both runs: every pose's certificate is at least its exact error.
+- **Within 1.4 points of the oracle everywhere.** The largest gap is at iteration 30 on KITTI full (18.9 % against 20.3 %). There the base patches certify nothing before iteration 70, and K = 3 needs median patches of 274 poses for the same decisions.
+- **Most decisions close at once.** On KITTI full, 450 of 477 poses are "continue" at iteration 1 and 449 are "stop" at iteration 200. The mean number of growth steps is 0.05–3.5, and the size cap binds for at most 2 poses per iteration.
+- **Factorization cost proxy:** (|P| / |P_{K=3}|)³ ≈ (80 / 274)³ ≈ 1/40 per pose.
+- **Two-sided self-assessment** (prefix run only; the KITTI-full run used an earlier version of the script). The reverse triangle inequality gives ‖e_i‖ ≥ s_i − Σ_j a_ij E_j, a certified lower bound L_i. It is valid at every iteration, and E/L has a median of 1.03–1.33. So the certificate reports its own looseness without the oracle.
+- **Cost here:** growth over every (pose, iteration) pair took 16 s (prefix, 1,127 pairs) and 332 s (KITTI full, 4,293 pairs) on 12 cores. In a solver a pose's patch changes only while its decision is open, and each change needs a refactorization of that patch.
+
 **Certificates in the statistical metric (I2).** W_i = L_i⁻¹, with L_i the certified patch lower bound on Σ_ii. The rule E_i^W ≤ η · q₁₂(0.05) guarantees ‖e_i‖_{Σ_ii⁻¹} ≤ η · q₁₂(0.05).
 
 *This is a different criterion from the brief's.* The brief's D-metric rule implies it, but not conversely: it accepts larger errors along poorly determined directions. So its oracle differs as well. Prefix, cap:
@@ -227,6 +257,8 @@ These fractions show how close the certificate comes to perfect knowledge. They 
 | grown, r = 0.3 | 0.257 → 0.241 | 52 / 66 / 78 | 64 / 73 / 89 |
 
 All W-certificates are valid (≥ ‖e‖_{W_i} and ≥ ‖e‖_{Σ_ii⁻¹}). The D-certificate converted to W stops exactly the same poses, as derived. The gain needs the recursion computed directly in W.
+
+`scripts/explore_metric.py` computes both metrics from one factorization per patch: it keeps the metric-free pieces [H_PP⁻¹g_P]_i, [H_PP⁻¹]_ii and the raw leak blocks, then applies either metric. On the prefix it reproduces the table above exactly, with all certificates valid, in 90 s in total. It needs 6.8 s for K = 1, 5.5 s for the grown patches and 13 s for K = 2, over 161 poses and 17 iterations each. It has not been run on KITTI full (§6).
 
 **Landmark certificates by back-substitution (prefix, cap).** From the landmark row of H e = g:
 
@@ -277,6 +309,7 @@ Worst ratios:
 | | C3, K = 2 | pose 353 (t = 72.5 s) | 1 | 4.73 / 1.31 = 3.61 | leak 3.38 against local 1.35 |
 | | C3, K = 3 | pose 340 (t = 70.9 s) | 1 | 1.90 / 1.36 = 1.40 | |
 | grown r = 0.8, KITTI full | C3 | – | – | max 22.1 | the largest ratio of any valid certificate |
+| decision-driven, KITTI full / prefix | C3 | not recorded (the script keeps per-iteration statistics only) | 1 / 2 | max 5.43 / 2.87 | At iteration 1 on KITTI full, 450 of 477 decisions are "continue", which needs no tightness. From iteration 100 on the maximum is ≤ 1.47. |
 
 Other worst cases:
 - **Largest true error at the last iteration:** ChArUco POSE_3.600000000 (pose 4) in every snapshot, equal to the floor (5.5e-4 to 9.9e-4). Pose model: 0.127 on KITTI full at t = 2,000.
@@ -323,7 +356,9 @@ The floor is GBP's own O(ε) bias in the weak directions of a few tens of far la
 - **The cut upper bound on the pose model exists for only 13 % (K = 1) to 48 % (K = 2) of KITTI-full poses.** Cutting the marginalized-landmark factors at the boundary leaves boundary poses under-determined. S_hi, and so Phase E's tubes, needs a better upper bound. Stopping uses S_lo only and is unaffected.
 - **Not attempted:**
   - C4 and hubs on the pose model (the I5 idea);
-  - the Mahalanobis metric on KITTI full;
+  - the Mahalanobis metric on KITTI full (`scripts/explore_metric.py` is ready and ran on the prefix in 90 s);
+  - decision-driven patches in the statistical metric, and the two-sided self-assessment on KITTI full;
+  - the refactorization cost of residual-dependent patches inside a solver (Phase D);
   - figures (Phase F);
   - a longer frozen run of the prefix at the cap to find its fixed point (the floor there is not reached).
 - **Timings are offline Python with validation-grade precision.** They say nothing about in-solver cost (§3.8).
@@ -345,6 +380,8 @@ The floor is GBP's own O(ε) bias in the weak directions of a few tens of far la
   | `greedy_kitti06_{prefix,full}_conv.json` | `scripts/explore_greedy.py` |
   | `mahalanobis_kitti06_prefix_conv.json` | `scripts/explore_mahalanobis.py` |
   | `landmarks_kitti06_prefix_conv.json` | `scripts/explore_landmark_backsub.py` |
+  | `decision_kitti06_{prefix,full}_conv.json` (logs `explore_decision_{prefix,full}.log`) | `scripts/explore_decision.py` |
+  | `metric_kitti06_prefix_conv.json` (log `explore_metric_prefix.log`) | `scripts/explore_metric.py` |
 - D2/D6:
   - `results/phaseC/d2/<dataset>.json`, `_xbar_pL*.npy`, `attribution_<dataset>.json`;
   - scripts `scripts/phaseC_d2.py`, `scripts/phaseC_d2_attribution.py`, `scripts/phaseC_d2_summary.py`.

@@ -1,0 +1,10 @@
+kitti06_prefix_conv: 161 poses, iterations [1, 2, 3, 5, 10, 20, 50], oracle stop [0.62 0.65 0.68 0.73 0.84 0.91 0.96] (65s)
+base (grown r=0.3): rho 0.257, patch median 33 mean 34.2; stop [0.52 0.58 0.6  0.66 0.78 0.88 0.96]
+it    1: rho 0.251 max row 0.300 | patch median  33.0 mean  34.9 p90  49.0 max  64 | reasons {'stop': 100, 'continue': 61, 'tight': 0, 'cap': 0} | valid True ratio median 1.184 (self-assessed E/L median 1.334, lower valid True) | stop 0.62 (base 0.52, oracle 0.62)
+it    2: rho 0.252 max row 0.300 | patch median  33.0 mean  34.8 p90  49.0 max  83 | reasons {'stop': 103, 'continue': 57, 'tight': 1, 'cap': 0} | valid True ratio median 1.133 (self-assessed E/L median 1.286, lower valid True) | stop 0.64 (base 0.58, oracle 0.65)
+it    3: rho 0.250 max row 0.300 | patch median  33.0 mean  35.3 p90  49.0 max  82 | reasons {'stop': 106, 'continue': 53, 'tight': 2, 'cap': 0} | valid True ratio median 1.104 (self-assessed E/L median 1.2, lower valid True) | stop 0.66 (base 0.60, oracle 0.68)
+it    5: rho 0.253 max row 0.300 | patch median  33.0 mean  34.9 p90  49.0 max  62 | reasons {'stop': 116, 'continue': 45, 'tight': 0, 'cap': 0} | valid True ratio median 1.113 (self-assessed E/L median 1.18, lower valid True) | stop 0.72 (base 0.66, oracle 0.73)
+it   10: rho 0.255 max row 0.300 | patch median  33.0 mean  34.7 p90  49.0 max  67 | reasons {'stop': 136, 'continue': 25, 'tight': 0, 'cap': 0} | valid True ratio median 1.054 (self-assessed E/L median 1.128, lower valid True) | stop 0.84 (base 0.78, oracle 0.84)
+it   20: rho 0.257 max row 0.300 | patch median  33.0 mean  34.3 p90  49.0 max  52 | reasons {'stop': 144, 'continue': 17, 'tight': 0, 'cap': 0} | valid True ratio median 1.029 (self-assessed E/L median 1.069, lower valid True) | stop 0.89 (base 0.88, oracle 0.91)
+it   50: rho 0.257 max row 0.300 | patch median  33.0 mean  34.2 p90  49.0 max  52 | reasons {'stop': 155, 'continue': 6, 'tight': 0, 'cap': 0} | valid True ratio median 1.013 (self-assessed E/L median 1.034, lower valid True) | stop 0.96 (base 0.96, oracle 0.96)
+done in 94s (growth 16s)

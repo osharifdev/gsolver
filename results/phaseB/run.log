@@ -1,0 +1,11 @@
+/home/os717/.local/lib/python3.9/site-packages/numpy/_core/fromnumeric.py:86: RuntimeWarning: overflow encountered in reduce
+  return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+/home/os717/gsolver/certify/check.py:243: RuntimeWarning: overflow encountered in scalar multiply
+  v.append(float(viol_scalar(lhs, lam * prod)))
+{
+ "problems": 71,
+ "problem_errors": 0,
+ "checks": 12474,
+ "failed": 0,
+ "failed_rows": []
+}
