@@ -2,6 +2,7 @@
 
 #include <Eigen/Dense>
 
+#include <gsolver/core/flop_count.h>
 #include <gsolver/core/robust_kernels.h>
 #include <gsolver/graph/edge.h>
 #include <gsolver/graph/factor_node_base.h>

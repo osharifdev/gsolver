@@ -7,6 +7,7 @@
 class VariableNodeBase {
 public:
   std::string id_; // Variable node ID
+  int flop_class_ = 0; // Phase D, WP6a: class index of this variable in the flop tallies (gsolver/core/flop_count.h)
 
   virtual void sendMessage(size_t outedge_id) = 0;
   virtual void sendMessage(const std::string& factor_id) = 0;

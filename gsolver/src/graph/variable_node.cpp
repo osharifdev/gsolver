@@ -1,3 +1,4 @@
+#include <gsolver/core/flop_count.h>
 #include <gsolver/core/frozen_mode.h>
 #include <gsolver/graph/variable_node.h>
 
@@ -63,6 +64,7 @@ namespace gsolver {
       // Frozen mode: the outgoing mean stays in the fixed chart (no boxplus remap)
       edges_[outedge_id]->variable_to_factor_message_.Lambda_ = tangent_Lambdaprime;
       edges_[outedge_id]->variable_to_factor_message_.tau_    = z_ + tangent_delta_mu;
+      flops::add(flop_class_, flops::V2F, flops::v2f(Dim_, edges_.size()), Dim_, 0, static_cast<int>(edges_.size()));
       return;
     }
 
@@ -134,6 +136,7 @@ namespace gsolver {
       // Frozen mode: the outgoing mean stays in the fixed chart (no boxplus remap)
       edges_[outedge_id]->variable_to_factor_message_.Lambda_ = tangent_Lambdaprime;
       edges_[outedge_id]->variable_to_factor_message_.tau_    = z_ + tangent_delta_mu;
+      flops::add(flop_class_, flops::V2F, flops::v2f(Dim_, edges_.size()), Dim_, 0, static_cast<int>(edges_.size()));
       return;
     }
 
@@ -195,6 +198,7 @@ namespace gsolver {
       z_                       = z_ + tangent_delta_mu;
       MatrixLieDim Lambdaprime = tangent_Lambdaprime;
       Sigma_                   = Lambdaprime.inverse();
+      flops::add(flop_class_, flops::Belief, flops::belief(Dim_, edges_.size()), Dim_, 0, static_cast<int>(edges_.size()));
       return;
     }
 

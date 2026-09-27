@@ -1,0 +1,33 @@
+{
+ "round": 1,
+ "poses": 161,
+ "rel_S_full_vs_sidecar": 3.088410915040855e-14,
+ "rel_g_full_vs_sidecar": 3.84986787464075e-13,
+ "certify_s": 9.464804848656058,
+ "certificate_flops": 20609343000.0,
+ "violations_upper": 0,
+ "violations_lower": 0,
+ "load_check": {
+  "variables": 18098,
+  "gp": {
+   "factors": 160,
+   "max_abs_dJ": 0,
+   "max_abs_J": 12.487897713370906,
+   "max_abs_de": 0,
+   "max_abs_e": 1.7430274733435176
+  },
+  "stereo": {
+   "factors": 50480,
+   "max_abs_dJ": 0,
+   "max_abs_J": 2443.777770653862,
+   "max_abs_de": 0,
+   "max_abs_e": 10.9716601404388
+  }
+ },
+ "probe_s": 26.323446448892355,
+ "classes": [
+  "gp",
+  "stereo"
+ ],
+ "total_s": 50.77020197920501
+}

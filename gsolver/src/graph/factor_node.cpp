@@ -21,6 +21,9 @@ namespace gsolver {
       edges_.template fillMessageTau<VariablesDim_>(tau_in, 0);
       error_ = error_lin_ + J_lin_ * tau_in;
       J_     = J_lin_;
+      flops::add(flop_class_, flops::FactorUpdate,
+                 flops::factorUpdate(Dim_, VariablesDim_, (0 + ... + (VariableTypes_::LieDim * VariableTypes_::LieDim))), Dim_,
+                 VariablesDim_);
     } else {
       updateErrorAndJacobian();
     }
@@ -39,13 +42,13 @@ namespace gsolver {
   template <int Dim_, typename... VariableTypes_>
   void FactorNode<Dim_, VariableTypes_...>::sendMessage(const std::string& variable_id) {
     // Send message from factor node to variable node
-    edges_.template sendMessage<VariablesDim_>(variable_id, eta_, Lambdaprime_, Lambdaprime_conditioned_);
+    edges_.template sendMessage<VariablesDim_>(variable_id, eta_, Lambdaprime_, Lambdaprime_conditioned_, flop_class_);
   }
 
   template <int Dim_, typename... VariableTypes_>
   void FactorNode<Dim_, VariableTypes_...>::sendAllMessages() {
     // iterate over all edges and send messages to all connected variable nodes
-    edges_.template sendAllMessages<VariablesDim_>(eta_, Lambdaprime_, Lambdaprime_conditioned_);
+    edges_.template sendAllMessages<VariablesDim_>(eta_, Lambdaprime_, Lambdaprime_conditioned_, flop_class_);
   }
 
   // Frozen (linear) mode, see certify/FREEZE_MODE.md -------------------------------------------------
@@ -58,6 +61,7 @@ namespace gsolver {
     error_lin_ = error_;
     J_lin_     = J_;
     frozen_    = true;
+    flops::add(flop_class_, flops::Linearize, 0, Dim_, VariablesDim_);
   }
 
   template <int Dim_, typename... VariableTypes_>

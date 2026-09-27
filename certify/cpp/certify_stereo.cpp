@@ -38,6 +38,12 @@
  *                                  DIR (certify/SIDECAR.md); the sidecar decides which poses sleep
  *     --persist-rounds LIST        with --sidecar: also export these rounds (and the last) to OUT/export_rNNNNN
  *     --pause-every N              with --sidecar: checkpoint every N rounds (export, wait for OUT/continue)
+ *     --count-flops                Phase D, WP6a (threshold mode): per-round GBP flops to OUT/flops.csv (certify/FLOPS.md)
+ *     --flop-trace-round R         with --count-flops: one operation of every kind in round R to OUT/flops_trace.csv
+ *     --probe-export DIR           Phase D, WP6b: no run; load the linearization points and state of the frozen-chart
+ *                                  export DIR into the built graph (checked against its J and e) and serve nonlinear
+ *                                  residual probes through --probe-dir (certify/NL_PROBE.md) until probe_quit
+ *     --probe-dir DIR              the probe exchange directory (in /dev/shm)
  */
 
 #include <cmath>
@@ -74,6 +80,9 @@ struct Args {
   int curve_every = 0, pause_at = 0, pause_every = 0;
   std::string sidecar;
   std::vector<int> persist_rounds;
+  bool count_flops     = false;
+  int flop_trace_round = -1;
+  std::string probe_export, probe_dir;
 };
 
 static Args parse(int argc, char** argv) {
@@ -112,6 +121,10 @@ static Args parse(int argc, char** argv) {
     else if (k == "--sidecar") a.sidecar = next();
     else if (k == "--persist-rounds") a.persist_rounds = certify::parseIntList(next());
     else if (k == "--pause-every") a.pause_every = std::stoi(next());
+    else if (k == "--count-flops") a.count_flops = true;
+    else if (k == "--flop-trace-round") a.flop_trace_round = std::stoi(next());
+    else if (k == "--probe-export") a.probe_export = next();
+    else if (k == "--probe-dir") a.probe_dir = next();
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.g2o.empty() || a.out.empty())
@@ -184,6 +197,18 @@ int main(int argc, char** argv) {
     std::cout << "graph: " << robot_poses.size() << " poses, " << robot_landmarks.size() << " landmarks, "
               << robot_stereo.size() << " observations" << std::endl;
 
+    if (!a.probe_export.empty()) {
+      // Phase D, WP6b: nonlinear residual probes at a persisted export's linearization (no solver run)
+      if (a.probe_dir.empty())
+        throw std::runtime_error("--probe-export needs --probe-dir");
+      certify::ProbeServer server(graph, a.probe_dir);
+      const certify::Json check = certify::loadFrozenState(graph, a.probe_export);
+      std::ofstream(a.probe_dir + "/load_check.json") << check.dump() << "\n";
+      std::ofstream(a.probe_dir + "/server_ready") << "1\n";
+      server.serve();
+      return 0;
+    }
+
     certify::Json meta;
     meta.str("dataset", a.keyframes > 0 ? "kitti06_prefix" : "kitti06_full").str("g2o", a.g2o).str("config", a.config);
     meta.set("qc_diag", certify::jsonArray(std::vector<double>(params.qc_diag.data(), params.qc_diag.data() + 6)));
@@ -210,6 +235,11 @@ int main(int argc, char** argv) {
     auto t0             = std::chrono::steady_clock::now();
     // Every round goes through the work account (WP1b); performIteration() itself is unchanged
     certify::RoundRunner runner(solver, graph, a.out, a.work_budget, a.curve_every, meta);
+    if (a.count_flops) {
+      if (!threshold)
+        throw std::runtime_error("--count-flops counts the frozen (threshold-mode) operations: it needs --relin-threshold");
+      runner.enableFlops(a.flop_trace_round);
+    }
     if (!a.sidecar.empty()) {
       if (!threshold)
         throw std::runtime_error("--sidecar needs --relin-threshold");

@@ -4,6 +4,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include <gsolver/core/flop_count.h>
 #include <gsolver/graph/edge.h>
 #include <gsolver/graph/edge_base.h>
 #include <gsolver/graph/helpers/factor_node_helper.h>
@@ -100,7 +101,8 @@ namespace gsolver {
     void sendMessage(std::string variable_id,
                      Eigen::Vector<double, VariablesDim_> factor_eta,
                      Eigen::Matrix<double, VariablesDim_, VariablesDim_> factor_Lambdaprime,
-                     Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime) {
+                     Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime,
+                     int flop_class = 0) {
       if (current_edge_->variable_id_ == variable_id) {
         static const int total_size = VariablesDim_;               // Total size of the joint distribution
         static const int a_size     = CurrentVariableType::LieDim; // Size of the outgoing edge
@@ -108,29 +110,35 @@ namespace gsolver {
         // Send the message to the variable node
         current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
           factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
+        if (current_edge_->frozen_)
+          flops::add(flop_class, flops::F2V, flops::f2v(a_size, b_size), a_size, b_size);
         return;
       }
       static const int next_out_offset = out_offset_ + CurrentVariableType::LieDim;
       RestFactorEdgeTuple::template sendMessage<VariablesDim_, next_out_offset>(
-        variable_id, factor_eta, factor_Lambdaprime, conditioned_Lambdaprime);
+        variable_id, factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, flop_class);
     }
 
     // Send messages from factor node to all the connected variable node
     template <int VariablesDim_, int out_offset_ = 0>
     void sendAllMessages(Eigen::Vector<double, VariablesDim_> factor_eta,
                          Eigen::Matrix<double, VariablesDim_, VariablesDim_> factor_Lambdaprime,
-                         Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime) {
+                         Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime,
+                         int flop_class = 0) {
       static const int total_size      = VariablesDim_;               // Total size of the joint distribution
       static const int a_size          = CurrentVariableType::LieDim; // Size of the outgoing edge
       static const int b_size          = total_size - a_size;         // Size of the remaining edges
       static const int next_out_offset = out_offset_ + CurrentVariableType::LieDim;
       // Send the message to the variable node (not to a sleeping one: its last message stays in place)
-      if (!current_edge_->asleep_)
+      if (!current_edge_->asleep_) {
         current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
           factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
+        if (current_edge_->frozen_)
+          flops::add(flop_class, flops::F2V, flops::f2v(a_size, b_size), a_size, b_size);
+      }
       // Send messages to the rest of the variable nodes
       RestFactorEdgeTuple::template sendAllMessages<VariablesDim_, next_out_offset>(
-        factor_eta, factor_Lambdaprime, conditioned_Lambdaprime);
+        factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, flop_class);
     }
   };
 
@@ -210,7 +218,8 @@ namespace gsolver {
     void sendMessage(std::string variable_id,
                      Eigen::Vector<double, VariablesDim_> factor_eta,
                      Eigen::Matrix<double, VariablesDim_, VariablesDim_> factor_Lambdaprime,
-                     Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime) {
+                     Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime,
+                     int flop_class = 0) {
       if (current_edge_->variable_id_ == variable_id) {
         static const int total_size = VariablesDim_;               // Total size of the joint distribution
         static const int a_size     = CurrentVariableType::LieDim; // Size of the outgoing edge
@@ -218,6 +227,8 @@ namespace gsolver {
         // Send the message to the variable node
         current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
           factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
+        if (current_edge_->frozen_)
+          flops::add(flop_class, flops::F2V, flops::f2v(a_size, b_size), a_size, b_size);
         return;
       }
       throw std::runtime_error("variable id not found");
@@ -227,14 +238,18 @@ namespace gsolver {
     template <int VariablesDim_, int out_offset_ = 0>
     void sendAllMessages(Eigen::Vector<double, VariablesDim_> factor_eta,
                          Eigen::Matrix<double, VariablesDim_, VariablesDim_> factor_Lambdaprime,
-                         Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime) {
+                         Eigen::Matrix<double, VariablesDim_, VariablesDim_> conditioned_Lambdaprime,
+                         int flop_class = 0) {
       static const int total_size = VariablesDim_;               // Total size of the joint distribution
       static const int a_size     = CurrentVariableType::LieDim; // Size of the outgoing edge
       static const int b_size     = total_size - a_size;         // Size of the remaining edges
       // Send the message to the variable node (not to a sleeping one: its last message stays in place)
-      if (!current_edge_->asleep_)
+      if (!current_edge_->asleep_) {
         current_edge_->factor_to_variable_message_ = computeMessage<CurrentVariableType, out_offset_, a_size, b_size>(
           factor_eta, factor_Lambdaprime, conditioned_Lambdaprime, current_edge_->variable_to_factor_message_, current_edge_->frozen_);
+        if (current_edge_->frozen_)
+          flops::add(flop_class, flops::F2V, flops::f2v(a_size, b_size), a_size, b_size);
+      }
       return;
     }
   };

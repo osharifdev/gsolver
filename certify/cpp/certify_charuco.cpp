@@ -34,6 +34,8 @@
  *                                  DIR (certify/SIDECAR.md); the sidecar decides which poses sleep
  *     --persist-rounds LIST        with --sidecar: also export these rounds (and the last) to OUT/export_rNNNNN
  *     --pause-every N              with --sidecar: checkpoint every N rounds (export, wait for OUT/continue)
+ *     --count-flops                Phase D, WP6a (threshold mode): per-round GBP flops to OUT/flops.csv (certify/FLOPS.md)
+ *     --flop-trace-round R         with --count-flops: one operation of every kind in round R to OUT/flops_trace.csv
  */
 
 #include <cmath>
@@ -132,6 +134,8 @@ struct Args {
   std::string sidecar;
   std::vector<int> persist_rounds;
   int pause_every = 0;
+  bool count_flops = false;
+  int flop_trace_round = -1;
 };
 
 static Args parse(int argc, char** argv) {
@@ -167,6 +171,8 @@ static Args parse(int argc, char** argv) {
     else if (k == "--sidecar") a.sidecar = next();
     else if (k == "--persist-rounds") a.persist_rounds = certify::parseIntList(next());
     else if (k == "--pause-every") a.pause_every = std::stoi(next());
+    else if (k == "--count-flops") a.count_flops = true;
+    else if (k == "--flop-trace-round") a.flop_trace_round = std::stoi(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.relin_threshold >= 0 && (a.mode != "islam" || a.freeze || !a.unfrozen_iters.empty()))
@@ -253,6 +259,11 @@ int run_islam(const Args& a) {
   }
   // Every round goes through the work account (WP1b); performIteration() itself is unchanged
   certify::RoundRunner runner(solver, factor_graph, a.out, a.work_budget, a.curve_every, meta);
+  if (a.count_flops) {
+    if (a.relin_threshold < 0)
+      throw std::runtime_error("--count-flops counts the frozen (threshold-mode) operations: it needs --relin-threshold");
+    runner.enableFlops(a.flop_trace_round);
+  }
   if (!a.sidecar.empty()) {
     if (!threshold)
       throw std::runtime_error("--sidecar needs --relin-threshold");

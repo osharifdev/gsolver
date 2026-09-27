@@ -1,0 +1,3003 @@
+{
+ "trace": "exports/phaseD/wp6/flops/charuco/flops_trace.csv",
+ "kinds": 53,
+ "all_match": true,
+ "rows": [
+  {
+   "category": "factor_update",
+   "cls": "posevel_pose",
+   "a": 6,
+   "b": 18,
+   "degree": 0,
+   "logged": 8310,
+   "hand": 8310,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:22",
+     "op": "error_ = error_lin_ + J_lin_ * tau_in: product (m x n)(n)",
+     "flops": 216
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:22",
+     "op": "  ... + error_lin_",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "eta_: Sigma_.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  J_' * Sigma^-1: (n x m)(m x m)",
+     "flops": 1296
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  (J' Sigma^-1) * (-error_): (n x m)(m)",
+     "flops": 216
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  -error_",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  * k",
+     "flops": 18
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "Lambdaprime_: Sigma_.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  J_' * Sigma^-1: (n x m)(m x m)",
+     "flops": 1296
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  (J' Sigma^-1) * J_: (n x m)(m x n)",
+     "flops": 3888
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  * k",
+     "flops": 324
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_edge_tuple_helper.h:70/189",
+     "op": "conditioned joint += incoming precision (12 x 12)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_edge_tuple_helper.h:70/189",
+     "op": "conditioned joint += incoming precision (6 x 6)",
+     "flops": 36
+    }
+   ]
+  },
+  {
+   "category": "factor_update",
+   "cls": "gp",
+   "a": 12,
+   "b": 24,
+   "degree": 0,
+   "logged": 36624,
+   "hand": 36624,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:22",
+     "op": "error_ = error_lin_ + J_lin_ * tau_in: product (m x n)(n)",
+     "flops": 576
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:22",
+     "op": "  ... + error_lin_",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "eta_: Sigma_.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  J_' * Sigma^-1: (n x m)(m x m)",
+     "flops": 6912
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  (J' Sigma^-1) * (-error_): (n x m)(m)",
+     "flops": 576
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  -error_",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  * k",
+     "flops": 24
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "Lambdaprime_: Sigma_.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  J_' * Sigma^-1: (n x m)(m x m)",
+     "flops": 6912
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  (J' Sigma^-1) * J_: (n x m)(m x n)",
+     "flops": 13824
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  * k",
+     "flops": 576
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_edge_tuple_helper.h:70/189",
+     "op": "conditioned joint += incoming precision (12 x 12)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_edge_tuple_helper.h:70/189",
+     "op": "conditioned joint += incoming precision (12 x 12)",
+     "flops": 144
+    }
+   ]
+  },
+  {
+   "category": "factor_update",
+   "cls": "prior",
+   "a": 6,
+   "b": 12,
+   "degree": 0,
+   "logged": 4920,
+   "hand": 4920,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:22",
+     "op": "error_ = error_lin_ + J_lin_ * tau_in: product (m x n)(n)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:22",
+     "op": "  ... + error_lin_",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "eta_: Sigma_.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  J_' * Sigma^-1: (n x m)(m x m)",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  (J' Sigma^-1) * (-error_): (n x m)(m)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  -error_",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:34",
+     "op": "  * k",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "Lambdaprime_: Sigma_.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  J_' * Sigma^-1: (n x m)(m x m)",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  (J' Sigma^-1) * J_: (n x m)(m x n)",
+     "flops": 1728
+    },
+    {
+     "line": "gsolver/src/graph/factor_node.cpp:35",
+     "op": "  * k",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_edge_tuple_helper.h:70/189",
+     "op": "conditioned joint += incoming precision (12 x 12)",
+     "flops": 144
+    }
+   ]
+  },
+  {
+   "category": "f2v",
+   "cls": "prior",
+   "a": 12,
+   "b": 0,
+   "degree": 0,
+   "logged": 3768,
+   "hand": 3768,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:74",
+     "op": "Lambdaprime_M += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "Lambdaprime_M.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "  * eta_M",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:85",
+     "op": "tau_ = tau_in + tau",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "f2v",
+   "cls": "posevel_pose",
+   "a": 12,
+   "b": 6,
+   "degree": 0,
+   "logged": 8394,
+   "hand": 8394,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:26",
+     "op": "bb += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "eta_marg: bb.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  ab * bb^-1: (a x b)(b x b)",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  (ab bb^-1) * eb: (a x b)(b)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  ea - ...",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "Lambdaprime_marg: bb.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  ab * bb^-1",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  (ab bb^-1) * ba: (a x b)(b x a)",
+     "flops": 1728
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  aa - ...",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:74",
+     "op": "Lambdaprime_M += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "Lambdaprime_M.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "  * eta_M",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:85",
+     "op": "tau_ = tau_in + tau",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "f2v",
+   "cls": "gp",
+   "a": 12,
+   "b": 12,
+   "degree": 0,
+   "logged": 21504,
+   "hand": 21504,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:26",
+     "op": "bb += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "eta_marg: bb.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  ab * bb^-1: (a x b)(b x b)",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  (ab bb^-1) * eb: (a x b)(b)",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  ea - ...",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "Lambdaprime_marg: bb.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  ab * bb^-1",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  (ab bb^-1) * ba: (a x b)(b x a)",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  aa - ...",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:74",
+     "op": "Lambdaprime_M += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "Lambdaprime_M.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "  * eta_M",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:85",
+     "op": "tau_ = tau_in + tau",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "f2v",
+   "cls": "posevel_pose",
+   "a": 6,
+   "b": 12,
+   "degree": 0,
+   "logged": 11946,
+   "hand": 11946,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:26",
+     "op": "bb += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "eta_marg: bb.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  ab * bb^-1: (a x b)(b x b)",
+     "flops": 1728
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  (ab bb^-1) * eb: (a x b)(b)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:29",
+     "op": "  ea - ...",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "Lambdaprime_marg: bb.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  ab * bb^-1",
+     "flops": 1728
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  (ab bb^-1) * ba: (a x b)(b x a)",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:30",
+     "op": "  aa - ...",
+     "flops": 36
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:74",
+     "op": "Lambdaprime_M += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "Lambdaprime_M.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:77",
+     "op": "  * eta_M",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/include/gsolver/graph/helpers/factor_node_helper.h:85",
+     "op": "tau_ = tau_in + tau",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 3,
+   "logged": 1308,
+   "hand": 1308,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "3 x (tau_ - z_)",
+     "flops": 18
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "3 x Lambda_in * delta",
+     "flops": 216
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "3 x eta +=",
+     "flops": 18
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "3 x Lambda' +=",
+     "flops": 108
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 10,
+   "logged": 11784,
+   "hand": 11784,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "10 x (tau_ - z_)",
+     "flops": 120
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "10 x Lambda_in * delta",
+     "flops": 2880
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "10 x eta +=",
+     "flops": 120
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "10 x Lambda' +=",
+     "flops": 1440
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 3456
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 9,
+   "logged": 11328,
+   "hand": 11328,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "9 x (tau_ - z_)",
+     "flops": 108
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "9 x Lambda_in * delta",
+     "flops": 2592
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "9 x eta +=",
+     "flops": 108
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "9 x Lambda' +=",
+     "flops": 1296
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 3456
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 22,
+   "logged": 3588,
+   "hand": 3588,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "22 x (tau_ - z_)",
+     "flops": 132
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "22 x Lambda_in * delta",
+     "flops": 1584
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "22 x eta +=",
+     "flops": 132
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "22 x Lambda' +=",
+     "flops": 792
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 8,
+   "logged": 10872,
+   "hand": 10872,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "8 x (tau_ - z_)",
+     "flops": 96
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "8 x Lambda_in * delta",
+     "flops": 2304
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "8 x eta +=",
+     "flops": 96
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "8 x Lambda' +=",
+     "flops": 1152
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 3456
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 12,
+   "logged": 12696,
+   "hand": 12696,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "12 x (tau_ - z_)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "12 x Lambda_in * delta",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "12 x eta +=",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "12 x Lambda' +=",
+     "flops": 1728
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 3456
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 37,
+   "logged": 5388,
+   "hand": 5388,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "37 x (tau_ - z_)",
+     "flops": 222
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "37 x Lambda_in * delta",
+     "flops": 2664
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "37 x eta +=",
+     "flops": 222
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "37 x Lambda' +=",
+     "flops": 1332
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 11,
+   "logged": 12240,
+   "hand": 12240,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "11 x (tau_ - z_)",
+     "flops": 132
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "11 x Lambda_in * delta",
+     "flops": 3168
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "11 x eta +=",
+     "flops": 132
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "11 x Lambda' +=",
+     "flops": 1584
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 3456
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 13,
+   "logged": 2508,
+   "hand": 2508,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "13 x (tau_ - z_)",
+     "flops": 78
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "13 x Lambda_in * delta",
+     "flops": 936
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "13 x eta +=",
+     "flops": 78
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "13 x Lambda' +=",
+     "flops": 468
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 34,
+   "logged": 5028,
+   "hand": 5028,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "34 x (tau_ - z_)",
+     "flops": 204
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "34 x Lambda_in * delta",
+     "flops": 2448
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "34 x eta +=",
+     "flops": 204
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "34 x Lambda' +=",
+     "flops": 1224
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 38,
+   "logged": 5508,
+   "hand": 5508,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "38 x (tau_ - z_)",
+     "flops": 228
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "38 x Lambda_in * delta",
+     "flops": 2736
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "38 x eta +=",
+     "flops": 228
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "38 x Lambda' +=",
+     "flops": 1368
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 12,
+   "logged": 2388,
+   "hand": 2388,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "12 x (tau_ - z_)",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "12 x Lambda_in * delta",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "12 x eta +=",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "12 x Lambda' +=",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 24,
+   "logged": 3828,
+   "hand": 3828,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "24 x (tau_ - z_)",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "24 x Lambda_in * delta",
+     "flops": 1728
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "24 x eta +=",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "24 x Lambda' +=",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 5,
+   "logged": 1548,
+   "hand": 1548,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "5 x (tau_ - z_)",
+     "flops": 30
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "5 x Lambda_in * delta",
+     "flops": 360
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "5 x eta +=",
+     "flops": 30
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "5 x Lambda' +=",
+     "flops": 180
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 16,
+   "logged": 2868,
+   "hand": 2868,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "16 x (tau_ - z_)",
+     "flops": 96
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "16 x Lambda_in * delta",
+     "flops": 1152
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "16 x eta +=",
+     "flops": 96
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "16 x Lambda' +=",
+     "flops": 576
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 35,
+   "logged": 5148,
+   "hand": 5148,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "35 x (tau_ - z_)",
+     "flops": 210
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "35 x Lambda_in * delta",
+     "flops": 2520
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "35 x eta +=",
+     "flops": 210
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "35 x Lambda' +=",
+     "flops": 1260
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 15,
+   "logged": 2748,
+   "hand": 2748,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "15 x (tau_ - z_)",
+     "flops": 90
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "15 x Lambda_in * delta",
+     "flops": 1080
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "15 x eta +=",
+     "flops": 90
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "15 x Lambda' +=",
+     "flops": 540
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 8,
+   "logged": 1908,
+   "hand": 1908,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "8 x (tau_ - z_)",
+     "flops": 48
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "8 x Lambda_in * delta",
+     "flops": 576
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "8 x eta +=",
+     "flops": 48
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "8 x Lambda' +=",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 18,
+   "logged": 3108,
+   "hand": 3108,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "18 x (tau_ - z_)",
+     "flops": 108
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "18 x Lambda_in * delta",
+     "flops": 1296
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "18 x eta +=",
+     "flops": 108
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "18 x Lambda' +=",
+     "flops": 648
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 14,
+   "logged": 2628,
+   "hand": 2628,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "14 x (tau_ - z_)",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "14 x Lambda_in * delta",
+     "flops": 1008
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "14 x eta +=",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "14 x Lambda' +=",
+     "flops": 504
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 7,
+   "logged": 10416,
+   "hand": 10416,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "7 x (tau_ - z_)",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "7 x Lambda_in * delta",
+     "flops": 2016
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "7 x eta +=",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "7 x Lambda' +=",
+     "flops": 1008
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 3456
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 32,
+   "logged": 4788,
+   "hand": 4788,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "32 x (tau_ - z_)",
+     "flops": 192
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "32 x Lambda_in * delta",
+     "flops": 2304
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "32 x eta +=",
+     "flops": 192
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "32 x Lambda' +=",
+     "flops": 1152
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "belief",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 33,
+   "logged": 4908,
+   "hand": 4908,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:178",
+     "op": "33 x (tau_ - z_)",
+     "flops": 198
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:186",
+     "op": "33 x Lambda_in * delta",
+     "flops": 2376
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:188",
+     "op": "33 x eta +=",
+     "flops": 198
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:189",
+     "op": "33 x Lambda' +=",
+     "flops": 1188
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:192",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:194",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:198",
+     "op": "z_ += delta",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:200",
+     "op": "Sigma_ = Lambda'.inverse()",
+     "flops": 432
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 3,
+   "logged": 756,
+   "hand": 756,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "2 x (tau_ - z_)",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "2 x Lambda_in * delta",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "2 x eta +=",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "2 x Lambda' +=",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 22,
+   "logged": 3036,
+   "hand": 3036,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "21 x (tau_ - z_)",
+     "flops": 126
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "21 x Lambda_in * delta",
+     "flops": 1512
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "21 x eta +=",
+     "flops": 126
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "21 x Lambda' +=",
+     "flops": 756
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 10,
+   "logged": 7872,
+   "hand": 7872,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "9 x (tau_ - z_)",
+     "flops": 108
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "9 x Lambda_in * delta",
+     "flops": 2592
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "9 x eta +=",
+     "flops": 108
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "9 x Lambda' +=",
+     "flops": 1296
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 9,
+   "logged": 7416,
+   "hand": 7416,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "8 x (tau_ - z_)",
+     "flops": 96
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "8 x Lambda_in * delta",
+     "flops": 2304
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "8 x eta +=",
+     "flops": 96
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "8 x Lambda' +=",
+     "flops": 1152
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 12,
+   "logged": 8784,
+   "hand": 8784,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "11 x (tau_ - z_)",
+     "flops": 132
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "11 x Lambda_in * delta",
+     "flops": 3168
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "11 x eta +=",
+     "flops": 132
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "11 x Lambda' +=",
+     "flops": 1584
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 11,
+   "logged": 8328,
+   "hand": 8328,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "10 x (tau_ - z_)",
+     "flops": 120
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "10 x Lambda_in * delta",
+     "flops": 2880
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "10 x eta +=",
+     "flops": 120
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "10 x Lambda' +=",
+     "flops": 1440
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 13,
+   "logged": 1956,
+   "hand": 1956,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "12 x (tau_ - z_)",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "12 x Lambda_in * delta",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "12 x eta +=",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "12 x Lambda' +=",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 8,
+   "logged": 6960,
+   "hand": 6960,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "7 x (tau_ - z_)",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "7 x Lambda_in * delta",
+     "flops": 2016
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "7 x eta +=",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "7 x Lambda' +=",
+     "flops": 1008
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 37,
+   "logged": 4836,
+   "hand": 4836,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "36 x (tau_ - z_)",
+     "flops": 216
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "36 x Lambda_in * delta",
+     "flops": 2592
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "36 x eta +=",
+     "flops": 216
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "36 x Lambda' +=",
+     "flops": 1296
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 5,
+   "logged": 996,
+   "hand": 996,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "4 x (tau_ - z_)",
+     "flops": 24
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "4 x Lambda_in * delta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "4 x eta +=",
+     "flops": 24
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "4 x Lambda' +=",
+     "flops": 144
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 24,
+   "logged": 3276,
+   "hand": 3276,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "23 x (tau_ - z_)",
+     "flops": 138
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "23 x Lambda_in * delta",
+     "flops": 1656
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "23 x eta +=",
+     "flops": 138
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "23 x Lambda' +=",
+     "flops": 828
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 12,
+   "logged": 1836,
+   "hand": 1836,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "11 x (tau_ - z_)",
+     "flops": 66
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "11 x Lambda_in * delta",
+     "flops": 792
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "11 x eta +=",
+     "flops": 66
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "11 x Lambda' +=",
+     "flops": 396
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 18,
+   "logged": 2556,
+   "hand": 2556,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "17 x (tau_ - z_)",
+     "flops": 102
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "17 x Lambda_in * delta",
+     "flops": 1224
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "17 x eta +=",
+     "flops": 102
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "17 x Lambda' +=",
+     "flops": 612
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 35,
+   "logged": 4596,
+   "hand": 4596,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "34 x (tau_ - z_)",
+     "flops": 204
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "34 x Lambda_in * delta",
+     "flops": 2448
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "34 x eta +=",
+     "flops": 204
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "34 x Lambda' +=",
+     "flops": 1224
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 16,
+   "logged": 2316,
+   "hand": 2316,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "15 x (tau_ - z_)",
+     "flops": 90
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "15 x Lambda_in * delta",
+     "flops": 1080
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "15 x eta +=",
+     "flops": 90
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "15 x Lambda' +=",
+     "flops": 540
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3PoseVel",
+   "a": 12,
+   "b": 0,
+   "degree": 7,
+   "logged": 6504,
+   "hand": 6504,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "6 x (tau_ - z_)",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "6 x Lambda_in * delta",
+     "flops": 1728
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "6 x eta +=",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "6 x Lambda' +=",
+     "flops": 864
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 12
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 3456
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 288
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 12
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 33,
+   "logged": 4356,
+   "hand": 4356,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "32 x (tau_ - z_)",
+     "flops": 192
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "32 x Lambda_in * delta",
+     "flops": 2304
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "32 x eta +=",
+     "flops": 192
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "32 x Lambda' +=",
+     "flops": 1152
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 15,
+   "logged": 2196,
+   "hand": 2196,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "14 x (tau_ - z_)",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "14 x Lambda_in * delta",
+     "flops": 1008
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "14 x eta +=",
+     "flops": 84
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "14 x Lambda' +=",
+     "flops": 504
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 14,
+   "logged": 2076,
+   "hand": 2076,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "13 x (tau_ - z_)",
+     "flops": 78
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "13 x Lambda_in * delta",
+     "flops": 936
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "13 x eta +=",
+     "flops": 78
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "13 x Lambda' +=",
+     "flops": 468
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 32,
+   "logged": 4236,
+   "hand": 4236,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "31 x (tau_ - z_)",
+     "flops": 186
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "31 x Lambda_in * delta",
+     "flops": 2232
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "31 x eta +=",
+     "flops": 186
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "31 x Lambda' +=",
+     "flops": 1116
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 8,
+   "logged": 1356,
+   "hand": 1356,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "7 x (tau_ - z_)",
+     "flops": 42
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "7 x Lambda_in * delta",
+     "flops": 504
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "7 x eta +=",
+     "flops": 42
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "7 x Lambda' +=",
+     "flops": 252
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 34,
+   "logged": 4476,
+   "hand": 4476,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "33 x (tau_ - z_)",
+     "flops": 198
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "33 x Lambda_in * delta",
+     "flops": 2376
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "33 x eta +=",
+     "flops": 198
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "33 x Lambda' +=",
+     "flops": 1188
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  },
+  {
+   "category": "v2f",
+   "cls": "SE3Pose",
+   "a": 6,
+   "b": 0,
+   "degree": 38,
+   "logged": 4956,
+   "hand": 4956,
+   "match": true,
+   "items": [
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:45",
+     "op": "37 x (tau_ - z_)",
+     "flops": 222
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:53",
+     "op": "37 x Lambda_in * delta",
+     "flops": 2664
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:55",
+     "op": "37 x eta +=",
+     "flops": 222
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:56",
+     "op": "37 x Lambda' +=",
+     "flops": 1332
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:59",
+     "op": "Lambda' += eps I",
+     "flops": 6
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "Lambda'.inverse()",
+     "flops": 432
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:61",
+     "op": "  * eta",
+     "flops": 72
+    },
+    {
+     "line": "gsolver/src/graph/variable_node.cpp:66",
+     "op": "tau_ = z_ + delta",
+     "flops": 6
+    }
+   ]
+  }
+ ]
+}

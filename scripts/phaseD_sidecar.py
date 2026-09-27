@@ -8,7 +8,8 @@ that sleep during this round's message passing to <shm>/decision, and logs:
   <out>/summary.csv  per round: stop fractions, wakes, refactorizations, operation counts, timings, violations
 On an exception it writes <shm>/abort (the driver then stops). Exits after the round marked last.
 
-Usage: python3 scripts/phaseD_sidecar.py <shm_dir> <out_dir> [--delta 0.003] [--eta 0.1] [--p-L 1e-6]
+Usage: python3 scripts/phaseD_sidecar.py <shm_dir> <out_dir> [--delta 0.003] [--eta 0.1] [--p-L 1e-6] [--continue-rule L|s]
+(--continue-rule s reproduces WP2's growth exit; the default L is the rule decided after WP2.)
 """
 
 import csv
@@ -52,10 +53,10 @@ def read_info(path):
 
 
 class Sidecar:
-    def __init__(self, shm, out, delta, eta, p_L):
+    def __init__(self, shm, out, delta, eta, p_L, continue_rule="L"):
         self.shm, self.out = Path(shm), Path(out)
         self.out.mkdir(parents=True, exist_ok=True)
-        self.engine = Engine(delta, eta)
+        self.engine = Engine(delta, eta, continue_rule)
         self.p_L = p_L
         self.builder = None
         self.fr = open(self.out / "rounds.csv", "w", newline="")
@@ -122,4 +123,5 @@ if __name__ == "__main__":
     def opt(name, default):
         return float(a[a.index(name) + 1]) if name in a else default
 
-    Sidecar(a[0], a[1], delta=opt("--delta", 0.003), eta=opt("--eta", 0.1), p_L=opt("--p-L", None)).run()
+    rule = a[a.index("--continue-rule") + 1] if "--continue-rule" in a else "L"
+    Sidecar(a[0], a[1], delta=opt("--delta", 0.003), eta=opt("--eta", 0.1), p_L=opt("--p-L", None), continue_rule=rule).run()

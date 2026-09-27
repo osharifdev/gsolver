@@ -40,14 +40,16 @@ class PoseModelBuilder:
         self.p_L = p_L
         self.init = _landmark_init(g2o) if (g2o and p_L) else {}
 
-    def build(self, path, true_jacobian=False, ex=None):
+    def build(self, path, true_jacobian=False, ex=None, J_override=None):
+        """J_override: {factor type: Jacobians (n, m, d) in the export's order} used in place of the export's (WP6b:
+        central-difference GP Jacobians, to measure the yardstick's sensitivity to the GP factor's Jacobian)."""
         ex = ex if ex is not None else Export(path)
         n, dims, vt = ex.n_blocks, ex.dims, ex.var_type
         se = {i: (tau, L) for i, tau, L in ex.single_edge}
         groups = []
         for t, g in ex.factors.items():
             keep = ~np.char.startswith(g["ids"].astype(str), "CERTIFY_GAUGE_PRIOR")
-            J = g["J"].astype(float)
+            J = g["J"].astype(float) if not (J_override and t in J_override) else np.asarray(J_override[t], float)
             keep &= np.abs(J).reshape(len(J), -1).max(axis=1) > 0
             if not keep.any():
                 continue

@@ -11,6 +11,7 @@ namespace gsolver {
   class FactorNodeBase {
   public:
     std::string id_; // Factor node ID
+    int flop_class_ = 0; // Phase D, WP6a: class index of this factor in the flop tallies (gsolver/core/flop_count.h)
 
     virtual ~FactorNodeBase() = default;
 

@@ -29,7 +29,9 @@
 #include <vector>
 
 #include <Eigen/Dense>
+#include <functional>
 
+#include <gsolver/core/flop_count.h>
 #include <gsolver/core/frozen_mode.h>
 #include <gsolver/core/gbp_solver.h>
 #include <gsolver/graph/factor_graph.h>
@@ -570,6 +572,98 @@ namespace certify {
     return secs;
   }
 
+  // ---- Phase D, WP6a: flop classes (certify/FLOPS.md). Factor classes index the factor-side categories of
+  // gsolver/core/flop_count.h (Linearize, FactorUpdate, F2V), variable classes the variable-side ones (Belief, V2F).
+  inline const std::vector<std::string>& factorClassNames() {
+    static const std::vector<std::string> n{"other", "gp", "stereo", "posevel_pose", "prior", "posevel_point", "posevel_posevel",
+                                            "point_equality"};
+    return n;
+  }
+  inline const std::vector<std::string>& variableClassNames() {
+    static const std::vector<std::string> n{"other", "SE3PoseVel", "SE3Pose", "SE3Point", "", "", "", ""};
+    return n;
+  }
+  inline int factorClassOf(const std::string& type) {
+    const auto& n = factorClassNames();
+    for (size_t k = 1; k < n.size(); ++k)
+      if (n[k] == type)
+        return static_cast<int>(k);
+    return 0;
+  }
+  // Assign the flop class of every node added since the last call (nodes are only ever appended)
+  inline void assignFlopClasses(FactorGraph& g, size_t& vars_done, size_t& factors_done) {
+    for (; vars_done < g.variable_nodes_.size(); ++vars_done) {
+      auto& v = g.variable_nodes_[vars_done];
+      if (std::dynamic_pointer_cast<SE3PoseVel>(v))
+        v->flop_class_ = 1;
+      else if (std::dynamic_pointer_cast<SE3Pose>(v))
+        v->flop_class_ = 2;
+      else if (std::dynamic_pointer_cast<SE3Point>(v))
+        v->flop_class_ = 3;
+    }
+    for (; factors_done < g.factor_nodes_.size(); ++factors_done)
+      withFactor(g.factor_nodes_[factors_done], [&](auto fp, const std::string& type) { fp->flop_class_ = factorClassOf(type); });
+  }
+
+  // NPY v1/v2 reader for little-endian float64 / int64 arrays in C order
+  struct NpyArray {
+    std::vector<size_t> shape;
+    std::vector<double> f;
+    std::vector<int64_t> i;
+    size_t size() const {
+      size_t n = 1;
+      for (size_t d : shape)
+        n *= d;
+      return n;
+    }
+  };
+  inline NpyArray readNpy(const std::string& path) {
+    std::ifstream fh(path, std::ios::binary);
+    if (!fh)
+      throw std::runtime_error("cannot read " + path);
+    char magic[6];
+    fh.read(magic, 6);
+    if (std::string(magic, 6) != std::string("\x93NUMPY", 6))
+      throw std::runtime_error("not an npy file: " + path);
+    unsigned char ver[2];
+    fh.read(reinterpret_cast<char*>(ver), 2);
+    size_t hl = 0;
+    if (ver[0] == 1) {
+      uint16_t h;
+      fh.read(reinterpret_cast<char*>(&h), 2);
+      hl = h;
+    } else {
+      uint32_t h;
+      fh.read(reinterpret_cast<char*>(&h), 4);
+      hl = h;
+    }
+    std::string header(hl, ' ');
+    fh.read(&header[0], static_cast<std::streamsize>(hl));
+    if (header.find("'fortran_order': True") != std::string::npos)
+      throw std::runtime_error("fortran order not supported: " + path);
+    const bool f8 = header.find("'<f8'") != std::string::npos, i8 = header.find("'<i8'") != std::string::npos;
+    if (!f8 && !i8)
+      throw std::runtime_error("only <f8 and <i8 are supported: " + path);
+    NpyArray a;
+    const size_t p0 = header.find("'shape': (") + 10, p1 = header.find(')', p0);
+    std::stringstream ss(header.substr(p0, p1 - p0));
+    std::string tok;
+    while (std::getline(ss, tok, ','))
+      if (tok.find_first_not_of(' ') != std::string::npos)
+        a.shape.push_back(static_cast<size_t>(std::stoll(tok)));
+    const size_t n = a.size();
+    if (f8) {
+      a.f.resize(n);
+      fh.read(reinterpret_cast<char*>(a.f.data()), static_cast<std::streamsize>(n * 8));
+    } else {
+      a.i.resize(n);
+      fh.read(reinterpret_cast<char*>(a.i.data()), static_cast<std::streamsize>(n * 8));
+    }
+    if (!fh)
+      throw std::runtime_error("short read: " + path);
+    return a;
+  }
+
   // ---- threshold relinearization (Phase D, WP1; certify/THRESHOLD_RELIN.md)
 
   inline bool isPoseId(const std::string& id) {
@@ -643,6 +737,63 @@ namespace certify {
     std::unique_ptr<RelinLog> relin_log;
     size_t nv_ = SIZE_MAX, nf_ = SIZE_MAX;
     long long messages_ = 0;
+
+    // Phase D, WP6a: per-round GBP flops (gsolver/core/flop_count.h, certify/FLOPS.md)
+    bool count_flops     = false;
+    int flop_trace_round = -1; // record one operation of every kind in this round (hand-count validation)
+    std::ofstream flop_log, flop_class_log;
+    size_t classed_vars_ = 0, classed_factors_ = 0;
+
+    void enableFlops(int trace_round) {
+      count_flops      = true;
+      flop_trace_round = trace_round;
+      flops::enabled   = true;
+      flops::collect(); // discard anything counted before
+      flop_log.open(out + "/flops.csv");
+      flop_log << "round,gbp_flops,factor_update,f2v,belief,v2f,linearizations,factor_updates,f2v_messages,belief_updates,"
+                  "v2f_messages\n";
+      flop_class_log.open(out + "/flops_by_class.csv");
+      flop_class_log << "round,category,class,flops,ops\n";
+    }
+    void beforeRound() {
+      if (!count_flops)
+        return;
+      assignFlopClasses(g, classed_vars_, classed_factors_);
+      if (rounds + 1 == flop_trace_round)
+        flops::trace_per_kind = 1;
+    }
+    void afterRound() {
+      if (!count_flops)
+        return;
+      const flops::Tally t = flops::collect();
+      uint64_t F[flops::NumCategories] = {}, N[flops::NumCategories] = {};
+      static const char* cat[] = {"linearize", "factor_update", "f2v", "belief", "v2f"};
+      for (int c = 0; c < flops::kClasses; ++c)
+        for (int k = 0; k < flops::NumCategories; ++k) {
+          F[k] += t.flops[c][k];
+          N[k] += t.ops[c][k];
+          if (t.ops[c][k])
+            flop_class_log << rounds << "," << cat[k] << ","
+                           << (k <= flops::F2V ? factorClassNames()[c] : variableClassNames()[c]) << "," << t.flops[c][k] << ","
+                           << t.ops[c][k] << "\n";
+        }
+      const uint64_t total = F[flops::FactorUpdate] + F[flops::F2V] + F[flops::Belief] + F[flops::V2F];
+      flop_log << rounds << "," << total << "," << F[flops::FactorUpdate] << "," << F[flops::F2V] << "," << F[flops::Belief] << ","
+               << F[flops::V2F] << "," << N[flops::Linearize] << "," << N[flops::FactorUpdate] << "," << N[flops::F2V] << ","
+               << N[flops::Belief] << "," << N[flops::V2F] << "\n";
+      flop_log.flush();
+      flop_class_log.flush();
+      if (flops::trace_per_kind > 0) {
+        flops::trace_per_kind = 0;
+        std::ofstream tr(out + "/flops_trace.csv");
+        tr << "round,category,class,a,b,degree,flops\n";
+        for (const auto& r : flops::trace)
+          tr << rounds << "," << cat[r.cat] << ","
+             << (r.cat <= flops::F2V ? factorClassNames()[r.cls] : variableClassNames()[r.cls]) << "," << r.a << "," << r.b << ","
+             << r.deg << "," << r.flops << "\n";
+        flops::trace.clear();
+      }
+    }
 
     RoundRunner(GbpSolver& s, FactorGraph& graph, const std::string& dir, long long work_budget, int every, Json m)
         : solver(s), g(graph), out(dir), budget(work_budget), curve_every(every), meta(std::move(m)) {
@@ -725,6 +876,7 @@ namespace certify {
     }
 
     void sidecarRound() {
+      beforeRound();
       const long long lin = solver.planThresholdRound(g);
       solver.applyThresholdRelinearization(g);
       const int r = solver.threshold_stats_.round;
@@ -781,6 +933,7 @@ namespace certify {
       log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << "," << updates << ","
           << sleep_ids.size() << "\n";
       log.flush();
+      afterRound();
       if (relin_log)
         relin_log->row(solver, g, wall);
       if (pause_every > 0 && rounds % pause_every == 0 && rounds != last_round)
@@ -793,6 +946,7 @@ namespace certify {
         sidecarRound();
         return;
       }
+      beforeRound();
       const long long lin = solver.threshold_relinearization_ ? solver.planThresholdRound(g)
                                                               : static_cast<long long>(g.factor_nodes_.size());
       const long long msg = messageCount();
@@ -808,6 +962,7 @@ namespace certify {
       cumulative += lin + msg;
       log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << ",,\n";
       log.flush();
+      afterRound();
       if (relin_log)
         relin_log->row(solver, g, wall);
       if (curve_every > 0 && rounds % curve_every == 0) {
@@ -851,5 +1006,406 @@ namespace certify {
       f << g.variable_nodes_[v]->id_ << "," << (isPoseId(g.variable_nodes_[v]->id_) ? 1 : 0) << ","
         << st.created_round[v] << "," << st.relinearizations[v] << "," << st.round << "\n";
   }
+
+  // ---- Phase D, WP6b: the nonlinear estimating-equation residual at a stepped point (certify/NL_PROBE.md)
+
+  /**
+   * Load the linearization points and tangent states of a frozen-chart export into a freshly built graph (the same
+   * driver construction, so the same variable ids and factor order), make every variable frozen at its point and
+   * relinearize every factor there. Returns the largest differences between the recomputed J_lin/e_lin and the
+   * export's, per factor type (they must agree to rounding: same code, same points).
+   */
+  inline Json loadFrozenState(FactorGraph& g, const std::string& dir) {
+    auto vars = orderVariables(g);
+    {
+      std::ifstream fv(dir + "/variables.tsv");
+      std::string line;
+      std::getline(fv, line);
+      size_t k = 0;
+      while (std::getline(fv, line)) {
+        if (line.empty())
+          continue;
+        std::stringstream ss(line);
+        std::string idx, id;
+        std::getline(ss, idx, '\t');
+        std::getline(ss, id, '\t');
+        if (k >= vars.size() || vars[k].id != id)
+          throw std::runtime_error("export variable " + std::to_string(k) + " (" + id + ") does not match the rebuilt graph");
+        ++k;
+      }
+      if (k != vars.size())
+        throw std::runtime_error("export has " + std::to_string(k) + " variables, the rebuilt graph " + std::to_string(vars.size()));
+    }
+    const NpyArray T = readNpy(dir + "/pose_T_lin.npy"), V = readNpy(dir + "/pose_v_lin.npy"), S3 = readNpy(dir + "/se3_T_lin.npy"),
+                   P = readNpy(dir + "/point_p_lin.npy"), Z = readNpy(dir + "/z.npy");
+    size_t kp = 0, ks = 0, kq = 0, off = 0;
+    auto iso = [](const std::vector<double>& a, size_t k) {
+      Eigen::Matrix4d M;
+      for (int r = 0; r < 4; ++r)
+        for (int c = 0; c < 4; ++c)
+          M(r, c) = a[16 * k + 4 * r + c];
+      Eigen::Isometry3d X;
+      X.matrix() = M;
+      return X;
+    };
+    for (auto& r : vars)
+      withVariable(r.node, [&](auto vp) {
+        using VT = typename std::decay_t<decltype(*vp)>;
+        typename VT::EstimateType lin;
+        if constexpr (std::is_same_v<VT, SE3PoseVel>) {
+          lin.pose = iso(T.f, kp);
+          for (int k = 0; k < 6; ++k)
+            lin.vel(k) = V.f[6 * kp + k];
+          ++kp;
+        } else if constexpr (std::is_same_v<VT, SE3Pose>) {
+          lin = iso(S3.f, ks++);
+        } else {
+          lin = Eigen::Vector3d(P.f[3 * kq], P.f[3 * kq + 1], P.f[3 * kq + 2]);
+          ++kq;
+        }
+        vp->mu_     = lin;
+        vp->mu_lin_ = lin;
+        for (int k = 0; k < VT::LieDim; ++k)
+          vp->z_(k) = Z.f[off + k];
+        off += VT::LieDim;
+        vp->frozen_ = true;
+        for (auto& e : vp->edges_) {
+          e->variable_to_factor_message_.mu_ = lin;
+          e->frozen_                         = true;
+        }
+      });
+    const bool was = flops::enabled;
+    flops::enabled = false;
+    for (auto& f : g.factor_nodes_)
+      f->freezeLinearization();
+    flops::enabled = was;
+    // compare with the export
+    std::map<std::string, std::pair<NpyArray, NpyArray>> ref;
+    std::map<std::string, size_t> pos;
+    std::map<std::string, double> dJ, de, mJ, me;
+    for (auto& f : g.factor_nodes_)
+      withFactor(f, [&](auto fp, const std::string& type) {
+        using FT = typename std::decay_t<decltype(*fp)>;
+        if (!ref.count(type))
+          ref[type] = {readNpy(dir + "/f_" + type + "_J.npy"), readNpy(dir + "/f_" + type + "_e.npy")};
+        const size_t k = pos[type]++;
+        const int m = FT::MatrixErrorDim::RowsAtCompileTime, n = FT::VariablesDim_;
+        const auto& J = ref[type].first.f;
+        const auto& e = ref[type].second.f;
+        for (int a = 0; a < m; ++a) {
+          for (int b = 0; b < n; ++b) {
+            dJ[type] = std::max(dJ[type], std::abs(fp->J_lin_(a, b) - J[(k * m + a) * n + b]));
+            mJ[type] = std::max(mJ[type], std::abs(J[(k * m + a) * n + b]));
+          }
+          de[type] = std::max(de[type], std::abs(fp->error_lin_(a) - e[k * m + a]));
+          me[type] = std::max(me[type], std::abs(e[k * m + a]));
+        }
+      });
+    Json out;
+    out.integer("variables", static_cast<long long>(vars.size()));
+    for (auto& [type, n] : pos) {
+      if (ref[type].first.shape.empty() || ref[type].first.shape[0] != n)
+        throw std::runtime_error("factor count mismatch for type " + type);
+      out.set(type, "{\"factors\": " + std::to_string(n) + ", \"max_abs_dJ\": " + jsonNum(dJ[type]) + ", \"max_abs_J\": " +
+                      jsonNum(mJ[type]) + ", \"max_abs_de\": " + jsonNum(de[type]) + ", \"max_abs_e\": " + jsonNum(me[type]) + "}");
+    }
+    return out;
+  }
+
+  /**
+   * Probe server. A probe is a target set T of variables (canonical export order) with tangent offsets z1_v in their
+   * frozen charts. Every factor touching T is evaluated by its own updateErrorAndJacobian() -- the code the solver
+   * relinearizes with -- at x = x_lin ⊞ z, with z = z1 on T and the current state z_ elsewhere, and for v in T
+   *   F_nl[c]_v  = sum over the factors f of class c touching v of [J~_f(x)' Sigma_f^-1 e_f(x)]_v,
+   *   F_lin[c]_v = the same with the frozen linear model: J_lin' Sigma^-1 (e_lin + J_lin tau(z)),
+   *   F_jac[c]_v = the new Jacobian with the linear model's error: J~_f(x)' Sigma^-1 (e_lin + J_lin tau(z)),
+   *   F_true[c]_v = the same with the error's true linear model: J~_f(x)' Sigma^-1 (e_lin + J_lin,true tau(z)),
+   * so F_jac - F_lin is the Gauss-Newton Jacobian-change term, F_true - F_jac the first-order mismatch of the solver's
+   * linear model when its Jacobian is not the error's derivative (stereo, Theorem T0), F_nl - F_true the curvature.
+   * The solver state is unchanged: message means are pointed back at the beliefs after each probe and restored at
+   * the end of the session, and each factor's error_, J_ and inlier flag are restored after its evaluation.
+   *
+   * Protocol (files in `dir`): the client writes probe_targets.npy (int64), probe_offsets.npy (int64, n_probes + 1)
+   * and probe_z.npy (float64, the offsets of every target in turn), then probe_request (a request number). The server
+   * answers with probe_F.npy (float64, 4 x n_classes x total target dofs: F_nl, F_lin, F_jac, F_true), probe_stats.npy (int64,
+   * n_probes x 2: factors evaluated, factors whose inlier status at x differs from the linearization point) and
+   * probe_done (the request number). probe_classes.txt lists the factor classes. probe_quit ends serve().
+   */
+  struct ProbeServer {
+    FactorGraph& g;
+    std::string dir;
+    std::vector<VarRec> vars;
+    std::vector<int> dim;                          // per canonical variable
+    std::vector<std::vector<int>> var_factors;     // canonical variable -> factor indices
+    std::vector<std::vector<int>> factor_vars;     // factor -> canonical variables (edge order)
+    std::vector<int> factor_class;                 // index into classes
+    std::vector<std::string> classes;
+    std::vector<Eigen::VectorXd> zev;              // tangent offset at which each variable is evaluated
+    std::vector<std::function<void(Eigen::VectorXd&, Eigen::VectorXd&, Eigen::VectorXd&, Eigen::VectorXd&, int&)>> eval;
+    std::vector<int> stamp;
+    int stamp_now = 0, last_request = 0;
+    bool in_session = false;
+
+    ProbeServer(FactorGraph& graph, const std::string& d) : g(graph), dir(d) {
+      makeDirs(dir);
+      vars = orderVariables(g);
+      std::unordered_map<std::string, int> index;
+      for (size_t i = 0; i < vars.size(); ++i) {
+        index[vars[i].id] = static_cast<int>(i);
+        dim.push_back(vars[i].dim);
+      }
+      var_factors.resize(vars.size());
+      for (size_t k = 0; k < g.factor_nodes_.size(); ++k)
+        withFactor(g.factor_nodes_[k], [&](auto fp, const std::string& type) {
+          using FT = typename std::decay_t<decltype(*fp)>;
+          int c = static_cast<int>(std::find(classes.begin(), classes.end(), type) - classes.begin());
+          if (c == static_cast<int>(classes.size()))
+            classes.push_back(type);
+          factor_class.push_back(c);
+          std::vector<int> vs;
+          forEachEdge<0>(*fp, [&](int, auto& edge) { vs.push_back(index.at(edge->variable_id_)); });
+          for (int v : vs)
+            var_factors[v].push_back(static_cast<int>(k));
+          factor_vars.push_back(vs);
+          const std::vector<Eigen::VectorXd>* zp = &zev;
+          eval.push_back([fp, vs, zp](Eigen::VectorXd& gnl, Eigen::VectorXd& glin, Eigen::VectorXd& gjac, Eigen::VectorXd& gtrue,
+                                      int& flip) {
+            const typename FT::VectorErrorDim e0    = fp->error_;
+            const typename FT::MatrixJacobianDim J0 = fp->J_;
+            bool in0                                = true;
+            if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>)
+              in0 = fp->inlier_;
+            fp->updateErrorAndJacobian();
+            const typename FT::MatrixErrorDim W = fp->Sigma_.inverse();
+            gnl                                 = fp->J_.transpose() * (W * fp->error_);
+            typename FT::VectorVariablesDim tau;
+            int o = 0;
+            for (int v : vs) {
+              const auto& zv                   = (*zp)[v];
+              tau.segment(o, zv.size())        = zv;
+              o += static_cast<int>(zv.size());
+            }
+            const typename FT::VectorErrorDim elin = fp->error_lin_ + fp->J_lin_ * tau;
+            glin                                    = fp->J_lin_.transpose() * (W * elin);
+            gjac                                    = fp->J_.transpose() * (W * elin); // new Jacobian, linear error
+            // the true Jacobian at x_lin (Theorem T0: the stereo rotation columns without the factor 2 of
+            // se3_posevel_stereo_point.cpp; every other type's Jacobian is used as the solver's)
+            typename FT::MatrixJacobianDim Jt = fp->J_lin_;
+            if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>)
+              Jt.template block<3, 3>(0, 3) *= 0.5;
+            gtrue = fp->J_.transpose() * (W * (fp->error_lin_ + Jt * tau));
+            flip = (fp->J_lin_.isZero(0.0) != fp->J_.isZero(0.0)) ? 1 : 0;
+            if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>)
+              fp->inlier_ = in0;
+            fp->error_ = e0;
+            fp->J_     = J0;
+          });
+        });
+      stamp.assign(g.factor_nodes_.size(), 0);
+      std::ofstream fc(dir + "/probe_classes.txt");
+      for (auto& c : classes)
+        fc << c << "\n";
+    }
+
+    void setPoint(int v, const Eigen::VectorXd& z) {
+      withVariable(vars[v].node, [&](auto vp) {
+        using VT = typename std::decay_t<decltype(*vp)>;
+        const typename VT::VectorLieDim tau = z;
+        const auto point                     = vp->boxplus(tau); // at mu_ == mu_lin_ (frozen)
+        for (auto& e : vp->edges_)
+          e->variable_to_factor_message_.mu_ = point;
+      });
+      zev[v] = z;
+    }
+
+    void beginSession() {
+      zev.assign(vars.size(), Eigen::VectorXd());
+      for (size_t v = 0; v < vars.size(); ++v) {
+        if (!vars[v].node->isFrozen())
+          throw std::runtime_error("probe: variable " + vars[v].id + " is not frozen");
+        vars[v].node->beginEvaluateAtBelief();
+        zev[v] = vars[v].node->tangentState();
+      }
+      in_session = true;
+    }
+    void endSession() {
+      if (!in_session)
+        return;
+      for (auto& r : vars)
+        r.node->restoreMessageMeans();
+      in_session = false;
+    }
+
+    void process(int request) {
+      const NpyArray T = readNpy(dir + "/probe_targets.npy"), O = readNpy(dir + "/probe_offsets.npy"), Z = readNpy(dir + "/probe_z.npy");
+      const size_t np = O.i.size() - 1, nc = classes.size();
+      size_t L = 0;
+      for (int64_t t : T.i)
+        L += dim.at(t);
+      if (Z.f.size() != L)
+        throw std::runtime_error("probe_z has " + std::to_string(Z.f.size()) + " values, the targets need " + std::to_string(L));
+      std::vector<double> F(4 * nc * L, 0.0);
+      std::vector<int64_t> stats(2 * np, 0);
+      std::vector<int> slot(vars.size(), -1); // target -> first dof in this probe's block of F
+      size_t zoff = 0;
+      for (size_t p = 0; p < np; ++p) {
+        const size_t t0 = O.i[p], t1 = O.i[p + 1];
+        for (size_t k = t0; k < t1; ++k) {
+          const int v = static_cast<int>(T.i[k]);
+          slot[v]     = static_cast<int>(zoff);
+          setPoint(v, Eigen::Map<const Eigen::VectorXd>(Z.f.data() + zoff, dim[v]));
+          zoff += dim[v];
+        }
+        ++stamp_now;
+        std::vector<int> fl;
+        for (size_t k = t0; k < t1; ++k)
+          for (int f : var_factors[T.i[k]])
+            if (stamp[f] != stamp_now) {
+              stamp[f] = stamp_now;
+              fl.push_back(f);
+            }
+        std::vector<Eigen::VectorXd> gnl(fl.size()), glin(fl.size()), gjac(fl.size()), gtrue(fl.size());
+        std::vector<int> flip(fl.size(), 0);
+#pragma omp parallel for schedule(dynamic, 256)
+        for (size_t k = 0; k < fl.size(); ++k)
+          eval[fl[k]](gnl[k], glin[k], gjac[k], gtrue[k], flip[k]);
+        for (size_t k = 0; k < fl.size(); ++k) {
+          const int f = fl[k], c = factor_class[f];
+          int o = 0;
+          for (int v : factor_vars[f]) {
+            if (slot[v] >= 0)
+              for (int a = 0; a < dim[v]; ++a) {
+                F[(0 * nc + c) * L + slot[v] + a] += gnl[k](o + a);
+                F[(1 * nc + c) * L + slot[v] + a] += glin[k](o + a);
+                F[(2 * nc + c) * L + slot[v] + a] += gjac[k](o + a);
+                F[(3 * nc + c) * L + slot[v] + a] += gtrue[k](o + a);
+              }
+            o += dim[v];
+          }
+          stats[2 * p + 1] += flip[k];
+        }
+        stats[2 * p] = static_cast<int64_t>(fl.size());
+        for (size_t k = t0; k < t1; ++k) {
+          const int v = static_cast<int>(T.i[k]);
+          slot[v]     = -1;
+          setPoint(v, vars[v].node->tangentState()); // back to the belief
+        }
+      }
+      writeNpy(dir + "/probe_F.npy", F, {4, nc, L});
+      writeNpy(dir + "/probe_stats.npy", stats, {np, 2});
+      std::ofstream(dir + "/probe_done.tmp") << request << "\n";
+      std::rename((dir + "/probe_done.tmp").c_str(), (dir + "/probe_done").c_str());
+    }
+
+    /**
+     * Central-difference check of the factors' Jacobians at their linearization points: for the first n factors of
+     * every class, J_fd[:, k] = (e(x_lin (+) h e_k) - e(x_lin (+) -h e_k)) / 2h along each variable's own chart, the other
+     * variables at x_lin, compared with the solver's J_lin. Written to fd_check.tsv, one row per factor and tangent
+     * column block of 3: max |J_lin - J_fd|, max |J_fd|, and the least-squares ratio <J_lin, J_fd> / <J_fd, J_fd>.
+     */
+    void fdCheck(int n_per_class, double h) {
+      std::ofstream out(dir + "/fd_check.tsv");
+      out << "class\tfactor\tslot\tcols\tmax_abs_diff\tmax_abs_fd\tratio\n";
+      std::vector<int> seen(classes.size(), 0);
+      std::vector<std::vector<double>> dump(classes.size());
+      std::vector<std::vector<size_t>> shape(classes.size());
+      for (size_t f = 0; f < g.factor_nodes_.size(); ++f) {
+        const int c = factor_class[f];
+        if (seen[c] >= n_per_class)
+          continue;
+        ++seen[c];
+        withFactor(g.factor_nodes_[f], [&](auto fp, const std::string&) {
+          using FT = typename std::decay_t<decltype(*fp)>;
+          const auto e0 = fp->error_;
+          const auto J0 = fp->J_;
+          bool in0      = true;
+          if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>)
+            in0 = fp->inlier_;
+          const auto& vs = factor_vars[f];
+          for (int v : vs)
+            setPoint(v, Eigen::VectorXd::Zero(dim[v]));
+          typename FT::MatrixJacobianDim Jfd;
+          int col = 0;
+          for (int v : vs) {
+            for (int k = 0; k < dim[v]; ++k) {
+              Eigen::VectorXd z = Eigen::VectorXd::Zero(dim[v]);
+              z(k)              = h;
+              setPoint(v, z);
+              fp->updateErrorAndJacobian();
+              const typename FT::VectorErrorDim ep = fp->error_;
+              setPoint(v, -z);
+              fp->updateErrorAndJacobian();
+              Jfd.col(col + k) = (ep - fp->error_) / (2 * h);
+              setPoint(v, Eigen::VectorXd::Zero(dim[v]));
+            }
+            col += dim[v];
+          }
+          appendRowMajor(dump[c], Jfd);
+          shape[c] = {static_cast<size_t>(seen[c]), static_cast<size_t>(Jfd.rows()), static_cast<size_t>(Jfd.cols())};
+          int o = 0;
+          for (size_t slot = 0; slot < vs.size(); ++slot) {
+            for (int b = 0; b < dim[vs[slot]]; b += 3) {
+              const Eigen::MatrixXd A = fp->J_lin_.middleCols(o + b, 3), B = Jfd.middleCols(o + b, 3);
+              const double bb = (B.array() * B.array()).sum();
+              out << classes[c] << "\t" << fp->id_ << "\t" << slot << "\t" << b << "-" << (b + 2) << "\t" << (A - B).cwiseAbs().maxCoeff()
+                  << "\t" << B.cwiseAbs().maxCoeff() << "\t" << (bb > 0 ? (A.array() * B.array()).sum() / bb : std::nan("")) << "\n";
+            }
+            o += dim[vs[slot]];
+          }
+          for (int v : vs)
+            setPoint(v, vars[v].node->tangentState()); // back to the belief
+          if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>)
+            fp->inlier_ = in0;
+          fp->error_ = e0;
+          fp->J_     = J0;
+        });
+      }
+      out.close();
+      // the central-difference Jacobians themselves (the first factors of each class, in graph order)
+      for (size_t c = 0; c < classes.size(); ++c)
+        if (!dump[c].empty())
+          writeNpy(dir + "/fd_J_" + classes[c] + ".npy", dump[c], shape[c]);
+      std::ofstream(dir + "/fd_done") << "1\n";
+    }
+
+    // Answer a pending request, if any; returns true if one was answered
+    bool poll() {
+      std::ifstream f(dir + "/probe_request");
+      int r = -1;
+      if (!(f && (f >> r)) || r <= last_request)
+        return false;
+      if (!in_session)
+        beginSession();
+      process(r);
+      last_request = r;
+      return true;
+    }
+
+    // Serve until probe_quit exists
+    void serve() {
+      while (true) {
+        if (poll())
+          continue;
+        {
+          std::ifstream fr(dir + "/fd_request");
+          int n = 0;
+          double h = 0.0;
+          if (fr && (fr >> n >> h)) {
+            fr.close();
+            std::remove((dir + "/fd_request").c_str());
+            if (!in_session)
+              beginSession();
+            fdCheck(n, h);
+            continue;
+          }
+        }
+        struct stat st;
+        if (stat((dir + "/probe_quit").c_str(), &st) == 0)
+          break;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+      }
+      endSession();
+    }
+  };
 
 } // namespace certify

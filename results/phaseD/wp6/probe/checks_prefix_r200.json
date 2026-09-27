@@ -1,0 +1,257 @@
+{
+ "export": "exports/phaseD/wp2/prefix/export_r00200",
+ "classes": [
+  "gp",
+  "stereo"
+ ],
+ "load_check": {
+  "variables": 18098,
+  "gp": {
+   "factors": 160,
+   "max_abs_dJ": 0,
+   "max_abs_J": 12.599332558869525,
+   "max_abs_de": 0,
+   "max_abs_e": 1.8758426283093945
+  },
+  "stereo": {
+   "factors": 50480,
+   "max_abs_dJ": 0,
+   "max_abs_J": 2447.478017467071,
+   "max_abs_de": 0,
+   "max_abs_e": 10.945517673032139
+  }
+ },
+ "identity": {
+  "max_abs_nl_minus_lin": 0.0,
+  "max_abs_jac_minus_lin": 0.0,
+  "max_abs_true_minus_lin": 0.0,
+  "max_abs_F_lin": 171754.65719746938,
+  "inlier_flips": 0
+ },
+ "fd_check": {
+  "gp slot 0 cols 0-2": {
+   "factors": 160,
+   "ratio_median": 1.0,
+   "ratio_min": 0.999999,
+   "ratio_max": 1.0,
+   "rel_diff_median": 3.773702548990196e-08,
+   "rel_diff_max": 6.881343829165038e-07
+  },
+  "gp slot 0 cols 3-5": {
+   "factors": 160,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 3.956085544781255e-08,
+   "rel_diff_max": 2.2288759203957413e-06
+  },
+  "gp slot 0 cols 6-8": {
+   "factors": 160,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 6.243445e-09,
+   "rel_diff_max": 2.72829e-08
+  },
+  "gp slot 0 cols 9-11": {
+   "factors": 160,
+   "ratio_median": 0.999977,
+   "ratio_min": 0.936197,
+   "ratio_max": 1.04062,
+   "rel_diff_median": 0.49999249999999995,
+   "rel_diff_max": 1.70364
+  },
+  "gp slot 1 cols 0-2": {
+   "factors": 160,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 1.574865e-08,
+   "rel_diff_max": 7.618326656573192e-08
+  },
+  "gp slot 1 cols 3-5": {
+   "factors": 160,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 3.9515687157592754e-08,
+   "rel_diff_max": 2.1981561639215243e-06
+  },
+  "gp slot 1 cols 6-8": {
+   "factors": 160,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 6.048168124288506e-10,
+   "rel_diff_max": 1.53395e-09
+  },
+  "gp slot 1 cols 9-11": {
+   "factors": 160,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 1.846966801673603e-12,
+   "rel_diff_max": 6.362422564623658e-11
+  },
+  "stereo slot 0 cols 0-2": {
+   "factors": 200,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 2.5402518268679884e-08,
+   "rel_diff_max": 3.270145712632555e-07
+  },
+  "stereo slot 0 cols 3-5": {
+   "factors": 200,
+   "ratio_median": 2.0,
+   "ratio_min": 2.0,
+   "ratio_max": 2.0,
+   "rel_diff_median": 1.0,
+   "rel_diff_max": 1.0
+  },
+  "stereo slot 0 cols 6-8": {
+   "factors": 200,
+   "ratio_median": null,
+   "ratio_min": null,
+   "ratio_max": null,
+   "rel_diff_median": 0.0,
+   "rel_diff_max": 0.0
+  },
+  "stereo slot 0 cols 9-11": {
+   "factors": 200,
+   "ratio_median": null,
+   "ratio_min": null,
+   "ratio_max": null,
+   "rel_diff_median": 0.0,
+   "rel_diff_max": 0.0
+  },
+  "stereo slot 1 cols 0-2": {
+   "factors": 200,
+   "ratio_median": 1.0,
+   "ratio_min": 1.0,
+   "ratio_max": 1.0,
+   "rel_diff_median": 1.8207887618614338e-09,
+   "rel_diff_max": 1.2156448096129601e-06
+  }
+ },
+ "order": [
+  {
+   "s": 1.0,
+   "jacobian_D": 0.0018114193291574362,
+   "mismatch_D": 4.401177867579908,
+   "curvature_D": 0.2828079012574219,
+   "total_D": 4.410344641481098,
+   "jacobian_2": 4.228977902983982,
+   "mismatch_2": 79737.99675589823,
+   "curvature_2": 52.819389153441264,
+   "inlier_flips": 0,
+   "per_class_D": {
+    "gp": 0.2827866011478743,
+    "stereo": 4.401268213721405
+   },
+   "per_class_parts_D": {
+    "gp": {
+     "jacobian": 0.0010796810908006438,
+     "mismatch": 0.0,
+     "curvature": 0.2828056601583478
+    },
+    "stereo": {
+     "jacobian": 0.0014728784723418826,
+     "mismatch": 4.401177867579908,
+     "curvature": 0.0012154893637717375
+    }
+   }
+  },
+  {
+   "s": 0.5,
+   "jacobian_D": 0.0020084536659773526,
+   "mismatch_D": 2.200593490402021,
+   "curvature_D": 0.14140058660345894,
+   "total_D": 2.205104053591458,
+   "jacobian_2": 4.703366970167989,
+   "mismatch_2": 39869.073588377694,
+   "curvature_2": 26.183273305763173,
+   "inlier_flips": 0,
+   "per_class_D": {
+    "gp": 0.14138941333611008,
+    "stereo": 2.2005656781686453
+   },
+   "per_class_parts_D": {
+    "gp": {
+     "jacobian": 0.0005810654723624201,
+     "mismatch": 0.0,
+     "curvature": 0.14140034707702928
+    },
+    "stereo": {
+     "jacobian": 0.0019268863637842612,
+     "mismatch": 2.200593490402021,
+     "curvature": 0.0003047245974842155
+    }
+   }
+  },
+  {
+   "s": 0.25,
+   "jacobian_D": 0.0014003265108836528,
+   "mismatch_D": 1.1002978900086173,
+   "curvature_D": 0.07069957406465784,
+   "total_D": 1.1025352276937177,
+   "jacobian_2": 3.279662320269409,
+   "mismatch_2": 19934.555640763032,
+   "curvature_2": 13.0619766292522,
+   "inlier_flips": 0,
+   "per_class_D": {
+    "gp": 0.0706937481436688,
+    "stereo": 1.100265999361546
+   },
+   "per_class_parts_D": {
+    "gp": {
+     "jacobian": 0.0003063536314402182,
+     "mismatch": 0.0,
+     "curvature": 0.07069955521286986
+    },
+    "stereo": {
+     "jacobian": 0.0013681631833614909,
+     "mismatch": 1.1002978900086173,
+     "curvature": 7.622334824403207e-05
+    }
+   }
+  },
+  {
+   "s": 0.125,
+   "jacobian_D": 0.000802342923200034,
+   "mismatch_D": 0.5501492319384452,
+   "curvature_D": 0.03534962359669075,
+   "total_D": 0.5512634439904671,
+   "jacobian_2": 1.8791900104225554,
+   "mismatch_2": 9967.282537634728,
+   "curvature_2": 6.5271748261003975,
+   "inlier_flips": 0,
+   "per_class_D": {
+    "gp": 0.03534663680166369,
+    "stereo": 0.5501288195682478
+   },
+   "per_class_parts_D": {
+    "gp": {
+     "jacobian": 0.00015771094575805516,
+     "mismatch": 0.0,
+     "curvature": 0.03534962402690897
+    },
+    "stereo": {
+     "jacobian": 0.0007875152621712491,
+     "mismatch": 0.5501492319384452,
+     "curvature": 1.9062007135933996e-05
+    }
+   }
+  }
+ ],
+ "slope_jacobian_D": 0.4044810941091494,
+ "slope_mismatch_D": 0.9999982776564746,
+ "slope_curvature_D": 1.0000181684277902,
+ "slope_class_gp": 1.0000226288359753,
+ "slope_class_gp_jacobian": 0.9249254409685016,
+ "slope_class_gp_curvature": 1.0000145274567738,
+ "slope_class_stereo": 1.0000255792263992,
+ "slope_class_stereo_jacobian": 0.3203807007811645,
+ "slope_class_stereo_mismatch": 0.9999982776564746,
+ "slope_class_stereo_curvature": 1.9983281340525891
+}

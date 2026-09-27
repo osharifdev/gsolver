@@ -13,6 +13,7 @@ Certificate (Theorem A on the reduced pose model, D_i = S_ii = C_i C_i'):
       s_i <= s_i(t0) + sum_p l_ip ||C_p^-1 (g_p - g_p(t0))||,  l_ip = ||C_i' [S_PP^-1]_ip C_p||.
   E = c* = (I - A)^-1 s (rho(A) < 1 certified by Collatz-Wielandt), L_i = max(0, s_i^lo - (A E)_i).
 Yardstick (Theorem T0): S_lo,i = sqrt(lambda_min(C_i' [SF_PP^-1]_ii C_i)) q_12(0.05) on the base patch.
+Growth exits (continue_rule "L", decided after WP2): CONTINUE only when the certified lower bound exceeds the threshold.
 Decision (Theorem C at R = 1; RELINEARIZE-NOW cannot fire, the solver relinearizes as soon as d_i > delta):
   STOP if d_i + kappa_i E_i <= delta and E_i <= eta S_lo,i, kappa_i = ||C_i^-T|| = lambda_min(D_i)^-1/2; else CONTINUE.
   Certified only for poses the solver did not relinearize this round (d_i <= delta), and for sleeping poses.
@@ -61,8 +62,13 @@ class Row:
 
 
 class Engine:
-    def __init__(self, delta, eta):
-        self.delta, self.eta = float(delta), float(eta)
+    def __init__(self, delta, eta, continue_rule="L", yard_all=False):
+        # continue_rule: "L" (the decision after WP2: the decision-driven growth decides CONTINUE only when the certified
+        # lower bound L_i = s_i - sum_j a_ij c0_j exceeds the growth threshold) or "s" (WP2 as run: CONTINUE when s_i does)
+        assert continue_rule in ("L", "s")
+        self.delta, self.eta, self.continue_rule = float(delta), float(eta), continue_rule
+        self.yard_all = yard_all  # also give the poses the round does not decide their yardstick (termination, WP6)
+        self.last = None    # the last round's rows, residual and factorizations (for the nonlinear probe, WP6b)
         self.base = {}      # pose id -> dict(P ids, row cache, valid flag)
         self.yard = {}      # pose id -> dict(P ids, S_lo, L)
         self.sleep = {}     # pose id -> sleep record
@@ -134,15 +140,20 @@ class Engine:
         return row, steps
 
     def _grow_decision(self, S, g, C, Cinv, adj, i, base_row, c0, thr, ops):
-        """Phase C I1b: grow while the decision is open."""
+        """Phase C I1b: grow while the decision is open. With continue_rule "L" the growth exits on CONTINUE only when
+        the certified lower bound s_i - sum_j a_ij c0_j exceeds the threshold (c0 are valid upper bounds, so STOP is then
+        impossible), at any leak row sum; with "s" (WP2) it exited when s_i alone reached the threshold."""
         row, steps, why = base_row, 0, "cap"
         while True:
             rs, leak = row.a.sum(), float(row.a @ c0[row.ext]) if len(row.ext) else 0.0
+            if self.continue_rule == "L" and row.s - leak > thr:
+                why = "continue"
+                break
             if rs <= R_BASE:
                 if row.s + leak <= thr:
                     why = "stop"
                     break
-                if row.s >= thr:
+                if self.continue_rule == "s" and row.s >= thr:
                     why = "continue"
                     break
                 if leak <= THETA * row.s:
@@ -310,6 +321,14 @@ class Engine:
             if p in index and p not in s_lo_of:
                 s_lo_of[p] = self.sleep[p]["S_lo"]  # its patch rows of S and SF are unchanged since it fell asleep
                 yard_current.add(p)
+        if self.yard_all:
+            for p in ids:
+                if p not in s_lo_of:
+                    i = index[p]
+                    S_lo, L = self._yardstick(SF, C, i, rows[i].P, ops)
+                    self.yard[p] = dict(P=[ids[k] for k in rows[i].P], S_lo=S_lo, L=L)
+                    s_lo_of[p] = S_lo
+                    yard_current.add(p)
 
         # final certificates
         s = np.array([rows[i].s for i in range(n)])
@@ -390,6 +409,8 @@ class Engine:
                                 and err[index[p]] <= self.eta * S_ex[index[p]] for p in ids])
 
         self.prev = dict(S=S, SF=SF, ids=ids)
+        self.last = dict(rows=rows, g=g, C=C, Cinv=Cinv, kappa=kappa, ids=ids, index=index, eligible=eligible, E=E, L=Lo,
+                         err=err, S_lo=s_lo_of, S_exact=S_ex, fcache=self._fcache, S=S, ops=ops)
         per_pose = []
         for p in ids:
             i = index[p]

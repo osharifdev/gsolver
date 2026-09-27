@@ -1,0 +1,132 @@
+{
+ "charuco": {
+  "rounds": 103,
+  "gbp_flops_per_round": {
+   "median": 21937290.0,
+   "max": 34837590.0,
+   "first": 283266.0,
+   "last": 34837590.0
+  },
+  "shares": {
+   "factor_update": 0.24298497897076957,
+   "f2v": 0.478574203388049,
+   "belief": 0.03199187419202915,
+   "v2f": 0.2464489434491523
+  },
+  "wp2_certificate_flops_per_round": {
+   "median": 2062053500.0,
+   "max": 15879869672.0
+  },
+  "certificate_over_gbp": {
+   "median": 93.99764054721436,
+   "max": 455.82572365080364,
+   "min": 0.0
+  },
+  "totals": {
+   "gbp": 2098038258.0,
+   "wp2_certificate": 397725306950.0,
+   "ratio": 189.57009264890155
+  },
+  "linearizations_per_round": {
+   "median": 210.0,
+   "max": 382
+  },
+  "relinearization_flops_bound_per_round_max": 3820000.0,
+  "v2f_final_graph": {
+   "shipped_formula": 8603604.0,
+   "logged_last_round": 8603604.0,
+   "belief_minus_incoming": 3788508.0,
+   "gbp_last_round_with_alternative": 30022494.0
+  }
+ },
+ "kf40": {
+  "rounds": 100,
+  "gbp_flops_per_round": {
+   "median": 1798899207.0,
+   "max": 1798899207.0,
+   "first": 1798899207.0,
+   "last": 1798899207.0
+  },
+  "shares": {
+   "factor_update": 0.01724962403632879,
+   "f2v": 0.09309536762723138,
+   "belief": 0.003646284891602601,
+   "v2f": 0.8860087234448373
+  },
+  "wp2_certificate_flops_per_round": {
+   "median": 635324928.0,
+   "max": 1050109488.0
+  },
+  "certificate_over_gbp": {
+   "median": 0.35317427765145487,
+   "max": 0.5837511539911419,
+   "min": 0.18227558204710465
+  },
+  "totals": {
+   "gbp": 179889920700.0,
+   "wp2_certificate": 66397110564.0,
+   "ratio": 0.3690985593057744
+  },
+  "linearizations_per_round": {
+   "median": 1367.5,
+   "max": 11526
+  },
+  "relinearization_flops_bound_per_round_max": 8054790.0,
+  "v2f_final_graph": {
+   "shipped_formula": 1593840390.0,
+   "logged_last_round": 1593840390.0,
+   "belief_minus_incoming": 49970550.0,
+   "gbp_last_round_with_alternative": 255029367.0
+  },
+  "certificate_flops_corrected_rule_persisted_rounds": {
+   "1": 1054129854.0,
+   "10": 1104642540.0,
+   "100": 2289186164.0
+  }
+ },
+ "prefix": {
+  "rounds": 200,
+  "gbp_flops_per_round": {
+   "median": 8559320952.0,
+   "max": 8559320952.0,
+   "first": 8559320952.0,
+   "last": 8559320952.0
+  },
+  "shares": {
+   "factor_update": 0.01588289547294452,
+   "f2v": 0.08592493775200125,
+   "belief": 0.0033135091158572553,
+   "v2f": 0.8948786576591969
+  },
+  "wp2_certificate_flops_per_round": {
+   "median": 82604726480.0,
+   "max": 102066046976.0
+  },
+  "certificate_over_gbp": {
+   "median": 9.65085045218433,
+   "max": 11.92454956980564,
+   "min": 0.6401015784692355
+  },
+  "totals": {
+   "gbp": 1711864190400.0,
+   "wp2_certificate": 12007677871092.0,
+   "ratio": 7.014386969731661
+  },
+  "linearizations_per_round": {
+   "median": 11076.5,
+   "max": 50640
+  },
+  "relinearization_flops_bound_per_round_max": 35275600.0,
+  "v2f_final_graph": {
+   "shipped_formula": 7659553644.0,
+   "logged_last_round": 7659553644.0,
+   "belief_minus_incoming": 219711507.0,
+   "gbp_last_round_with_alternative": 1119478815.0
+  },
+  "certificate_flops_corrected_rule_persisted_rounds": {
+   "1": 20609343000.0,
+   "10": 18416160442.0,
+   "200": 191504139578.0
+  }
+ }
+}
