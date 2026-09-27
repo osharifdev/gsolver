@@ -68,4 +68,15 @@ namespace gsolver {
     edges_.markEdgesFrozen();
   }
 
+  // Threshold relinearization, see certify/THRESHOLD_RELIN.md ----------------------------------------
+
+  template <int Dim_, typename... VariableTypes_>
+  Eigen::MatrixXd FactorNode<Dim_, VariableTypes_...>::linearizedInformationBlock(size_t i) {
+    // This factor's contribution to the diagonal block H_vv of the linear model, v = the variable of edge i
+    int offset = 0, dim = 0;
+    edges_.edgeSpan(i, offset, dim);
+    const Eigen::MatrixXd J = J_lin_.middleCols(offset, dim);
+    return J.transpose() * Sigma_.inverse() * J;
+  }
+
 } // namespace gsolver

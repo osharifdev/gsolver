@@ -1,0 +1,273 @@
+{
+ "default": {
+  "run": {
+   "wall_s": 31.013,
+   "exit": 0,
+   "args": ""
+  },
+  "poses": 40,
+  "err_median": 0.42447035277825546,
+  "err_p95": 1.950683686559172,
+  "err_max": 2.2008828155679176,
+  "err_worst_pose_time": 8.003122,
+  "err_mean": 0.6078110240234605,
+  "traj": {
+   "matched": 78,
+   "ate": 0.5086148606428251,
+   "are": 0.012688692733331133,
+   "ate_aligned": 0.07883771726573555,
+   "are_aligned": 0.03393592593992914
+  },
+  "analysis_s": 1.0307599231600761
+ },
+ "d0_R1": {
+  "run": {
+   "wall_s": 19.513,
+   "exit": 0,
+   "args": "--relin-threshold 0 --relin-every 1"
+  },
+  "poses": 40,
+  "err_median": 0.17217504462304456,
+  "err_p95": 1.0069073716795736,
+  "err_max": 1.8017620240989136,
+  "err_worst_pose_time": 0.311634,
+  "err_mean": 0.30934457348451605,
+  "traj": {
+   "matched": 78,
+   "ate": 0.5083267522221492,
+   "are": 0.01269907195239867,
+   "ate_aligned": 0.07849651639896728,
+   "are_aligned": 0.032915367183482716
+  },
+  "rounds": 100,
+  "relin_poses_total": 3960,
+  "relin_other_total": 454615,
+  "relin_factors_total": 1141074,
+  "relin_factors_per_round_mean": 11410.74,
+  "rounds_with_pose_relin": 99,
+  "wall_s_per_round_median": 0.1880725,
+  "rounds_per_linearization_poses": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0
+  },
+  "relinearizations_poses": {
+   "median": 99.0,
+   "max": 99,
+   "never": 0.0
+  },
+  "rounds_per_linearization_other": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0187374535700444
+  },
+  "relinearizations_other": {
+   "median": 99.0,
+   "max": 99,
+   "never": 0.0
+  },
+  "analysis_s": 2.5004849955439568
+ },
+ "d0.25_R10": {
+  "run": {
+   "wall_s": 17.862,
+   "exit": 0,
+   "args": "--relin-threshold 0.25 --relin-every 10"
+  },
+  "poses": 40,
+  "err_median": 0.41808143995288466,
+  "err_p95": 16.13286767831917,
+  "err_max": 43.97089358747199,
+  "err_worst_pose_time": 5.091994,
+  "err_mean": 2.9040697971503997,
+  "traj": {
+   "matched": 78,
+   "ate": 0.5066355674113299,
+   "are": 0.012795554177199141,
+   "ate_aligned": 0.08360121046360547,
+   "are_aligned": 0.02971917784008906
+  },
+  "rounds": 100,
+  "relin_poses_total": 357,
+  "relin_other_total": 10005,
+  "relin_factors_total": 118722,
+  "relin_factors_per_round_mean": 1187.22,
+  "rounds_with_pose_relin": 32,
+  "wall_s_per_round_median": 0.1723945,
+  "rounds_per_linearization_poses": {
+   "median": 10.0,
+   "p5": 10.0,
+   "min": 10.0,
+   "pooled": 10.075566750629722
+  },
+  "relinearizations_poses": {
+   "median": 9.0,
+   "max": 9,
+   "never": 0.0
+  },
+  "rounds_per_linearization_other": {
+   "median": 50.0,
+   "p5": 14.285714285714286,
+   "min": 10.0,
+   "pooled": 31.86461454644511
+  },
+  "relinearizations_other": {
+   "median": 1.0,
+   "max": 9,
+   "never": 0.07309254114126951
+  },
+  "analysis_s": 2.026782050728798
+ },
+ "d0.5_R10": {
+  "run": {
+   "wall_s": 18.044,
+   "exit": 0,
+   "args": "--relin-threshold 0.5 --relin-every 10"
+  },
+  "poses": 40,
+  "err_median": 0.2855357579425156,
+  "err_p95": 12.653063557595416,
+  "err_max": 65.90979155597836,
+  "err_worst_pose_time": 5.091994,
+  "err_mean": 3.398061877573917,
+  "traj": {
+   "matched": 78,
+   "ate": 0.5130824905913114,
+   "are": 0.012973528833980995,
+   "ate_aligned": 0.11867509586141337,
+   "are_aligned": 0.029207026608205105
+  },
+  "rounds": 100,
+  "relin_poses_total": 319,
+  "relin_other_total": 5817,
+  "relin_factors_total": 100593,
+  "relin_factors_per_round_mean": 1005.93,
+  "rounds_with_pose_relin": 41,
+  "wall_s_per_round_median": 0.174351,
+  "rounds_per_linearization_poses": {
+   "median": 11.11111111111111,
+   "p5": 10.0,
+   "min": 10.0,
+   "pooled": 11.142061281337048
+  },
+  "relinearizations_poses": {
+   "median": 8.0,
+   "max": 9,
+   "never": 0.0
+  },
+  "rounds_per_linearization_other": {
+   "median": 50.0,
+   "p5": 16.666666666666668,
+   "min": 10.0,
+   "pooled": 44.57888719512195
+  },
+  "relinearizations_other": {
+   "median": 1.0,
+   "max": 9,
+   "never": 0.32720666809147253
+  },
+  "analysis_s": 1.6221864148974419
+ },
+ "d1_R10": {
+  "run": {
+   "wall_s": 17.828,
+   "exit": 0,
+   "args": "--relin-threshold 1 --relin-every 10"
+  },
+  "poses": 40,
+  "err_median": 0.6220675290629508,
+  "err_p95": 15.732716849576137,
+  "err_max": 40.37405276233527,
+  "err_worst_pose_time": 5.091994,
+  "err_mean": 2.920462083342944,
+  "traj": {
+   "matched": 78,
+   "ate": 0.5072779073314637,
+   "are": 0.012782644098530816,
+   "ate_aligned": 0.08323422144746015,
+   "are_aligned": 0.02956757422505019
+  },
+  "rounds": 100,
+  "relin_poses_total": 229,
+  "relin_other_total": 2671,
+  "relin_factors_total": 69802,
+  "relin_factors_per_round_mean": 698.02,
+  "rounds_with_pose_relin": 53,
+  "wall_s_per_round_median": 0.17215,
+  "rounds_per_linearization_poses": {
+   "median": 14.285714285714286,
+   "p5": 11.11111111111111,
+   "min": 10.0,
+   "pooled": 14.869888475836431
+  },
+  "relinearizations_poses": {
+   "median": 6.0,
+   "max": 9,
+   "never": 0.0
+  },
+  "rounds_per_linearization_other": {
+   "median": 100.0,
+   "p5": 20.0,
+   "min": 10.0,
+   "pooled": 63.65986394557823
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 9,
+   "never": 0.7161786706561231
+  },
+  "analysis_s": 1.6965035442262888
+ },
+ "d2_R10": {
+  "run": {
+   "wall_s": 17.736,
+   "exit": 0,
+   "args": "--relin-threshold 2 --relin-every 10"
+  },
+  "poses": 40,
+  "err_median": 0.8036730546885495,
+  "err_p95": 3.640270598683933,
+  "err_max": 8.374606118578468,
+  "err_worst_pose_time": 5.507756,
+  "err_mean": 1.3127004855176239,
+  "traj": {
+   "matched": 78,
+   "ate": 0.5082763827357751,
+   "are": 0.012679454923112874,
+   "ate_aligned": 0.07906493088396123,
+   "are_aligned": 0.03280113342878957
+  },
+  "rounds": 100,
+  "relin_poses_total": 111,
+  "relin_other_total": 830,
+  "relin_factors_total": 33109,
+  "relin_factors_per_round_mean": 331.09,
+  "rounds_with_pose_relin": 45,
+  "wall_s_per_round_median": 0.16959950000000001,
+  "rounds_per_linearization_poses": {
+   "median": 25.0,
+   "p5": 14.285714285714286,
+   "min": 12.5,
+   "pooled": 26.490066225165563
+  },
+  "relinearizations_poses": {
+   "median": 3.0,
+   "max": 7,
+   "never": 0.125
+  },
+  "rounds_per_linearization_other": {
+   "median": 100.0,
+   "p5": 33.333333333333336,
+   "min": 10.0,
+   "pooled": 84.93374478126702
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 9,
+   "never": 0.9140842060269289
+  },
+  "analysis_s": 2.054247759282589
+ }
+}

@@ -85,6 +85,16 @@ namespace gsolver {
       RestFactorEdgeTuple::markEdgesFrozen();
     }
 
+    // Threshold relinearization: column offset and size of edge i's variable in the stacked Jacobian
+    void edgeSpan(size_t i, int& offset, int& dim, int acc = 0) {
+      if (i == 0) {
+        offset = acc;
+        dim    = CurrentVariableType::LieDim;
+        return;
+      }
+      RestFactorEdgeTuple::edgeSpan(i - 1, offset, dim, acc + CurrentVariableType::LieDim);
+    }
+
     // Send message from factor node to variable node
     template <int VariablesDim_, int out_offset_ = 0>
     void sendMessage(std::string variable_id,
@@ -182,6 +192,16 @@ namespace gsolver {
       current_edge_->frozen_                          = true;
       current_edge_->variable_to_factor_message_.tau_ = CurrentVariableType::VectorLieDim::Zero();
       current_edge_->factor_to_variable_message_.tau_ = CurrentVariableType::VectorLieDim::Zero();
+    }
+
+    // Threshold relinearization: column offset and size of edge i's variable in the stacked Jacobian
+    void edgeSpan(size_t i, int& offset, int& dim, int acc = 0) {
+      if (i == 0) {
+        offset = acc;
+        dim    = CurrentVariableType::LieDim;
+        return;
+      }
+      throw std::runtime_error("index out of bounds");
     }
 
     // Send message from factor node to variable node

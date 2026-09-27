@@ -1,0 +1,431 @@
+{
+ "default": {
+  "run": {
+   "wall_s": 0.135,
+   "exit": 0,
+   "args": ""
+  },
+  "poses": 94,
+  "err_median": 1.4232128554440644,
+  "err_p95": 19.330263554308665,
+  "err_max": 34.99389279198404,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 3.7498276247406084,
+  "analysis_s": 0.17569577507674694
+ },
+ "d0_R1": {
+  "run": {
+   "wall_s": 0.293,
+   "exit": 0,
+   "args": "--relin-threshold 0 --relin-every 1"
+  },
+  "poses": 94,
+  "err_median": 1.4987007220370883,
+  "err_p95": 20.38061149500898,
+  "err_max": 66.34560258478267,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 4.7951881082537176,
+  "rounds": 103,
+  "relin_poses_total": 5217,
+  "relin_other_total": 1956,
+  "relin_factors_total": 43619,
+  "relin_factors_per_round_mean": 423.4854368932039,
+  "rounds_with_pose_relin": 102,
+  "wall_s_per_round_median": 0.0028524,
+  "rounds_per_linearization_poses": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0
+  },
+  "relinearizations_poses": {
+   "median": 55.5,
+   "max": 102,
+   "never": 0.0
+  },
+  "rounds_per_linearization_other": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0
+  },
+  "relinearizations_other": {
+   "median": 90.5,
+   "max": 102,
+   "never": 0.0
+  },
+  "analysis_s": 0.16850948706269264
+ },
+ "d0.25_R10": {
+  "run": {
+   "wall_s": 0.171,
+   "exit": 0,
+   "args": "--relin-threshold 0.25 --relin-every 10"
+  },
+  "poses": 94,
+  "err_median": 1.7996671653475942,
+  "err_p95": 27.913825349763176,
+  "err_max": 81.85718952718769,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 6.100217097346646,
+  "rounds": 103,
+  "relin_poses_total": 331,
+  "relin_other_total": 3,
+  "relin_factors_total": 3041,
+  "relin_factors_per_round_mean": 29.524271844660195,
+  "rounds_with_pose_relin": 93,
+  "wall_s_per_round_median": 0.0013389,
+  "rounds_per_linearization_poses": {
+   "median": 10.0,
+   "p5": 7.325,
+   "min": 5.5,
+   "pooled": 12.496470588235294
+  },
+  "relinearizations_poses": {
+   "median": 3.0,
+   "max": 9,
+   "never": 0.010638297872340425
+  },
+  "rounds_per_linearization_other": {
+   "median": 86.5,
+   "p5": 32.25,
+   "min": 18.0,
+   "pooled": 73.33333333333333
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 1,
+   "never": 0.875
+  },
+  "analysis_s": 0.1591135486960411
+ },
+ "d0.5_R10": {
+  "run": {
+   "wall_s": 0.159,
+   "exit": 0,
+   "args": "--relin-threshold 0.5 --relin-every 10"
+  },
+  "poses": 94,
+  "err_median": 2.271992359163193,
+  "err_p95": 31.724923429551232,
+  "err_max": 95.16621816300948,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 7.466218647856719,
+  "rounds": 103,
+  "relin_poses_total": 263,
+  "relin_other_total": 0,
+  "relin_factors_total": 2352,
+  "relin_factors_per_round_mean": 22.83495145631068,
+  "rounds_with_pose_relin": 93,
+  "wall_s_per_round_median": 0.00126221,
+  "rounds_per_linearization_poses": {
+   "median": 11.291666666666668,
+   "p5": 7.325,
+   "min": 5.5,
+   "pooled": 14.876750700280112
+  },
+  "relinearizations_poses": {
+   "median": 2.0,
+   "max": 9,
+   "never": 0.010638297872340425
+  },
+  "rounds_per_linearization_other": {
+   "median": 91.5,
+   "p5": 32.85,
+   "min": 18.0,
+   "pooled": 82.5
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 0,
+   "never": 1.0
+  },
+  "analysis_s": 0.15940224938094616
+ },
+ "d1_R10": {
+  "run": {
+   "wall_s": 0.156,
+   "exit": 0,
+   "args": "--relin-threshold 1 --relin-every 10"
+  },
+  "poses": 94,
+  "err_median": 2.2797987769258032,
+  "err_p95": 31.76874882361634,
+  "err_max": 95.29961758483526,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 7.472545598491877,
+  "rounds": 103,
+  "relin_poses_total": 198,
+  "relin_other_total": 0,
+  "relin_factors_total": 1765,
+  "relin_factors_per_round_mean": 17.135922330097088,
+  "rounds_with_pose_relin": 92,
+  "wall_s_per_round_median": 0.00125192,
+  "rounds_per_linearization_poses": {
+   "median": 14.583333333333332,
+   "p5": 7.825,
+   "min": 5.5,
+   "pooled": 18.188356164383563
+  },
+  "relinearizations_poses": {
+   "median": 1.0,
+   "max": 9,
+   "never": 0.031914893617021274
+  },
+  "rounds_per_linearization_other": {
+   "median": 91.5,
+   "p5": 32.85,
+   "min": 18.0,
+   "pooled": 82.5
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 0,
+   "never": 1.0
+  },
+  "analysis_s": 0.15947584249079227
+ },
+ "d2_R10": {
+  "run": {
+   "wall_s": 0.146,
+   "exit": 0,
+   "args": "--relin-threshold 2 --relin-every 10"
+  },
+  "poses": 94,
+  "err_median": 2.2859243376143326,
+  "err_p95": 31.877532173690554,
+  "err_max": 95.14947052445883,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 7.457048704148471,
+  "rounds": 103,
+  "relin_poses_total": 147,
+  "relin_other_total": 0,
+  "relin_factors_total": 1315,
+  "relin_factors_per_round_mean": 12.766990291262136,
+  "rounds_with_pose_relin": 75,
+  "wall_s_per_round_median": 0.00114313,
+  "rounds_per_linearization_poses": {
+   "median": 22.0,
+   "p5": 9.278571428571428,
+   "min": 6.0,
+   "pooled": 22.03734439834025
+  },
+  "relinearizations_poses": {
+   "median": 1.0,
+   "max": 9,
+   "never": 0.1595744680851064
+  },
+  "rounds_per_linearization_other": {
+   "median": 91.5,
+   "p5": 32.85,
+   "min": 18.0,
+   "pooled": 82.5
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 0,
+   "never": 1.0
+  },
+  "analysis_s": 0.163049740716815
+ },
+ "default_x90": {
+  "run": {
+   "wall_s": 0.275,
+   "exit": 0,
+   "args": "--extra-final-rounds 90"
+  },
+  "poses": 94,
+  "err_median": 1.4499349311700809,
+  "err_p95": 22.068769989282156,
+  "err_max": 33.31711913432609,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 3.9013316594344154,
+  "analysis_s": 0.15775539726018906
+ },
+ "d0_R1_x90": {
+  "run": {
+   "wall_s": 0.619,
+   "exit": 0,
+   "args": "--relin-threshold 0 --relin-every 1 --extra-final-rounds 90"
+  },
+  "poses": 94,
+  "err_median": 1.2287853149892878,
+  "err_p95": 15.559780293310588,
+  "err_max": 50.758816254041626,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 3.731961325967902,
+  "rounds": 193,
+  "relin_poses_total": 13677,
+  "relin_other_total": 4116,
+  "relin_factors_total": 107609,
+  "relin_factors_per_round_mean": 557.5595854922279,
+  "rounds_with_pose_relin": 192,
+  "wall_s_per_round_median": 0.00348768,
+  "rounds_per_linearization_poses": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0
+  },
+  "relinearizations_poses": {
+   "median": 145.5,
+   "max": 192,
+   "never": 0.0
+  },
+  "rounds_per_linearization_other": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0
+  },
+  "relinearizations_other": {
+   "median": 180.5,
+   "max": 192,
+   "never": 0.0
+  },
+  "analysis_s": 0.16017653793096542
+ },
+ "d1_R10_x90": {
+  "run": {
+   "wall_s": 0.289,
+   "exit": 0,
+   "args": "--relin-threshold 1 --relin-every 10 --extra-final-rounds 90"
+  },
+  "poses": 94,
+  "err_median": 1.741446207074032,
+  "err_p95": 21.311849847812354,
+  "err_max": 74.39384049530133,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 5.418864119546897,
+  "rounds": 193,
+  "relin_poses_total": 358,
+  "relin_other_total": 0,
+  "relin_factors_total": 3121,
+  "relin_factors_per_round_mean": 16.17098445595855,
+  "rounds_with_pose_relin": 168,
+  "wall_s_per_round_median": 0.00136526,
+  "rounds_per_linearization_poses": {
+   "median": 40.33333333333333,
+   "p5": 9.98157894736842,
+   "min": 9.866666666666667,
+   "pooled": 30.466814159292035
+  },
+  "relinearizations_poses": {
+   "median": 2.0,
+   "max": 18,
+   "never": 0.02127659574468085
+  },
+  "rounds_per_linearization_other": {
+   "median": 181.5,
+   "p5": 122.85000000000001,
+   "min": 108.0,
+   "pooled": 172.5
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 0,
+   "never": 1.0
+  },
+  "analysis_s": 0.15841790474951267
+ },
+ "default_x990": {
+  "run": {
+   "wall_s": 1.71,
+   "exit": 0,
+   "args": "--extra-final-rounds 990"
+  },
+  "poses": 94,
+  "err_median": 2.448805514594856,
+  "err_p95": 43.498929748241515,
+  "err_max": 85.32273605570354,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 7.850506095788684,
+  "analysis_s": 0.15686610899865627
+ },
+ "d0_R1_x990": {
+  "run": {
+   "wall_s": 3.876,
+   "exit": 0,
+   "args": "--relin-threshold 0 --relin-every 1 --extra-final-rounds 990"
+  },
+  "poses": 94,
+  "err_median": 0.3337473754545469,
+  "err_p95": 6.436217719975728,
+  "err_max": 13.614403977794193,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 1.1405309727133084,
+  "rounds": 1093,
+  "relin_poses_total": 98277,
+  "relin_other_total": 25716,
+  "relin_factors_total": 747509,
+  "relin_factors_per_round_mean": 683.9057639524245,
+  "rounds_with_pose_relin": 1092,
+  "wall_s_per_round_median": 0.00356348,
+  "rounds_per_linearization_poses": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0
+  },
+  "relinearizations_poses": {
+   "median": 1045.5,
+   "max": 1092,
+   "never": 0.0
+  },
+  "rounds_per_linearization_other": {
+   "median": 1.0,
+   "p5": 1.0,
+   "min": 1.0,
+   "pooled": 1.0
+  },
+  "relinearizations_other": {
+   "median": 1080.5,
+   "max": 1092,
+   "never": 0.0
+  },
+  "analysis_s": 0.16376959905028343
+ },
+ "d1_R10_x990": {
+  "run": {
+   "wall_s": 1.413,
+   "exit": 0,
+   "args": "--relin-threshold 1 --relin-every 10 --extra-final-rounds 990"
+  },
+  "poses": 94,
+  "err_median": 0.40410919260082157,
+  "err_p95": 8.204585892570847,
+  "err_max": 17.088747606627532,
+  "err_worst_pose_time": 3.6,
+  "err_mean": 1.4353131647342383,
+  "rounds": 1093,
+  "relin_poses_total": 804,
+  "relin_other_total": 0,
+  "relin_factors_total": 6952,
+  "relin_factors_per_round_mean": 6.360475754803294,
+  "rounds_with_pose_relin": 479,
+  "wall_s_per_round_median": 0.00113612,
+  "rounds_per_linearization_poses": {
+   "median": 205.60000000000002,
+   "p5": 29.129166666666666,
+   "min": 15.557142857142857,
+   "pooled": 109.5445434298441
+  },
+  "relinearizations_poses": {
+   "median": 4.0,
+   "max": 69,
+   "never": 0.02127659574468085
+  },
+  "rounds_per_linearization_other": {
+   "median": 1081.5,
+   "p5": 1022.85,
+   "min": 1008.0,
+   "pooled": 1072.5
+  },
+  "relinearizations_other": {
+   "median": 0.0,
+   "max": 0,
+   "never": 1.0
+  },
+  "analysis_s": 0.16222589649260044
+ }
+}

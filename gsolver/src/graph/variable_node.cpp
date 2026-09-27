@@ -243,4 +243,45 @@ namespace gsolver {
     frozen_ = true;
   }
 
+  // Threshold relinearization, see certify/THRESHOLD_RELIN.md ----------------------------------------
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  void VariableNode<Dim_, EstimateType_, EdgeType_>::freezeAsNew() {
+    // A variable that has not taken part in any threshold round. Its edges are new (createEdge set their
+    // incoming-to-factor means to mu_), so every message mean sits at the fixed point: tau_ = 0. Factor
+    // messages on them are written by the factors before any variable reads them.
+    mu_lin_ = mu_;
+    for (auto& edge : edges_) {
+      edge->variable_to_factor_message_.mu_  = mu_lin_;
+      edge->variable_to_factor_message_.tau_ = VectorLieDim::Zero();
+      edge->factor_to_variable_message_.tau_ = VectorLieDim::Zero();
+      edge->frozen_                          = true;
+    }
+    z_      = VectorLieDim::Zero();
+    frozen_ = true;
+  }
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  void VariableNode<Dim_, EstimateType_, EdgeType_>::refreezeAtBelief() {
+    // The fixed point moves to the belief mean mu_lin_ ⊞ z_ (mu_ == mu_lin_ while frozen). Every stored
+    // message mean keeps its manifold point and is re-expressed in the new chart. Precisions are kept as
+    // stored, as in endFreeze(). Incoming-to-factor means point at the new mu_lin_, where the factors
+    // touching this variable relinearize (FactorNode::freezeLinearization reads them).
+    std::vector<EstimateType> v2f, f2v;
+    v2f.reserve(edges_.size());
+    f2v.reserve(edges_.size());
+    for (auto& edge : edges_) {
+      v2f.push_back(boxplus(edge->variable_to_factor_message_.tau_));
+      f2v.push_back(boxplus(edge->factor_to_variable_message_.tau_));
+    }
+    mu_     = boxplus(z_);
+    mu_lin_ = mu_;
+    for (size_t i = 0; i < edges_.size(); ++i) {
+      edges_[i]->variable_to_factor_message_.tau_ = boxminus(v2f[i]);
+      edges_[i]->factor_to_variable_message_.tau_ = boxminus(f2v[i]);
+      edges_[i]->variable_to_factor_message_.mu_  = mu_lin_;
+    }
+    z_ = VectorLieDim::Zero();
+  }
+
 } // namespace gsolver

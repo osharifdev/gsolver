@@ -43,6 +43,16 @@ namespace gsolver {
     void restoreMessageMeans() override;
     void endFreeze(bool factor_messages_valid) override;
 
+    // Threshold relinearization, see certify/THRESHOLD_RELIN.md
+    bool isFrozen() const override {
+      return frozen_;
+    }
+    void freezeAsNew() override;
+    void refreezeAtBelief() override;
+    Eigen::VectorXd tangentState() const override {
+      return z_;
+    }
+
     // For each new VariableNode, implement the following functions:
     virtual const VectorLieDim boxminus(const EstimateType& mu_inward) = 0;
     virtual const EstimateType boxplus(const VectorLieDim& tau)        = 0;

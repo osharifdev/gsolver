@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Eigen/Dense>
 #include <memory>
 #include <string>
 
@@ -21,6 +22,12 @@ namespace gsolver {
     // Frozen (linear) mode, see certify/FREEZE_MODE.md
     virtual void freezeLinearization() = 0; // store error and Jacobian at the incoming means, go linear
     virtual void freezeNewFactor()     = 0; // freeze a factor added after the graph was frozen
+
+    // Threshold relinearization (GbpSolver::threshold_relinearization_), see certify/THRESHOLD_RELIN.md
+    virtual bool isFrozen() const                                = 0;
+    virtual size_t numberOfEdges() const                         = 0;
+    virtual std::string edgeVariableId(size_t i)                 = 0;
+    virtual Eigen::MatrixXd linearizedInformationBlock(size_t i) = 0; // J_lin,iᵀ Σ⁻¹ J_lin,i for edge i
   };
 
 } // namespace gsolver

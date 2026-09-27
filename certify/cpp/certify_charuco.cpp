@@ -20,6 +20,12 @@
  *     --frozen-eps-sites SPEC      diagnostic per-site override, e.g. "marg=1e-7,f2v=1e-6"
  *     --dump-stride S              state dump: every iteration up to 1000, then every S-th, and the last
  *     --unfrozen-export-iters L    comma list of normal-run iterations to export (charts at beliefs)
+ *     --relin-threshold D          islam, Phase D, WP1: threshold relinearization instead of the per-round
+ *                                  schedule, d_v = ||z_v||_{H_vv} > D (certify/THRESHOLD_RELIN.md), same round
+ *                                  budget; writes relin_rounds.csv and relin_counts.csv
+ *     --relin-every R              at most one re-freeze per variable per R rounds (default 1)
+ *     --final-export DIR           islam: export the linearization at the final belief means (either schedule)
+ *     --extra-final-rounds N       islam, diagnostic: N rounds added to the final BA (default 0)
  */
 
 #include <cmath>
@@ -40,14 +46,21 @@
 using namespace gsolver;
 using namespace examples;
 
-// Verbatim from charuco_experiment_islam.cpp
+// The front end's current estimate of a pose: its belief mean. With threshold relinearization (Phase D, WP1)
+// mu_ holds the linearization point and the belief is mu_lin_ ⊞ z_; otherwise mu_ is the belief (shipped path).
+static SE3PoseVel::EstimateType beliefOf(const std::shared_ptr<SE3PoseVel>& pose) {
+  return pose->frozen_ ? pose->boxplus(pose->z_) : pose->mu_;
+}
+
+// From charuco_experiment_islam.cpp, verbatim except that the previous pose is read through beliefOf()
 void predictAndAddNewPose(FactorGraph& factor_graph, double new_timestamp, double previous_timestamp) {
   auto pose_nodes                       = factor_graph.getPoseVariableNodes();
   std::shared_ptr<SE3PoseVel> prev_pose = std::dynamic_pointer_cast<SE3PoseVel>(pose_nodes.back());
+  const SE3PoseVel::EstimateType prev   = beliefOf(prev_pose);
 
   double dt                        = new_timestamp - previous_timestamp;
-  Eigen::Isometry3d delta_pose     = expMapSE3(prev_pose->mu_.vel * dt);
-  Eigen::Isometry3d predicted_pose = prev_pose->mu_.pose * delta_pose;
+  Eigen::Isometry3d delta_pose     = expMapSE3(prev.vel * dt);
+  Eigen::Isometry3d predicted_pose = prev.pose * delta_pose;
 
   Eigen::Vector<double, 6> velocity = logMapSE3(delta_pose) / dt;
 
@@ -58,6 +71,23 @@ void predictAndAddNewPose(FactorGraph& factor_graph, double new_timestamp, doubl
 
   Eigen::Matrix<double, 12, 12> sigma = Eigen::Matrix<double, 12, 12>::Identity() * 3.0;
   add_pose_variable_node(factor_graph, new_pose, velocity, sigma);
+}
+
+// add_landmark_factor (examples/cpp/common/factor_graph_builder.h), verbatim except that a new marker is
+// initialized from the camera pose's belief (beliefOf); identical to it on the shipped path.
+static void addLandmarkFactor(FactorGraph& factor_graph, const LandmarkMeas& landmark,
+                              const Eigen::Matrix<double, 6, 6>& sigma = Eigen::Matrix<double, 6, 6>::Identity() * 3.0) {
+  std::string pose_var_id     = poseId(landmark.timestamp);
+  std::string landmark_var_id = landmarkId(landmark.landmark_id);
+  if (!factor_graph.getVariableNode(landmark_var_id)) {
+    auto pose_node       = std::dynamic_pointer_cast<SE3PoseVel>(factor_graph.getVariableNode(pose_var_id));
+    Eigen::Isometry3d lm = beliefOf(pose_node).pose * landmark.measurement;
+    auto landmark_var    = std::make_shared<SE3Pose>(landmark_var_id, lm, sigma);
+    factor_graph.addVariableNode(landmark_var);
+  }
+  std::string factor_id = timestampToString(landmark.timestamp) + "_" + std::to_string(landmark.landmark_id);
+  auto factor           = std::make_shared<SE3PoseVelPose>(factor_id, landmark.measurement, sigma);
+  factor_graph.addFactorNode(factor, {pose_var_id, landmark_var_id});
 }
 
 // Verbatim from charuco_experiment_ba.cpp
@@ -84,6 +114,10 @@ struct Args {
   int freeze_at = -1, frozen_iters = 3000, dump_stride = 1;
   bool freeze = false, dynamic_schedule = false;
   std::vector<int> unfrozen_iters;
+  double relin_threshold = -1.0; // >= 0: threshold relinearization (Phase D, WP1), islam only
+  int relin_every        = 1;
+  std::string final_export;
+  int extra_final_rounds = 0; // diagnostic: rounds added to the final BA (default 0 = shipped budget)
 };
 
 static Args parse(int argc, char** argv) {
@@ -109,8 +143,14 @@ static Args parse(int argc, char** argv) {
     else if (k == "--dump-stride") a.dump_stride = std::stoi(next());
     else if (k == "--frozen-eps-sites") a.eps_sites = next();
     else if (k == "--unfrozen-export-iters") a.unfrozen_iters = certify::parseIntList(next());
+    else if (k == "--relin-threshold") a.relin_threshold = std::stod(next());
+    else if (k == "--relin-every") a.relin_every = std::stoi(next());
+    else if (k == "--final-export") a.final_export = next();
+    else if (k == "--extra-final-rounds") a.extra_final_rounds = std::stoi(next());
     else throw std::runtime_error("unknown argument " + k);
   }
+  if (a.relin_threshold >= 0 && (a.mode != "islam" || a.freeze || !a.unfrozen_iters.empty()))
+    throw std::runtime_error("--relin-threshold is implemented for --mode islam without --freeze or unfrozen exports");
   if ((a.mode != "islam" && a.mode != "ba") || a.g2o.empty() || a.out.empty())
     throw std::runtime_error("usage: certify_charuco --mode islam|ba --g2o PATH --out DIR [options]");
   return a;
@@ -180,14 +220,34 @@ int run_islam(const Args& a) {
   meta.num("snapshot_fraction", a.fraction).integer("snapshot_poses", n_snapshot).integer("sequence_poses", n_total);
   meta.str("gauge", "PRIOR_ANCHOR factor on the first pose, covariance 1e-12*I (precision 1e12), shipped driver");
 
+  // Phase D, WP1: the same rounds under the threshold rule instead of per-round relinearization
+  const bool threshold = a.relin_threshold >= 0;
+  std::unique_ptr<certify::RelinLog> relin_log;
+  if (threshold) {
+    certify::makeDirs(a.out);
+    gsolver::setFrozenRegularizer(a.frozen_eps);
+    certify::enableThresholdRelinearization(solver, a.relin_threshold, a.relin_every);
+    relin_log = std::make_unique<certify::RelinLog>(a.out + "/relin_rounds.csv");
+    meta.num("relinearize_threshold", a.relin_threshold).integer("relinearize_every", a.relin_every);
+    meta.str("schedule", "threshold relinearization, one linearization point per variable (certify/THRESHOLD_RELIN.md)");
+  } else {
+    meta.str("schedule", "G-solver per-round relinearization at the cavity means (shipped)");
+  }
+  auto round = [&]() {
+    auto tr = std::chrono::steady_clock::now();
+    solver.performIteration(factor_graph);
+    if (threshold)
+      relin_log->row(solver, factor_graph, certify::seconds_since(tr));
+  };
+
   int iteration  = 0;
   int pose_count = 1;
   for (const auto& landmark : landmarks) {
     if (landmark.timestamp == current_timestamp) {
-      add_landmark_factor(factor_graph, landmark);
+      addLandmarkFactor(factor_graph, landmark);
     } else if (landmark.timestamp > current_timestamp) {
       for (int iter = 0; iter < iterations_per_pose; ++iter) {
-        solver.performIteration(factor_graph);
+        round();
         ++iteration;
         maybeExportUnfrozen(factor_graph, a, iteration, meta);
       }
@@ -199,7 +259,7 @@ int run_islam(const Args& a) {
       }
       predictAndAddNewPose(factor_graph, landmark.timestamp, current_timestamp);
       add_gp_prior_factor_node(factor_graph, current_timestamp, landmark.timestamp, params.qc_diag);
-      add_landmark_factor(factor_graph, landmark);
+      addLandmarkFactor(factor_graph, landmark);
       current_timestamp = landmark.timestamp;
       pose_count++;
     } else {
@@ -207,10 +267,20 @@ int run_islam(const Args& a) {
       return 1;
     }
   }
-  for (int iter = 0; iter < final_ba_iterations; ++iter) {
-    solver.performIteration(factor_graph);
+  for (int iter = 0; iter < final_ba_iterations + a.extra_final_rounds; ++iter) {
+    round();
     ++iteration;
     maybeExportUnfrozen(factor_graph, a, iteration, meta);
+  }
+  if (threshold) {
+    // The final beliefs become the linearization points (mu_ = beliefs for writeTUM; the frozen export is
+    // then the linearization at the final beliefs, state z = 0).
+    certify::writeRelinCounts(a.out + "/relin_counts.csv", solver, factor_graph);
+    solver.relinearizeAllAtBeliefs(factor_graph);
+  }
+  if (!a.final_export.empty()) {
+    meta.integer("rounds", iteration).str("final_export", "linearization at the final belief means (state z = 0)");
+    certify::exportModel(factor_graph, a.final_export, threshold ? certify::Charts::Frozen : certify::Charts::Beliefs, meta);
   }
   if (a.freeze && final_snap) {
     meta.integer("normal_iterations_before_freeze", iteration);

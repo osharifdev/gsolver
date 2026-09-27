@@ -1,5 +1,12 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+#include <Eigen/Dense>
+
 #include <gsolver/graph/factor_graph.h>
 
 namespace gsolver {
@@ -30,6 +37,48 @@ namespace gsolver {
     // charts; afterwards performIteration() is Gaussian BP on one linear model. Pass
     // factor_messages_valid = false if no iteration has run yet (factor-to-variable messages unset).
     void freeze(FactorGraph& factor_graph, bool factor_messages_valid = true);
+
+    // Threshold relinearization, default off; see certify/THRESHOLD_RELIN.md. When on, every variable keeps
+    // one linearization point (the frozen-mode bookkeeping above) and performIteration() first freezes the
+    // variables and factors added since the last round, then re-freezes every variable v whose belief has
+    // moved more than relinearize_threshold_ from its linearization point, d_v = ||z_v||_{D_v} with
+    // D_v = H_vv of the current linear model, at most once per relinearize_every_ rounds, and relinearizes
+    // every factor touching it at the current points of all its variables. Then it runs the synchronous
+    // schedule on the linear model. Enable it before the first iteration of a graph.
+    bool threshold_relinearization_ = false;
+    double relinearize_threshold_   = 0.0; // delta, in the D-metric
+    int relinearize_every_          = 1;   // R
+
+    struct ThresholdStats {
+      int round = 0;                      // threshold rounds run so far
+      std::vector<int> relinearized_vars; // indices into variable_nodes_ re-frozen in the last round
+      int relinearized_factors = 0;       // factors relinearized in the last round (new factors excluded)
+      std::vector<double> displacement;   // d_v per variable at the last round's test
+      std::vector<int> relinearizations;  // re-freezes per variable so far
+      std::vector<int> created_round;     // round in which each variable was first linearized
+    };
+    ThresholdStats threshold_stats_;
+
+    // Threshold mode: move every linearization point to its belief mean and relinearize every factor, so
+    // mu_ holds the beliefs (e.g. for writeTUM) and the frozen model is the linearization at the beliefs.
+    // Not counted in threshold_stats_.
+    void relinearizeAllAtBeliefs(FactorGraph& factor_graph);
+
+  private:
+    void performThresholdIteration(FactorGraph& factor_graph);
+    void performSynchronousPhases(FactorGraph& factor_graph);
+    void registerNewNodes(FactorGraph& factor_graph);
+    void refreshDiagonalBlocks(FactorGraph& factor_graph);
+
+    // Threshold-mode bookkeeping, indexed like variable_nodes_ / factor_nodes_ (both only grow)
+    std::unordered_map<std::string, int> var_index_;
+    std::vector<int> last_relin_round_;
+    std::vector<Eigen::MatrixXd> D_;
+    std::vector<char> D_dirty_;
+    std::vector<std::vector<std::pair<int, int>>> var_factors_; // (factor index, edge position)
+    std::vector<std::vector<int>> factor_vars_;
+    size_t known_vars_    = 0;
+    size_t known_factors_ = 0;
   };
 
 } // namespace gsolver

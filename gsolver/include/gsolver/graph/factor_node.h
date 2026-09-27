@@ -66,6 +66,18 @@ namespace gsolver {
 
     void freezeLinearization() override;
     void freezeNewFactor() override;
+
+    // Threshold relinearization, see certify/THRESHOLD_RELIN.md
+    bool isFrozen() const override {
+      return frozen_;
+    }
+    size_t numberOfEdges() const override {
+      return NumberOfEdges_;
+    }
+    std::string edgeVariableId(size_t i) override {
+      return edges_.getEdgeAt(i)->variable_id_;
+    }
+    Eigen::MatrixXd linearizedInformationBlock(size_t i) override;
   };
 
 } // namespace gsolver

@@ -566,4 +566,58 @@ namespace certify {
     return secs;
   }
 
+  // ---- threshold relinearization (Phase D, WP1; certify/THRESHOLD_RELIN.md)
+
+  inline bool isPoseId(const std::string& id) {
+    return id.find("POSE_") != std::string::npos;
+  }
+
+  inline void enableThresholdRelinearization(GbpSolver& solver, double delta, int every) {
+    solver.threshold_relinearization_ = true;
+    solver.relinearize_threshold_     = delta;
+    solver.relinearize_every_         = every;
+  }
+
+  /** Per-round log of the threshold rule: re-frozen poses and other variables, relinearized factors, and the
+   *  D-metric displacement d_v of poses (median, max) and of all variables (max) at the round's test. */
+  struct RelinLog {
+    std::ofstream f;
+    explicit RelinLog(const std::string& path) : f(path) {
+      f << "round,wall_s,relin_poses,relin_other,relin_factors,d_pose_median,d_pose_max,d_all_max\n";
+    }
+    void row(const GbpSolver& solver, const FactorGraph& g, double wall_s) {
+      const auto& st = solver.threshold_stats_;
+      int np = 0, no = 0;
+      for (int v : st.relinearized_vars)
+        (isPoseId(g.variable_nodes_[v]->id_) ? np : no)++;
+      std::vector<double> dp;
+      double dmax = 0.0;
+      for (size_t v = 0; v < st.displacement.size(); ++v) {
+        dmax = std::max(dmax, st.displacement[v]);
+        if (isPoseId(g.variable_nodes_[v]->id_))
+          dp.push_back(st.displacement[v]);
+      }
+      double med = 0.0, pmax = 0.0;
+      if (!dp.empty()) {
+        pmax = *std::max_element(dp.begin(), dp.end());
+        std::nth_element(dp.begin(), dp.begin() + dp.size() / 2, dp.end());
+        med = dp[dp.size() / 2];
+      }
+      f << st.round << "," << wall_s << "," << np << "," << no << "," << st.relinearized_factors << "," << jsonNum(med)
+        << "," << jsonNum(pmax) << "," << jsonNum(dmax) << "\n";
+      f.flush();
+    }
+  };
+
+  /** Re-freezes per variable over the whole run: id, pose flag, round of first linearization, count, and the
+   *  rounds the run had (rounds per linearization = (rounds - created_round + 1) / (1 + relinearizations)). */
+  inline void writeRelinCounts(const std::string& path, const GbpSolver& solver, const FactorGraph& g) {
+    std::ofstream f(path);
+    f << "id,is_pose,created_round,relinearizations,rounds\n";
+    const auto& st = solver.threshold_stats_;
+    for (size_t v = 0; v < st.relinearizations.size(); ++v)
+      f << g.variable_nodes_[v]->id_ << "," << (isPoseId(g.variable_nodes_[v]->id_) ? 1 : 0) << ","
+        << st.created_round[v] << "," << st.relinearizations[v] << "," << st.round << "\n";
+  }
+
 } // namespace certify

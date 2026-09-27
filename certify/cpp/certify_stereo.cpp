@@ -24,6 +24,11 @@
  *     --frozen-eps E               frozen-mode regularizer (default 1e-6, as in G-solver)
  *     --frozen-eps-sites SPEC      diagnostic per-site override, e.g. "marg=1e-7,f2v=1e-6"
  *     --dump-stride S              state dump: every iteration up to 1000, then every S-th, and the last
+ *     --relin-threshold D          Phase D, WP1: threshold relinearization instead of the per-round schedule,
+ *                                  d_v = ||z_v||_{H_vv} > D (certify/THRESHOLD_RELIN.md); runs --normal-iters
+ *                                  rounds, writes relin_rounds.csv and relin_counts.csv
+ *     --relin-every R              at most one re-freeze per variable per R rounds (default 1)
+ *     --final-export DIR           export the linearization at the final belief means (either schedule)
  */
 
 #include <cmath>
@@ -52,6 +57,9 @@ struct Args {
   std::string eps_sites;
   bool freeze = false, dynamic_schedule = false;
   std::vector<int> unfrozen_iters;
+  double relin_threshold = -1.0; // >= 0: threshold relinearization (Phase D, WP1)
+  int relin_every        = 1;
+  std::string final_export;
 };
 
 static Args parse(int argc, char** argv) {
@@ -80,10 +88,16 @@ static Args parse(int argc, char** argv) {
     else if (k == "--frozen-eps") a.frozen_eps = std::stod(next());
     else if (k == "--dump-stride") a.dump_stride = std::stoi(next());
     else if (k == "--frozen-eps-sites") a.eps_sites = next();
+    else if (k == "--relin-threshold") a.relin_threshold = std::stod(next());
+    else if (k == "--relin-every") a.relin_every = std::stoi(next());
+    else if (k == "--final-export") a.final_export = next();
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.g2o.empty() || a.out.empty())
     throw std::runtime_error("usage: certify_stereo --g2o PATH --gt PATH --out DIR [options]");
+  if (a.relin_threshold >= 0 && (a.freeze || a.converge > 0 || !a.unfrozen_iters.empty()))
+    throw std::runtime_error("--relin-threshold runs a fixed number of rounds (--normal-iters) and cannot be combined "
+                             "with --freeze, --converge or --unfrozen-export-iters");
   return a;
 }
 
@@ -155,7 +169,18 @@ int main(int argc, char** argv) {
     meta.integer("keyframes", static_cast<long long>(robot_poses.size()));
     meta.set("camera", certify::jsonArray(std::vector<double>{camera.fx, camera.fy, camera.cx, camera.cy, camera.bf}));
 
-    // ---- normal (relinearizing) run
+    // ---- normal (relinearizing) run: G-solver's per-round schedule, or the threshold rule (Phase D, WP1)
+    const bool threshold = a.relin_threshold >= 0;
+    std::unique_ptr<certify::RelinLog> relin_log;
+    if (threshold) {
+      gsolver::setFrozenRegularizer(a.frozen_eps);
+      certify::enableThresholdRelinearization(solver, a.relin_threshold, a.relin_every);
+      relin_log = std::make_unique<certify::RelinLog>(a.out + "/relin_rounds.csv");
+      meta.num("relinearize_threshold", a.relin_threshold).integer("relinearize_every", a.relin_every);
+      meta.str("schedule", "threshold relinearization, one linearization point per variable (certify/THRESHOLD_RELIN.md)");
+    } else {
+      meta.str("schedule", "G-solver per-round relinearization at the cavity means (shipped)");
+    }
     auto vars = certify::orderVariables(graph);
     certify::MeanSnapshot snap;
     std::vector<double> step_max, step_med;
@@ -164,6 +189,17 @@ int main(int argc, char** argv) {
     bool converged      = false;
     auto t0             = std::chrono::steady_clock::now();
     while (iteration < max_iters) {
+      if (threshold) {
+        // mu_ stays at the linearization points in threshold mode, so the belief-step monitor does not apply
+        auto tr = std::chrono::steady_clock::now();
+        solver.performIteration(graph);
+        ++iteration;
+        relin_log->row(solver, graph, certify::seconds_since(tr));
+        const auto& st = solver.threshold_stats_;
+        std::cout << "threshold round " << iteration << ": re-frozen " << st.relinearized_vars.size()
+                  << " variables, relinearized " << st.relinearized_factors << " factors" << std::endl;
+        continue;
+      }
       snap.take(vars);
       solver.performIteration(graph);
       ++iteration;
@@ -190,6 +226,17 @@ int main(int argc, char** argv) {
     meta.set("normal_step_median", certify::jsonArray(step_med));
     if (a.converge > 0) {
       meta.num("converge_tol", a.converge).integer("normal_max", a.normal_max).boolean("normal_converged", converged);
+    }
+    if (threshold) {
+      // The final beliefs become the linearization points (mu_ = beliefs for the TUM output; the frozen
+      // export is then the linearization at the final beliefs, state z = 0).
+      certify::writeRelinCounts(a.out + "/relin_counts.csv", solver, graph);
+      solver.relinearizeAllAtBeliefs(graph);
+    }
+    if (!a.final_export.empty()) {
+      certify::Json m = meta;
+      m.str("final_export", "linearization at the final belief means (state z = 0)");
+      certify::exportModel(graph, a.final_export, threshold ? certify::Charts::Frozen : certify::Charts::Beliefs, m);
     }
 
     if (!a.freeze) {

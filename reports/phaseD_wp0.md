@@ -10,7 +10,7 @@ Branch `certify`, base commit `e89fc01`. Date 2026-09-27. Compute used: none (co
    - The pose update is T ⊞ τ = T · Exp(τ₀:₆) on SO(3) × ℝ³: rotation R·Exp(ω), translation t + R·δt. Velocity is additive.
    - Exp is Rodrigues' formula: R(δ) = I + sin θ K + (1 − cos θ) K², exactly I + [δ]× for θ² < 1e-8. So R(δ) ≈ I + [δ]×, not I + 2[δq]×.
    - No quaternion appears anywhere in the library.
-2. **So the stereo Jacobian's factor of 2 is a modification, not a chart convention.** It doubles the rotation block relative to the derivative in the solver's own chart. Phase A measured this by finite differences under this ⊞: 2.000000 ± 1.1e-6 on 2,000 factors each of the prefix and KITTI full. By the brief's rule, **S_lo must use the true Jacobian (Theorem T0), and J̃ ≠ J for stereo.** J̃ is J with every stereo factor's three rotation columns halved. Every other factor type is consistent with the exponential chart.
+2. **So the stereo Jacobian's factor of 2 is a modification, not a chart convention.** It doubles the rotation block relative to the derivative in the solver's own chart. Phase A measured this by finite differences under this ⊞: 2.000000 ± 1.1e-6 on 2,000 factors each of the prefix and KITTI full. By the brief's rule, **S_lo must use the true Jacobian (Theorem T0), and J̃ ≠ J for stereo.** In T0's naming, J̃ is the solver's Jacobian and J is the true one: the solver's J̃ with every stereo factor's three rotation columns halved. S_lo is built from I_F = JᵀΛJ. Every other factor type is consistent with the exponential chart. *(Naming corrected 2026-09-27: the first version called the halved Jacobian J̃, the reverse of T0.)*
 3. **G-solver never measures belief movement.**
    - `solve()` has no stopping criterion (a TODO), and nothing thresholds relinearization: every factor relinearizes every iteration.
    - The per-round belief move is δ_i = Λ'_i⁻¹η_i in the exponential chart at the old mean, where Λ'_i is GBP's belief precision.
@@ -53,7 +53,7 @@ WP0 has no gate. It ends at a decision point (§4).
 **Consequences.**
 - The quaternion reading, in which R ≈ I + 2[δq]× would make the 2 correct, is ruled out: the solver's ⊞ uses δω directly as the rotation vector.
 - The assembled model with the 2 is still a well-defined linear model, and GBP solves it. The certificates (E, L) are about that model, as in Phase C. What changes is the yardstick: per the brief, S_lo must come from the true-Jacobian Fisher information (Theorem T0).
-- **J̃ is exact and cheap.** Take J with columns 3–5 of the pose block of every stereo factor divided by 2 (`se3_posevel_stereo_point.cpp:77` without the `2.0`). The sidecar can form it from the exported J.
+- **The true Jacobian J is exact and cheap.** Take the solver's J̃ with columns 3–5 of the pose block of every stereo factor divided by 2 (`se3_posevel_stereo_point.cpp:77` without the `2.0`). The sidecar can form it from the exported J̃, then assemble I_F = JᵀΛJ for S_lo.
 - Phase C's stereo radii used H as assembled (errata F5: "the certified model is the assembled one"). Its stop fractions would change under T0. The direction is not fixed in general, since J̃ᵀΛJ̃ and JᵀΛJ are not ordered in the Loewner sense (the cross terms change sign relative to the diagonal ones).
 
 ### 3.3 Relinearization and belief movement

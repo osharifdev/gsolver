@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Eigen/Dense>
+
 #include <gsolver/graph/edge_base.h>
 
 class VariableNodeBase {
@@ -15,4 +17,10 @@ public:
   virtual void beginFreeze()                         = 0; // fix mu_lin_ = mu_; point incoming-to-factor means at it
   virtual void restoreMessageMeans()                 = 0; // undo beginFreeze() without freezing
   virtual void endFreeze(bool factor_messages_valid) = 0; // restore means, move messages to the fixed chart
+
+  // Threshold relinearization (GbpSolver::threshold_relinearization_), see certify/THRESHOLD_RELIN.md
+  virtual bool isFrozen() const                = 0;
+  virtual void freezeAsNew()                   = 0; // new variable: mu_lin_ = mu_, z_ = 0, fresh edges frozen
+  virtual void refreezeAtBelief()              = 0; // mu_lin_ <- belief mean, messages re-charted, z_ = 0
+  virtual Eigen::VectorXd tangentState() const = 0; // z_ (the belief mean in the chart at mu_lin_)
 };
