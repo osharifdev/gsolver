@@ -46,13 +46,23 @@ namespace gsolver {
     // every factor touching it at the current points of all its variables. Then it runs the synchronous
     // schedule on the linear model. Enable it before the first iteration of a graph.
     bool threshold_relinearization_ = false;
-    double relinearize_threshold_   = 0.0; // delta, in the D-metric
+    double relinearize_threshold_   = 0.0; // delta
     int relinearize_every_          = 1;   // R
+    // Metric of d_v: Physical = the Euclidean norm of the tangent vector z_v (metres, radians, m/s and rad/s,
+    // i.e. W = I; revised decision D-a of Phase D), HBlock = ||z_v||_{D_v} with D_v = H_vv (WP1).
+    enum class RelinMetric { Physical, HBlock };
+    RelinMetric relinearize_metric_ = RelinMetric::Physical;
+
+    // Threshold mode: decide the next round (freeze new nodes, test every variable) without running it, and
+    // return its linearizations: new factors plus factors relinearized by the rule. performIteration() then
+    // runs exactly this round. Lets a caller stop at a work budget.
+    int planThresholdRound(FactorGraph& factor_graph);
 
     struct ThresholdStats {
-      int round = 0;                      // threshold rounds run so far
+      int round = 0;                      // threshold rounds planned so far (the current one included)
       std::vector<int> relinearized_vars; // indices into variable_nodes_ re-frozen in the last round
-      int relinearized_factors = 0;       // factors relinearized in the last round (new factors excluded)
+      int relinearized_factors = 0;       // factors relinearized in the last round by the rule
+      int new_factors          = 0;       // factors first linearized in the last round
       std::vector<double> displacement;   // d_v per variable at the last round's test
       std::vector<int> relinearizations;  // re-freezes per variable so far
       std::vector<int> created_round;     // round in which each variable was first linearized
@@ -79,6 +89,9 @@ namespace gsolver {
     std::vector<std::vector<int>> factor_vars_;
     size_t known_vars_    = 0;
     size_t known_factors_ = 0;
+    bool planned_         = false; // a round has been planned and not yet run
+    std::vector<char> planned_relin_;
+    std::vector<int> planned_factors_;
   };
 
 } // namespace gsolver

@@ -1,0 +1,74 @@
+{
+ "default_r100": {
+  "export": "exports/kitti06_prefix161/unfrozen_run/unfrozen/it100",
+  "poses": 161,
+  "err_median": 0.5528839617303862,
+  "err_p95": 6.84294605581715,
+  "err_max": 18.179035917808395,
+  "err_worst_pose_time": 32.43543,
+  "keyframe_traj": {
+   "keyframes": 161,
+   "ate": 1.3671127447401048,
+   "are": 0.012643277603281862,
+   "ate_aligned": 0.3809661124498754,
+   "are_aligned": 0.006649508843887334
+  }
+ },
+ "default_r200": {
+  "export": "exports/kitti06_prefix161/conv",
+  "poses": 161,
+  "err_median": 0.5529988170622033,
+  "err_p95": 4.841234357344344,
+  "err_max": 11.85212848473625,
+  "err_worst_pose_time": 32.9564,
+  "keyframe_traj": {
+   "keyframes": 161,
+   "ate": 1.3673514007653718,
+   "are": 0.012640536935214441,
+   "ate_aligned": 0.380282964064865,
+   "are_aligned": 0.00647736782520469
+  }
+ },
+ "default_r10": {
+  "export": "exports/kitti06_prefix161/unfrozen_run/unfrozen/it010",
+  "poses": 161,
+  "err_median": 5.549417707824365,
+  "err_p95": 44.63143620036049,
+  "err_max": 2783.6621436091996,
+  "keyframe_traj": {
+   "keyframes": 161,
+   "ate": 1.3580660706503975,
+   "are": 0.012809198982424674,
+   "ate_aligned": 0.3908137277292831,
+   "are_aligned": 0.00641516084750694
+  }
+ },
+ "default_r20": {
+  "export": "exports/kitti06_prefix161/unfrozen_run/unfrozen/it020",
+  "poses": 161,
+  "err_median": 2.064919107648547,
+  "err_p95": 8.498150839066653,
+  "err_max": 13.649122431099721,
+  "keyframe_traj": {
+   "keyframes": 161,
+   "ate": 1.3682363185642106,
+   "are": 0.012713249059321103,
+   "ate_aligned": 0.3860996061890763,
+   "are_aligned": 0.006592114856911048
+  }
+ },
+ "default_r50": {
+  "export": "exports/kitti06_prefix161/unfrozen_run/unfrozen/it050",
+  "poses": 161,
+  "err_median": 0.6062236770568707,
+  "err_p95": 5.730774535218763,
+  "err_max": 19.86141165860133,
+  "keyframe_traj": {
+   "keyframes": 161,
+   "ate": 1.3685051087120126,
+   "are": 0.01265565175423755,
+   "ate_aligned": 0.3836258396092893,
+   "are_aligned": 0.006701389973973719
+  }
+ }
+}

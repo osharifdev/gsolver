@@ -284,4 +284,47 @@ namespace gsolver {
     z_ = VectorLieDim::Zero();
   }
 
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  EstimateType_ VariableNode<Dim_, EstimateType_, EdgeType_>::beliefMean() {
+    return frozen_ ? boxplus(z_) : mu_;
+  }
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  typename VariableNode<Dim_, EstimateType_, EdgeType_>::VectorLieDim
+  VariableNode<Dim_, EstimateType_, EdgeType_>::offsetFromBelief(const EstimateType_& point) {
+    if (!frozen_)
+      return boxminus(point);
+    const EstimateType_ lin    = mu_;
+    const EstimateType_ belief = boxplus(z_);
+    mu_                        = belief; // boxminus() is taken at mu_
+    const VectorLieDim tau     = boxminus(point);
+    mu_                        = lin;
+    return tau;
+  }
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  typename VariableNode<Dim_, EstimateType_, EdgeType_>::VectorLieDim
+  VariableNode<Dim_, EstimateType_, EdgeType_>::cavityOffsetFromBelief(size_t i) {
+    // Not frozen: the stash of beginEvaluateAtBelief holds the solver's own incoming-to-factor means (the cavity
+    // means). Frozen: the cavity mean is the message's tangent coordinate in the fixed chart.
+    if (!frozen_)
+      return boxminus(mu_msg_stash_[i]);
+    return offsetFromBelief(boxplus(edges_[i]->variable_to_factor_message_.tau_));
+  }
+
+  template <int Dim_, typename EstimateType_, typename EdgeType_>
+  void VariableNode<Dim_, EstimateType_, EdgeType_>::beginEvaluateAtBelief() {
+    if (!frozen_) {
+      beginFreeze(); // the belief is mu_; mu_lin_ is unused while not frozen
+      return;
+    }
+    const EstimateType_ belief = boxplus(z_);
+    mu_msg_stash_.clear();
+    mu_msg_stash_.reserve(edges_.size());
+    for (auto& edge : edges_) {
+      mu_msg_stash_.push_back(edge->variable_to_factor_message_.mu_);
+      edge->variable_to_factor_message_.mu_ = belief;
+    }
+  }
+
 } // namespace gsolver

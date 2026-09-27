@@ -1,0 +1,569 @@
+{
+ "charuco": {
+  "W0": 217945.0,
+  "default_rounds": 103,
+  "default_median": 1.4232128554440644,
+  "default_p95": 19.330263554308665,
+  "full_graph_round": 94,
+  "settings": {
+   "d0.003_R1": {
+    "at_budget": {
+     "err_median": 1.4680994951164332,
+     "err_p95": 19.791630176582412,
+     "err_max": 64.69688035394292,
+     "err_worst_pose_time": 3.6,
+     "round": 110,
+     "cumulative_work": 215170.0
+    },
+    "rounds_at_W0": 110,
+    "median_ratio": 1.0315389504111552,
+    "p95_ratio": 1.0238675805416482,
+    "passes": true,
+    "relin_fraction_per_round": 0.26818821122618586,
+    "linearizations_per_round": 190.6818181818182,
+    "rounds_to_reach_default_median": 130,
+    "work_to_reach_default_median": 273394.0,
+    "cap_rounds": 1030
+   },
+   "d0.003_R10": {
+    "at_budget": {
+     "err_median": 1.4439122533485165,
+     "err_p95": 18.95821168145754,
+     "err_max": 64.71016458994723,
+     "err_worst_pose_time": 3.6,
+     "round": 115,
+     "cumulative_work": 216979.0
+    },
+    "rounds_at_W0": 115,
+    "median_ratio": 1.0145441335955285,
+    "p95_ratio": 0.980752881521463,
+    "passes": true,
+    "relin_fraction_per_round": 0.10486149330398092,
+    "linearizations_per_round": 74.55652173913043,
+    "rounds_to_reach_default_median": 130,
+    "work_to_reach_default_median": 260554.0,
+    "cap_rounds": 1030
+   },
+   "d0.003_R3": {
+    "at_budget": {
+     "err_median": 1.553231732473006,
+     "err_p95": 21.206130246137874,
+     "err_max": 63.65392546729842,
+     "err_worst_pose_time": 3.6,
+     "round": 112,
+     "cumulative_work": 216162.0
+    },
+    "rounds_at_W0": 112,
+    "median_ratio": 1.0913558899721811,
+    "p95_ratio": 1.0970429961577572,
+    "passes": false,
+    "relin_fraction_per_round": 0.20447809925658028,
+    "linearizations_per_round": 145.38392857142858,
+    "rounds_to_reach_default_median": 140,
+    "work_to_reach_default_median": 297743.0,
+    "cap_rounds": 1030
+   },
+   "d0.01_R1": {
+    "at_budget": {
+     "err_median": 1.5106410039498175,
+     "err_p95": 20.62605321556479,
+     "err_max": 64.9997573434927,
+     "err_worst_pose_time": 3.6,
+     "round": 114,
+     "cumulative_work": 216250.0
+    },
+    "rounds_at_W0": 114,
+    "median_ratio": 1.0614301284388512,
+    "p95_ratio": 1.06703424697835,
+    "passes": false,
+    "relin_fraction_per_round": 0.13185037135736669,
+    "linearizations_per_round": 93.74561403508773,
+    "rounds_to_reach_default_median": 140,
+    "work_to_reach_default_median": 290571.0,
+    "cap_rounds": 1030
+   },
+   "d0.01_R10": {
+    "at_budget": {
+     "err_median": 1.4502165406793313,
+     "err_p95": 19.024346053759295,
+     "err_max": 64.64557975577772,
+     "err_worst_pose_time": 3.6,
+     "round": 116,
+     "cumulative_work": 215867.0
+    },
+    "rounds_at_W0": 116,
+    "median_ratio": 1.018973750224341,
+    "p95_ratio": 0.984174168153999,
+    "passes": true,
+    "relin_fraction_per_round": 0.05601629564964352,
+    "linearizations_per_round": 39.827586206896555,
+    "rounds_to_reach_default_median": 130,
+    "work_to_reach_default_median": 255885.0,
+    "cap_rounds": 1030
+   },
+   "d0.01_R3": {
+    "at_budget": {
+     "err_median": 1.676328322838471,
+     "err_p95": 22.729720690601994,
+     "err_max": 64.03409490117866,
+     "err_worst_pose_time": 3.6,
+     "round": 115,
+     "cumulative_work": 216533.0
+    },
+    "rounds_at_W0": 115,
+    "median_ratio": 1.1778479349917275,
+    "p95_ratio": 1.1758619134572326,
+    "passes": false,
+    "relin_fraction_per_round": 0.09940683666605515,
+    "linearizations_per_round": 70.67826086956522,
+    "rounds_to_reach_default_median": 160,
+    "work_to_reach_default_median": 345287.0,
+    "cap_rounds": 1030
+   },
+   "d0.03_R1": {
+    "at_budget": {
+     "err_median": 2.1412518689389017,
+     "err_p95": 32.75021547274628,
+     "err_max": 74.08518426752597,
+     "err_worst_pose_time": 3.6,
+     "round": 116,
+     "cumulative_work": 216394.0
+    },
+    "rounds_at_W0": 116,
+    "median_ratio": 1.5045197636799017,
+    "p95_ratio": 1.6942456775477508,
+    "passes": false,
+    "relin_fraction_per_round": 0.06240603327028469,
+    "linearizations_per_round": 44.37068965517241,
+    "rounds_to_reach_default_median": 240,
+    "work_to_reach_default_median": 569552.0,
+    "cap_rounds": 1030
+   },
+   "d0.03_R10": {
+    "at_budget": {
+     "err_median": 1.5852492123892588,
+     "err_p95": 20.610749281113474,
+     "err_max": 66.21697910474116,
+     "err_worst_pose_time": 3.6,
+     "round": 117,
+     "cumulative_work": 216467.0
+    },
+    "rounds_at_W0": 117,
+    "median_ratio": 1.1138525107649035,
+    "p95_ratio": 1.066242538453098,
+    "passes": false,
+    "relin_fraction_per_round": 0.02858619736256867,
+    "linearizations_per_round": 20.324786324786324,
+    "rounds_to_reach_default_median": 160,
+    "work_to_reach_default_median": 338807.0,
+    "cap_rounds": 1030
+   },
+   "d0.03_R3": {
+    "at_budget": {
+     "err_median": 2.026386660399214,
+     "err_p95": 30.739193517777192,
+     "err_max": 70.3677558780155,
+     "err_worst_pose_time": 3.6,
+     "round": 116,
+     "cumulative_work": 215193.0
+    },
+    "rounds_at_W0": 116,
+    "median_ratio": 1.4238113804606902,
+    "p95_ratio": 1.5902107817317113,
+    "passes": false,
+    "relin_fraction_per_round": 0.04784422134924099,
+    "linearizations_per_round": 34.01724137931034,
+    "rounds_to_reach_default_median": 210,
+    "work_to_reach_default_median": 482942.0,
+    "cap_rounds": 1030
+   },
+   "d0.1_R1": {
+    "at_budget": {
+     "err_median": 2.266151795145957,
+     "err_p95": 30.125349164534203,
+     "err_max": 94.1966019854442,
+     "err_worst_pose_time": 3.6,
+     "round": 117,
+     "cumulative_work": 215962.0
+    },
+    "rounds_at_W0": 117,
+    "median_ratio": 1.5922788966369212,
+    "p95_ratio": 1.5584551695271294,
+    "passes": false,
+    "relin_fraction_per_round": 0.02251553728346978,
+    "linearizations_per_round": 16.00854700854701,
+    "rounds_to_reach_default_median": 270,
+    "work_to_reach_default_median": 650994.0,
+    "cap_rounds": 1030
+   },
+   "d0.1_R10": {
+    "at_budget": {
+     "err_median": 1.4915239861434442,
+     "err_p95": 23.835592118350085,
+     "err_max": 67.88098083221983,
+     "err_worst_pose_time": 3.6,
+     "round": 117,
+     "cumulative_work": 215453.0
+    },
+    "rounds_at_W0": 117,
+    "median_ratio": 1.0479978314122702,
+    "p95_ratio": 1.2330712435132418,
+    "passes": true,
+    "relin_fraction_per_round": 0.016396792768100785,
+    "linearizations_per_round": 11.658119658119658,
+    "rounds_to_reach_default_median": 150,
+    "work_to_reach_default_median": 309255.0,
+    "cap_rounds": 1030
+   },
+   "d0.1_R3": {
+    "at_budget": {
+     "err_median": 1.506337438897518,
+     "err_p95": 23.798532454614705,
+     "err_max": 69.00894001329236,
+     "err_worst_pose_time": 3.6,
+     "round": 117,
+     "cumulative_work": 215531.0
+    },
+    "rounds_at_W0": 117,
+    "median_ratio": 1.0584062904824714,
+    "p95_ratio": 1.231154059940899,
+    "passes": false,
+    "relin_fraction_per_round": 0.01733443927536755,
+    "linearizations_per_round": 12.324786324786325,
+    "rounds_to_reach_default_median": 150,
+    "work_to_reach_default_median": 309345.0,
+    "cap_rounds": 1030
+   }
+  }
+ },
+ "kf40": {
+  "W0": 5623300.0,
+  "default_rounds": 100,
+  "default_median": 0.42447035277825546,
+  "default_p95": 1.950683686559172,
+  "full_graph_round": 1,
+  "settings": {
+   "d0.003_R1": {
+    "at_budget": {
+     "err_median": 0.18066520403809916,
+     "err_p95": 0.7640216345364521,
+     "err_max": 1.2096006276369118,
+     "err_worst_pose_time": 0.311634,
+     "round": 117,
+     "cumulative_work": 5589021.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5125367697569879,
+      "are": 0.012540894506970131,
+      "ate_aligned": 0.08207564768415967,
+      "are_aligned": 0.03726777083909005
+     }
+    },
+    "rounds_at_W0": 117,
+    "median_ratio": 0.425625023881183,
+    "p95_ratio": 0.39166864407633234,
+    "passes": true,
+    "relin_fraction_per_round": 0.26569584039651717,
+    "linearizations_per_round": 3062.4102564102564,
+    "rounds_to_reach_default_median": 40,
+    "work_to_reach_default_median": 2087688.0,
+    "cap_rounds": 300
+   },
+   "d0.003_R10": {
+    "at_budget": {
+     "err_median": 0.9507562446724624,
+     "err_p95": 16.899209269669296,
+     "err_max": 58.17231959232271,
+     "err_worst_pose_time": 6.547122,
+     "round": 121,
+     "cumulative_work": 5579804.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5117679627294524,
+      "are": 0.012555949921632592,
+      "ate_aligned": 0.08168553970039164,
+      "are_aligned": 0.03403887890084733
+     }
+    },
+    "rounds_at_W0": 121,
+    "median_ratio": 2.2398649009278166,
+    "p95_ratio": 8.663223764114191,
+    "passes": false,
+    "relin_fraction_per_round": 0.12207900786292723,
+    "linearizations_per_round": 1407.0826446280992,
+    "rounds_to_reach_default_median": 100,
+    "work_to_reach_default_median": 4614475.0,
+    "cap_rounds": 300
+   },
+   "d0.003_R3": {
+    "at_budget": {
+     "err_median": 0.3698680249792459,
+     "err_p95": 0.6278133141181174,
+     "err_max": 0.6620053107536353,
+     "err_worst_pose_time": 1.350553,
+     "round": 121,
+     "cumulative_work": 5611927.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5125961916121344,
+      "are": 0.012553433922356026,
+      "ate_aligned": 0.08178814797116282,
+      "are_aligned": 0.037265670155390895
+     }
+    },
+    "rounds_at_W0": 121,
+    "median_ratio": 0.8713636242398914,
+    "p95_ratio": 0.3218427049162044,
+    "passes": true,
+    "relin_fraction_per_round": 0.1451120929612246,
+    "linearizations_per_round": 1672.5619834710744,
+    "rounds_to_reach_default_median": 60,
+    "work_to_reach_default_median": 2869513.0,
+    "cap_rounds": 300
+   },
+   "d0.01_R1": {
+    "at_budget": {
+     "err_median": 0.4127331295159511,
+     "err_p95": 1.084445286548079,
+     "err_max": 1.1978374927831528,
+     "err_worst_pose_time": 6.963119,
+     "round": 120,
+     "cumulative_work": 5617086.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5125478726572832,
+      "are": 0.012540800710773684,
+      "ate_aligned": 0.08202013586281644,
+      "are_aligned": 0.03723859417385732
+     }
+    },
+    "rounds_at_W0": 120,
+    "median_ratio": 0.9723485440491154,
+    "p95_ratio": 0.5559308738880887,
+    "passes": true,
+    "relin_fraction_per_round": 0.18237463126843656,
+    "linearizations_per_round": 2102.05,
+    "rounds_to_reach_default_median": 120,
+    "work_to_reach_default_median": 5617086.0,
+    "cap_rounds": 300
+   },
+   "d0.01_R10": {
+    "at_budget": {
+     "err_median": 0.6839009288150919,
+     "err_p95": 4.746283595266473,
+     "err_max": 7.074078322304252,
+     "err_worst_pose_time": 5.507756,
+     "round": 123,
+     "cumulative_work": 5621691.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5123843642831921,
+      "are": 0.012567400092495082,
+      "ate_aligned": 0.08238604338106718,
+      "are_aligned": 0.0352699885153019
+     }
+    },
+    "rounds_at_W0": 123,
+    "median_ratio": 1.611186563063366,
+    "p95_ratio": 2.4331385082932044,
+    "passes": false,
+    "relin_fraction_per_round": 0.08656991827596569,
+    "linearizations_per_round": 997.8048780487804,
+    "rounds_to_reach_default_median": null,
+    "work_to_reach_default_median": null,
+    "cap_rounds": 300
+   },
+   "d0.01_R3": {
+    "at_budget": {
+     "err_median": 0.34854275655117134,
+     "err_p95": 1.0594074292868065,
+     "err_max": 1.2539399410436431,
+     "err_worst_pose_time": 0.311634,
+     "round": 123,
+     "cumulative_work": 5619016.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5126071432297813,
+      "are": 0.012560706156937607,
+      "ate_aligned": 0.08177794198878349,
+      "are_aligned": 0.037046955896247374
+     }
+    },
+    "rounds_at_W0": 123,
+    "median_ratio": 0.8211239118819003,
+    "p95_ratio": 0.543095447296996,
+    "passes": true,
+    "relin_fraction_per_round": 0.08468305661713568,
+    "linearizations_per_round": 976.0569105691056,
+    "rounds_to_reach_default_median": 40,
+    "work_to_reach_default_median": 1894537.0,
+    "cap_rounds": 300
+   },
+   "d0.03_R1": {
+    "at_budget": {
+     "err_median": 0.6185274023944255,
+     "err_p95": 1.5745376394419128,
+     "err_max": 1.7670461815084317,
+     "err_worst_pose_time": 6.963119,
+     "round": 121,
+     "cumulative_work": 5586788.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5125611782708336,
+      "are": 0.012543506897385048,
+      "ate_aligned": 0.08197927349639896,
+      "are_aligned": 0.03712166839066158
+     }
+    },
+    "rounds_at_W0": 121,
+    "median_ratio": 1.457174566718317,
+    "p95_ratio": 0.8071721982866703,
+    "passes": false,
+    "relin_fraction_per_round": 0.12708673025269496,
+    "linearizations_per_round": 1464.801652892562,
+    "rounds_to_reach_default_median": null,
+    "work_to_reach_default_median": null,
+    "cap_rounds": 300
+   },
+   "d0.03_R10": {
+    "at_budget": {
+     "err_median": 0.914216072646807,
+     "err_p95": 9.549044731234389,
+     "err_max": 12.331656787951642,
+     "err_worst_pose_time": 5.299899,
+     "round": 124,
+     "cumulative_work": 5623212.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5115217772304795,
+      "are": 0.01260033637974432,
+      "ate_aligned": 0.08305658546002471,
+      "are_aligned": 0.03810423824376984
+     }
+    },
+    "rounds_at_W0": 124,
+    "median_ratio": 2.153780745022718,
+    "p95_ratio": 4.895229706912674,
+    "passes": false,
+    "relin_fraction_per_round": 0.055655376623958176,
+    "linearizations_per_round": 641.483870967742,
+    "rounds_to_reach_default_median": null,
+    "work_to_reach_default_median": null,
+    "cap_rounds": 300
+   },
+   "d0.03_R3": {
+    "at_budget": {
+     "err_median": 0.5589659352419101,
+     "err_p95": 2.5322351084490347,
+     "err_max": 2.628186960739078,
+     "err_worst_pose_time": 6.547122,
+     "round": 123,
+     "cumulative_work": 5605497.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5126370952880481,
+      "are": 0.012571988157718546,
+      "ate_aligned": 0.08168287066451524,
+      "are_aligned": 0.036444812073195235
+     }
+    },
+    "rounds_at_W0": 123,
+    "median_ratio": 1.316855067929598,
+    "p95_ratio": 1.29812697255682,
+    "passes": false,
+    "relin_fraction_per_round": 0.07514717520938875,
+    "linearizations_per_round": 866.1463414634146,
+    "rounds_to_reach_default_median": null,
+    "work_to_reach_default_median": null,
+    "cap_rounds": 300
+   },
+   "d0.1_R1": {
+    "at_budget": {
+     "err_median": 0.9238781533131326,
+     "err_p95": 2.555319030930829,
+     "err_max": 6.0173887178458285,
+     "err_worst_pose_time": 4.052745,
+     "round": 123,
+     "cumulative_work": 5609956.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.512569191746768,
+      "are": 0.012557947572691665,
+      "ate_aligned": 0.08206198251379038,
+      "are_aligned": 0.03745722889449381
+     }
+    },
+    "rounds_at_W0": 123,
+    "median_ratio": 2.1765434199730063,
+    "p95_ratio": 1.309960732505114,
+    "passes": false,
+    "relin_fraction_per_round": 0.07829241488666838,
+    "linearizations_per_round": 902.3983739837398,
+    "rounds_to_reach_default_median": null,
+    "work_to_reach_default_median": null,
+    "cap_rounds": 300
+   },
+   "d0.1_R10": {
+    "at_budget": {
+     "err_median": 1.7001628388357448,
+     "err_p95": 9.535618479424135,
+     "err_max": 28.918268689254674,
+     "err_worst_pose_time": 6.755121,
+     "round": 124,
+     "cumulative_work": 5591389.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5121376750190654,
+      "are": 0.012631060288198768,
+      "ate_aligned": 0.0822322308118096,
+      "are_aligned": 0.0475819376200714
+     }
+    },
+    "rounds_at_W0": 124,
+    "median_ratio": 4.005374763414666,
+    "p95_ratio": 4.888346862757691,
+    "passes": false,
+    "relin_fraction_per_round": 0.0333894477002905,
+    "linearizations_per_round": 384.8467741935484,
+    "rounds_to_reach_default_median": null,
+    "work_to_reach_default_median": null,
+    "cap_rounds": 300
+   },
+   "d0.1_R3": {
+    "at_budget": {
+     "err_median": 1.1577560552510973,
+     "err_p95": 5.702108868011635,
+     "err_max": 8.947168574864252,
+     "err_worst_pose_time": 6.755121,
+     "round": 124,
+     "cumulative_work": 5603064.0,
+     "keyframe_traj": {
+      "keyframes": 40,
+      "ate": 0.5126112935247061,
+      "are": 0.012570655933408665,
+      "ate_aligned": 0.08176975389249364,
+      "are_aligned": 0.037179675800663725
+     }
+    },
+    "rounds_at_W0": 124,
+    "median_ratio": 2.727531022304195,
+    "p95_ratio": 2.9231335184176555,
+    "passes": false,
+    "relin_fraction_per_round": 0.041558216206836716,
+    "linearizations_per_round": 479.0,
+    "rounds_to_reach_default_median": null,
+    "work_to_reach_default_median": null,
+    "cap_rounds": 300
+   }
+  }
+ },
+ "choice": {
+  "passing": [
+   "d0.003_R1"
+  ],
+  "cost": {
+   "d0.003_R1": 0.2669420258113515
+  },
+  "chosen": "d0.003_R1"
+ }
+}

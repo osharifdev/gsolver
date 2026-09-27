@@ -20,7 +20,9 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <cstdio>
 #include <sys/stat.h>
+#include <thread>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -286,9 +288,10 @@ namespace certify {
     const int N = vars.empty() ? 0 : vars.back().offset + vars.back().dim;
 
     if (charts == Charts::Beliefs) {
-      // Point every incoming message mean at the belief mean, evaluate each factor there, then restore.
+      // Point every incoming message mean at the belief mean, evaluate each factor there, then restore. Works on
+      // an unfrozen graph and, without changing the solver state, on a threshold-mode (frozen) one.
       for (auto& v : g.variable_nodes_)
-        v->beginFreeze();
+        v->beginEvaluateAtBelief();
     }
 
     // ---- factors
@@ -338,7 +341,7 @@ namespace certify {
       for (auto& v : g.variable_nodes_) {
         withVariable(v, [&](auto vp) {
           for (size_t i = 0; i < vp->edges_.size(); ++i) {
-            auto tau = vp->boxminus(vp->mu_msg_stash_[i]);
+            auto tau = vp->cavityOffsetFromBelief(i);
             offset_of_edge[vp->edges_[i].get()] = std::vector<double>(tau.data(), tau.data() + tau.size());
           }
         });
@@ -379,8 +382,8 @@ namespace certify {
     for (size_t i = 0; i < vars.size(); ++i) {
       withVariable(vars[i].node, [&](auto vp) {
         using VT                      = typename std::decay_t<decltype(*vp)>;
-        const bool frozen             = (charts == Charts::Frozen);
-        const typename VT::EstimateType& lin = frozen ? vp->mu_lin_ : vp->mu_;
+        const bool frozen                   = (charts == Charts::Frozen);
+        const typename VT::EstimateType lin = frozen ? vp->mu_lin_ : vp->beliefMean();
         if constexpr (std::is_same_v<VT, SE3PoseVel>) {
           appendIsometry(T_lin, lin.pose);
           for (int k = 0; k < 6; ++k)
@@ -399,7 +402,7 @@ namespace certify {
           // G-solver never updates the outgoing message of a single-edge variable (variable_node.cpp:26-28)
           const auto& m = vp->edges_[0]->variable_to_factor_message_;
           se_idx.push_back(static_cast<int64_t>(i));
-          auto tau = frozen ? m.tau_ : vp->boxminus(m.mu_);
+          auto tau = frozen ? m.tau_ : (vp->frozen_ ? vp->offsetFromBelief(vp->boxplus(m.tau_)) : vp->boxminus(m.mu_));
           for (int k = 0; k < VT::LieDim; ++k)
             se_tau.push_back(tau(k));
           appendRowMajor(se_Lambda, m.Lambda_);
@@ -572,10 +575,16 @@ namespace certify {
     return id.find("POSE_") != std::string::npos;
   }
 
-  inline void enableThresholdRelinearization(GbpSolver& solver, double delta, int every) {
+  inline void enableThresholdRelinearization(GbpSolver& solver, double delta, int every, const std::string& metric) {
     solver.threshold_relinearization_ = true;
     solver.relinearize_threshold_     = delta;
     solver.relinearize_every_         = every;
+    if (metric == "physical")
+      solver.relinearize_metric_ = GbpSolver::RelinMetric::Physical;
+    else if (metric == "D")
+      solver.relinearize_metric_ = GbpSolver::RelinMetric::HBlock;
+    else
+      throw std::runtime_error("--relin-metric must be physical or D");
   }
 
   /** Per-round log of the threshold rule: re-frozen poses and other variables, relinearized factors, and the
@@ -583,7 +592,7 @@ namespace certify {
   struct RelinLog {
     std::ofstream f;
     explicit RelinLog(const std::string& path) : f(path) {
-      f << "round,wall_s,relin_poses,relin_other,relin_factors,d_pose_median,d_pose_max,d_all_max\n";
+      f << "round,wall_s,relin_poses,relin_other,relin_factors,new_factors,d_pose_median,d_pose_max,d_all_max\n";
     }
     void row(const GbpSolver& solver, const FactorGraph& g, double wall_s) {
       const auto& st = solver.threshold_stats_;
@@ -603,9 +612,118 @@ namespace certify {
         std::nth_element(dp.begin(), dp.begin() + dp.size() / 2, dp.end());
         med = dp[dp.size() / 2];
       }
-      f << st.round << "," << wall_s << "," << np << "," << no << "," << st.relinearized_factors << "," << jsonNum(med)
+      f << st.round << "," << wall_s << "," << np << "," << no << "," << st.relinearized_factors << "," << st.new_factors << "," << jsonNum(med)
         << "," << jsonNum(pmax) << "," << jsonNum(dmax) << "\n";
       f.flush();
+    }
+  };
+
+  /**
+   * Phase D, WP1b: rounds with a work account, curve exports and an optional stop point.
+   * Work of a round = linearizations + message computations:
+   *  - linearizations: every factor for G-solver's per-round schedule (each re-evaluates its error and Jacobian);
+   *    in threshold mode the factors linearized for the first time plus those the rule relinearizes;
+   *  - messages: every factor-to-variable message, and every variable-to-factor message of the variables with at
+   *    least two edges (a single-edge variable never sends; variable_node.cpp).
+   * A round is accounted before it runs (GbpSolver::planThresholdRound), so a budget W stops exactly after the
+   * last round whose cumulative work is <= W: the state there is exported to <out>/at_budget (charts at the
+   * beliefs) and the run continues. Every `curve_every` rounds the state is exported to <out>/curve/rNNNNN.
+   */
+  struct RoundRunner {
+    GbpSolver& solver;
+    FactorGraph& g;
+    std::string out;
+    long long budget = 0; // 0: none
+    int curve_every  = 0; // 0: no curve exports
+    Json meta;
+    int rounds = 0, budget_round = -1;
+    long long cumulative = 0, budget_work = 0;
+    std::ofstream log;
+    std::unique_ptr<RelinLog> relin_log;
+    size_t nv_ = SIZE_MAX, nf_ = SIZE_MAX;
+    long long messages_ = 0;
+
+    RoundRunner(GbpSolver& s, FactorGraph& graph, const std::string& dir, long long work_budget, int every, Json m)
+        : solver(s), g(graph), out(dir), budget(work_budget), curve_every(every), meta(std::move(m)) {
+      makeDirs(out);
+      log.open(out + "/work.csv");
+      log << "round,linearizations,messages,cumulative_work,wall_s\n";
+      if (solver.threshold_relinearization_)
+        relin_log = std::make_unique<RelinLog>(out + "/relin_rounds.csv");
+    }
+
+    long long messageCount() {
+      if (g.variable_nodes_.size() == nv_ && g.factor_nodes_.size() == nf_)
+        return messages_;
+      std::unordered_map<std::string, int> degree;
+      long long f2v = 0, v2f = 0;
+      for (auto& f : g.factor_nodes_) {
+        const size_t k = f->numberOfEdges();
+        f2v += static_cast<long long>(k);
+        for (size_t i = 0; i < k; ++i)
+          degree[f->edgeVariableId(i)]++;
+      }
+      for (auto& [id, d] : degree)
+        if (d >= 2)
+          v2f += d;
+      nv_       = g.variable_nodes_.size();
+      nf_       = g.factor_nodes_.size();
+      messages_ = f2v + v2f;
+      return messages_;
+    }
+
+    void exportBeliefs(const std::string& dir, const std::string& what) {
+      Json m = meta;
+      m.integer("round", rounds).num("cumulative_work", static_cast<double>(cumulative)).str("export", what);
+      exportModel(g, dir, Charts::Beliefs, m);
+    }
+
+    void round() {
+      const long long lin = solver.threshold_relinearization_ ? solver.planThresholdRound(g)
+                                                              : static_cast<long long>(g.factor_nodes_.size());
+      const long long msg = messageCount();
+      if (budget > 0 && budget_round < 0 && cumulative + lin + msg > budget) {
+        budget_round = rounds;
+        budget_work  = cumulative;
+        exportBeliefs(out + "/at_budget", "state after the last round within the work budget");
+      }
+      auto t0 = std::chrono::steady_clock::now();
+      solver.performIteration(g);
+      const double wall = seconds_since(t0);
+      ++rounds;
+      cumulative += lin + msg;
+      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << "\n";
+      log.flush();
+      if (relin_log)
+        relin_log->row(solver, g, wall);
+      if (curve_every > 0 && rounds % curve_every == 0) {
+        char name[32];
+        snprintf(name, sizeof(name), "/curve/r%05d", rounds);
+        exportBeliefs(out + name, "curve point");
+      }
+    }
+
+    // Stop point for a checkpointed run: export, then wait until <out>/continue (or <out>/abort) exists.
+    bool pause(const std::string& tag) {
+      exportBeliefs(out + "/checkpoint_" + tag, "checkpoint");
+      std::cout << "checkpoint " << tag << " written after round " << rounds << "; waiting for " << out << "/continue"
+                << std::endl;
+      while (true) {
+        struct stat st;
+        if (stat((out + "/abort").c_str(), &st) == 0)
+          return false;
+        if (stat((out + "/continue").c_str(), &st) == 0) {
+          std::remove((out + "/continue").c_str());
+          return true;
+        }
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+      }
+    }
+
+    void finish() {
+      std::ofstream(out + "/work_summary.json")
+        << "{\"rounds\": " << rounds << ", \"cumulative_work\": " << cumulative << ", \"budget\": " << budget
+        << ", \"budget_round\": " << budget_round << ", \"budget_work\": " << budget_work << "}\n";
     }
   };
 

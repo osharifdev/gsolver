@@ -23,4 +23,5 @@ public:
   virtual void freezeAsNew()                   = 0; // new variable: mu_lin_ = mu_, z_ = 0, fresh edges frozen
   virtual void refreezeAtBelief()              = 0; // mu_lin_ <- belief mean, messages re-charted, z_ = 0
   virtual Eigen::VectorXd tangentState() const = 0; // z_ (the belief mean in the chart at mu_lin_)
+  virtual void beginEvaluateAtBelief()         = 0; // point incoming-to-factor means at the belief (restoreMessageMeans undoes)
 };

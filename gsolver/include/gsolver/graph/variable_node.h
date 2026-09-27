@@ -52,6 +52,12 @@ namespace gsolver {
     Eigen::VectorXd tangentState() const override {
       return z_;
     }
+    // Evaluation at the beliefs without changing the solver state (e.g. an export in the middle of a run):
+    // the belief mean is mu_ when not frozen and mu_lin_ ⊞ z_ when frozen.
+    void beginEvaluateAtBelief() override;
+    EstimateType beliefMean();
+    VectorLieDim offsetFromBelief(const EstimateType& point); // point ⊟ belief, in the chart at the belief
+    VectorLieDim cavityOffsetFromBelief(size_t i);            // incoming-to-factor mean of edge i, ⊟ belief
 
     // For each new VariableNode, implement the following functions:
     virtual const VectorLieDim boxminus(const EstimateType& mu_inward) = 0;

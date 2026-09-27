@@ -26,6 +26,10 @@
  *     --relin-every R              at most one re-freeze per variable per R rounds (default 1)
  *     --final-export DIR           islam: export the linearization at the final belief means (either schedule)
  *     --extra-final-rounds N       islam, diagnostic: N rounds added to the final BA (default 0)
+ *     --relin-metric physical|D    metric of d_v: Euclidean tangent norm (default, revised D-a) or ||z_v||_{H_vv}
+ *     --work-budget W              islam: export the state after the last round with cumulative work <= W to
+ *                                  OUT/at_budget (work = linearizations + messages; certify_common.h)
+ *     --curve-every K              islam: export the state at the beliefs every K rounds to OUT/curve/
  */
 
 #include <cmath>
@@ -118,6 +122,9 @@ struct Args {
   int relin_every        = 1;
   std::string final_export;
   int extra_final_rounds = 0; // diagnostic: rounds added to the final BA (default 0 = shipped budget)
+  std::string relin_metric = "physical";
+  long long work_budget  = 0;
+  int curve_every        = 0;
 };
 
 static Args parse(int argc, char** argv) {
@@ -147,6 +154,9 @@ static Args parse(int argc, char** argv) {
     else if (k == "--relin-every") a.relin_every = std::stoi(next());
     else if (k == "--final-export") a.final_export = next();
     else if (k == "--extra-final-rounds") a.extra_final_rounds = std::stoi(next());
+    else if (k == "--relin-metric") a.relin_metric = next();
+    else if (k == "--work-budget") a.work_budget = std::stoll(next());
+    else if (k == "--curve-every") a.curve_every = std::stoi(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.relin_threshold >= 0 && (a.mode != "islam" || a.freeze || !a.unfrozen_iters.empty()))
@@ -222,23 +232,18 @@ int run_islam(const Args& a) {
 
   // Phase D, WP1: the same rounds under the threshold rule instead of per-round relinearization
   const bool threshold = a.relin_threshold >= 0;
-  std::unique_ptr<certify::RelinLog> relin_log;
   if (threshold) {
-    certify::makeDirs(a.out);
     gsolver::setFrozenRegularizer(a.frozen_eps);
-    certify::enableThresholdRelinearization(solver, a.relin_threshold, a.relin_every);
-    relin_log = std::make_unique<certify::RelinLog>(a.out + "/relin_rounds.csv");
+    certify::enableThresholdRelinearization(solver, a.relin_threshold, a.relin_every, a.relin_metric);
     meta.num("relinearize_threshold", a.relin_threshold).integer("relinearize_every", a.relin_every);
+    meta.str("relinearize_metric", a.relin_metric);
     meta.str("schedule", "threshold relinearization, one linearization point per variable (certify/THRESHOLD_RELIN.md)");
   } else {
     meta.str("schedule", "G-solver per-round relinearization at the cavity means (shipped)");
   }
-  auto round = [&]() {
-    auto tr = std::chrono::steady_clock::now();
-    solver.performIteration(factor_graph);
-    if (threshold)
-      relin_log->row(solver, factor_graph, certify::seconds_since(tr));
-  };
+  // Every round goes through the work account (WP1b); performIteration() itself is unchanged
+  certify::RoundRunner runner(solver, factor_graph, a.out, a.work_budget, a.curve_every, meta);
+  auto round = [&]() { runner.round(); };
 
   int iteration  = 0;
   int pose_count = 1;
@@ -272,6 +277,7 @@ int run_islam(const Args& a) {
     ++iteration;
     maybeExportUnfrozen(factor_graph, a, iteration, meta);
   }
+  runner.finish();
   if (threshold) {
     // The final beliefs become the linearization points (mu_ = beliefs for writeTUM; the frozen export is
     // then the linearization at the final beliefs, state z = 0).

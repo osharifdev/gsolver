@@ -29,6 +29,11 @@
  *                                  rounds, writes relin_rounds.csv and relin_counts.csv
  *     --relin-every R              at most one re-freeze per variable per R rounds (default 1)
  *     --final-export DIR           export the linearization at the final belief means (either schedule)
+ *     --relin-metric physical|D    metric of d_v: Euclidean tangent norm (default, revised D-a) or ||z_v||_{H_vv}
+ *     --work-budget W              export the state after the last round with cumulative work <= W to
+ *                                  OUT/at_budget (work = linearizations + messages; certify_common.h)
+ *     --curve-every K              export the state at the beliefs every K rounds to OUT/curve/
+ *     --pause-at N                 after round N write OUT/checkpoint_rN and wait for OUT/continue (or OUT/abort)
  */
 
 #include <cmath>
@@ -60,6 +65,9 @@ struct Args {
   double relin_threshold = -1.0; // >= 0: threshold relinearization (Phase D, WP1)
   int relin_every        = 1;
   std::string final_export;
+  std::string relin_metric = "physical";
+  long long work_budget  = 0;
+  int curve_every = 0, pause_at = 0;
 };
 
 static Args parse(int argc, char** argv) {
@@ -91,6 +99,10 @@ static Args parse(int argc, char** argv) {
     else if (k == "--relin-threshold") a.relin_threshold = std::stod(next());
     else if (k == "--relin-every") a.relin_every = std::stoi(next());
     else if (k == "--final-export") a.final_export = next();
+    else if (k == "--relin-metric") a.relin_metric = next();
+    else if (k == "--work-budget") a.work_budget = std::stoll(next());
+    else if (k == "--curve-every") a.curve_every = std::stoi(next());
+    else if (k == "--pause-at") a.pause_at = std::stoi(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.g2o.empty() || a.out.empty())
@@ -171,12 +183,11 @@ int main(int argc, char** argv) {
 
     // ---- normal (relinearizing) run: G-solver's per-round schedule, or the threshold rule (Phase D, WP1)
     const bool threshold = a.relin_threshold >= 0;
-    std::unique_ptr<certify::RelinLog> relin_log;
     if (threshold) {
       gsolver::setFrozenRegularizer(a.frozen_eps);
-      certify::enableThresholdRelinearization(solver, a.relin_threshold, a.relin_every);
-      relin_log = std::make_unique<certify::RelinLog>(a.out + "/relin_rounds.csv");
+      certify::enableThresholdRelinearization(solver, a.relin_threshold, a.relin_every, a.relin_metric);
       meta.num("relinearize_threshold", a.relin_threshold).integer("relinearize_every", a.relin_every);
+      meta.str("relinearize_metric", a.relin_metric);
       meta.str("schedule", "threshold relinearization, one linearization point per variable (certify/THRESHOLD_RELIN.md)");
     } else {
       meta.str("schedule", "G-solver per-round relinearization at the cavity means (shipped)");
@@ -188,20 +199,25 @@ int main(int argc, char** argv) {
     int iteration       = 0;
     bool converged      = false;
     auto t0             = std::chrono::steady_clock::now();
+    // Every round goes through the work account (WP1b); performIteration() itself is unchanged
+    certify::RoundRunner runner(solver, graph, a.out, a.work_budget, a.curve_every, meta);
+    auto maybePause = [&]() {
+      return !(a.pause_at > 0 && iteration == a.pause_at && iteration < max_iters) || runner.pause("r" + std::to_string(iteration));
+    };
     while (iteration < max_iters) {
       if (threshold) {
         // mu_ stays at the linearization points in threshold mode, so the belief-step monitor does not apply
-        auto tr = std::chrono::steady_clock::now();
-        solver.performIteration(graph);
+        runner.round();
         ++iteration;
-        relin_log->row(solver, graph, certify::seconds_since(tr));
         const auto& st = solver.threshold_stats_;
         std::cout << "threshold round " << iteration << ": re-frozen " << st.relinearized_vars.size()
                   << " variables, relinearized " << st.relinearized_factors << " factors" << std::endl;
+        if (!maybePause())
+          break;
         continue;
       }
       snap.take(vars);
-      solver.performIteration(graph);
+      runner.round();
       ++iteration;
       auto [smax, smed] = snap.steps(vars);
       step_max.push_back(smax);
@@ -218,7 +234,10 @@ int main(int argc, char** argv) {
         converged = true;
         break;
       }
+      if (!maybePause())
+        break;
     }
+    runner.finish();
     const double normal_secs = certify::seconds_since(t0);
     meta.integer("normal_iterations_before_freeze", iteration);
     meta.num("normal_run_wall_s", normal_secs);

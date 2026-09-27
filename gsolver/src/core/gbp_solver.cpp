@@ -168,46 +168,62 @@ namespace gsolver {
     }
   }
 
-  void GbpSolver::performThresholdIteration(FactorGraph& factor_graph) {
+  int GbpSolver::planThresholdRound(FactorGraph& factor_graph) {
     auto& st = threshold_stats_;
+    if (planned_)
+      return st.new_factors + static_cast<int>(planned_factors_.size());
     st.round++;
     st.relinearized_vars.clear();
     st.relinearized_factors = 0;
 
+    const size_t factors_before = known_factors_;
     registerNewNodes(factor_graph);
-    refreshDiagonalBlocks(factor_graph);
+    st.new_factors = static_cast<int>(known_factors_ - factors_before);
+    const bool hblock = (relinearize_metric_ == RelinMetric::HBlock);
+    if (hblock)
+      refreshDiagonalBlocks(factor_graph);
 
     // Displacement since linearization and the threshold test
     const size_t n = factor_graph.variable_nodes_.size();
-    std::vector<char> relin(n, 0);
+    planned_relin_.assign(n, 0);
 #pragma omp parallel for schedule(static)
     for (size_t v = 0; v < n; ++v) {
-      if (D_[v].size() == 0) {
-        st.displacement[v] = 0.0;
-        continue;
-      }
       const Eigen::VectorXd z = factor_graph.variable_nodes_[v]->tangentState();
-      const double d          = std::sqrt(std::max(0.0, z.dot(D_[v] * z)));
-      st.displacement[v]      = d;
-      relin[v] = (st.round - last_relin_round_[v] >= relinearize_every_) && (d > relinearize_threshold_);
+      double d                = 0.0;
+      if (!hblock)
+        d = z.norm();
+      else if (D_[v].size() != 0)
+        d = std::sqrt(std::max(0.0, z.dot(D_[v] * z)));
+      st.displacement[v] = d;
+      planned_relin_[v]  = (st.round - last_relin_round_[v] >= relinearize_every_) && (d > relinearize_threshold_);
     }
+    std::vector<char> relin_factor(factor_graph.factor_nodes_.size(), 0);
+    for (size_t v = 0; v < n; ++v)
+      if (planned_relin_[v])
+        for (const auto& fe : var_factors_[v])
+          relin_factor[fe.first] = 1;
+    planned_factors_.clear();
+    for (size_t f = 0; f < relin_factor.size(); ++f)
+      if (relin_factor[f])
+        planned_factors_.push_back(static_cast<int>(f));
+    planned_ = true;
+    return st.new_factors + static_cast<int>(planned_factors_.size());
+  }
+
+  void GbpSolver::performThresholdIteration(FactorGraph& factor_graph) {
+    planThresholdRound(factor_graph);
+    auto& st = threshold_stats_;
 
     // Re-freeze the moved variables at their beliefs, then relinearize every factor touching them
-    std::vector<char> relin_factor(factor_graph.factor_nodes_.size(), 0);
-    for (size_t v = 0; v < n; ++v) {
-      if (!relin[v])
+    for (size_t v = 0; v < planned_relin_.size(); ++v) {
+      if (!planned_relin_[v])
         continue;
       factor_graph.variable_nodes_[v]->refreezeAtBelief();
       last_relin_round_[v] = st.round;
       st.relinearizations[v]++;
       st.relinearized_vars.push_back(static_cast<int>(v));
-      for (const auto& fe : var_factors_[v])
-        relin_factor[fe.first] = 1;
     }
-    std::vector<int> factors;
-    for (size_t f = 0; f < relin_factor.size(); ++f)
-      if (relin_factor[f])
-        factors.push_back(static_cast<int>(f));
+    const auto& factors = planned_factors_;
 #pragma omp parallel for schedule(dynamic, 64)
     for (size_t k = 0; k < factors.size(); ++k)
       factor_graph.factor_nodes_[factors[k]]->freezeLinearization();
@@ -215,6 +231,7 @@ namespace gsolver {
       for (int v : factor_vars_[f])
         D_dirty_[v] = 1;
     st.relinearized_factors = static_cast<int>(factors.size());
+    planned_                = false;
 
     performSynchronousPhases(factor_graph);
   }
@@ -227,6 +244,7 @@ namespace gsolver {
     for (size_t f = 0; f < factor_graph.factor_nodes_.size(); ++f)
       factor_graph.factor_nodes_[f]->freezeLinearization();
     std::fill(D_dirty_.begin(), D_dirty_.end(), 1);
+    planned_ = false;
   }
 
   void GbpSolver::performSynchronousPhases(FactorGraph& factor_graph) {
