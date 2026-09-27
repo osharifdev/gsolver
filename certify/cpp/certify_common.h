@@ -17,6 +17,7 @@
 #include <cstdint>
 #include <fstream>
 #include <map>
+#include <set>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -647,7 +648,7 @@ namespace certify {
         : solver(s), g(graph), out(dir), budget(work_budget), curve_every(every), meta(std::move(m)) {
       makeDirs(out);
       log.open(out + "/work.csv");
-      log << "round,linearizations,messages,cumulative_work,wall_s\n";
+      log << "round,linearizations,messages,cumulative_work,wall_s,node_updates,asleep\n";
       if (solver.threshold_relinearization_)
         relin_log = std::make_unique<RelinLog>(out + "/relin_rounds.csv");
     }
@@ -678,7 +679,120 @@ namespace certify {
       exportModel(g, dir, Charts::Beliefs, m);
     }
 
+    // ---- Phase D, WP2: the sidecar protocol (certify/SIDECAR.md). Before the message passing of every round the
+    // current linearization is exported to <sidecar>/model (frozen charts, state z), the per-pose round data to
+    // <sidecar>/round_info.tsv, and <sidecar>/ready is written; the sidecar answers with <sidecar>/decision (the
+    // round number, then the ids of the poses that sleep during this round's message passing).
+    std::string sidecar;              // empty: off
+    std::string persist;              // exports of the sampled rounds go to <persist>/export_rNNNNN
+    std::vector<int> persist_rounds;  // e.g. 1, 10 and the last
+    int last_round = -1;
+    int pause_every = 0;              // checkpoint pause every N rounds (0: none)
+    long long node_updates = 0;       // cumulative variable updates (awake variables with at least one edge)
+    std::unordered_map<std::string, int> var_index_;
+
+    void writeAtomic(const std::string& path, const std::string& text) {
+      std::ofstream(path + ".tmp") << text;
+      std::rename((path + ".tmp").c_str(), path.c_str());
+    }
+
+    // Messages and node updates of a round with the given sleep mask (sleeping variables neither send nor receive)
+    std::pair<long long, long long> awakeWork() {
+      if (var_index_.size() != g.variable_nodes_.size()) {
+        var_index_.clear();
+        for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
+          var_index_[g.variable_nodes_[v]->id_] = static_cast<int>(v);
+      }
+      const auto& asleep = solver.asleep_;
+      auto sleeping = [&](int v) { return v < static_cast<int>(asleep.size()) && asleep[v]; };
+      std::vector<int> degree(g.variable_nodes_.size(), 0);
+      long long f2v = 0;
+      for (auto& f : g.factor_nodes_)
+        for (size_t i = 0; i < f->numberOfEdges(); ++i) {
+          const int v = var_index_.at(f->edgeVariableId(i));
+          degree[v]++;
+          if (!sleeping(v))
+            f2v++;
+        }
+      long long v2f = 0, updates = 0;
+      for (size_t v = 0; v < degree.size(); ++v)
+        if (!sleeping(static_cast<int>(v)) && degree[v] > 0) {
+          updates++;
+          if (degree[v] >= 2)
+            v2f += degree[v];
+        }
+      return {f2v + v2f, updates};
+    }
+
+    void sidecarRound() {
+      const long long lin = solver.planThresholdRound(g);
+      solver.applyThresholdRelinearization(g);
+      const int r = solver.threshold_stats_.round;
+      exportModel(g, sidecar + "/model", Charts::Frozen, meta);
+      {
+        const auto& st = solver.threshold_stats_;
+        std::vector<char> relin(g.variable_nodes_.size(), 0);
+        for (int v : st.relinearized_vars)
+          relin[v] = 1;
+        std::ostringstream info;
+        info << "round\t" << r << "\nlast\t" << (r == last_round ? 1 : 0) << "\nnew_factors\t" << st.new_factors
+             << "\nrelinearized_factors\t" << st.relinearized_factors << "\n";
+        info << "id\td\trelinearized\tasleep\n";
+        for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
+          if (isPoseId(g.variable_nodes_[v]->id_))
+            info << g.variable_nodes_[v]->id_ << "\t" << jsonNum(st.displacement[v]) << "\t" << int(relin[v]) << "\t"
+                 << int(v < solver.asleep_.size() && solver.asleep_[v]) << "\n";
+        writeAtomic(sidecar + "/round_info.tsv", info.str());
+        writeAtomic(sidecar + "/ready", std::to_string(r) + "\n");
+      }
+      if (std::find(persist_rounds.begin(), persist_rounds.end(), r) != persist_rounds.end() || r == last_round) {
+        char name[48];
+        snprintf(name, sizeof(name), "/export_r%05d", r);
+        Json m = meta;
+        m.integer("round", r).str("export", "linearization and state before this round's message passing");
+        exportModel(g, persist + name, Charts::Frozen, m);
+      }
+      // wait for the decision of this round
+      std::set<std::string> sleep_ids;
+      while (true) {
+        std::ifstream f(sidecar + "/decision");
+        int rr = -1;
+        if (f && (f >> rr) && rr == r) {
+          std::string id;
+          while (f >> id)
+            sleep_ids.insert(id);
+          break;
+        }
+        struct stat stt;
+        if (stat((sidecar + "/abort").c_str(), &stt) == 0)
+          throw std::runtime_error("sidecar aborted at round " + std::to_string(r));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+      }
+      for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
+        if (isPoseId(g.variable_nodes_[v]->id_))
+          solver.setAsleep(g, v, sleep_ids.count(g.variable_nodes_[v]->id_) > 0);
+      const auto [msg, updates] = awakeWork();
+      auto t0 = std::chrono::steady_clock::now();
+      solver.performIteration(g);
+      const double wall = seconds_since(t0);
+      ++rounds;
+      cumulative += lin + msg;
+      node_updates += updates;
+      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << "," << updates << ","
+          << sleep_ids.size() << "\n";
+      log.flush();
+      if (relin_log)
+        relin_log->row(solver, g, wall);
+      if (pause_every > 0 && rounds % pause_every == 0 && rounds != last_round)
+        if (!pause("r" + std::to_string(rounds)))
+          throw std::runtime_error("aborted at the checkpoint after round " + std::to_string(rounds));
+    }
+
     void round() {
+      if (!sidecar.empty()) {
+        sidecarRound();
+        return;
+      }
       const long long lin = solver.threshold_relinearization_ ? solver.planThresholdRound(g)
                                                               : static_cast<long long>(g.factor_nodes_.size());
       const long long msg = messageCount();
@@ -692,7 +806,7 @@ namespace certify {
       const double wall = seconds_since(t0);
       ++rounds;
       cumulative += lin + msg;
-      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << "\n";
+      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << ",,\n";
       log.flush();
       if (relin_log)
         relin_log->row(solver, g, wall);

@@ -195,7 +195,8 @@ namespace gsolver {
       else if (D_[v].size() != 0)
         d = std::sqrt(std::max(0.0, z.dot(D_[v] * z)));
       st.displacement[v] = d;
-      planned_relin_[v]  = (st.round - last_relin_round_[v] >= relinearize_every_) && (d > relinearize_threshold_);
+      planned_relin_[v]  = (st.round - last_relin_round_[v] >= relinearize_every_) && (d > relinearize_threshold_) &&
+                          !(v < asleep_.size() && asleep_[v]);
     }
     std::vector<char> relin_factor(factor_graph.factor_nodes_.size(), 0);
     for (size_t v = 0; v < n; ++v)
@@ -210,8 +211,10 @@ namespace gsolver {
     return st.new_factors + static_cast<int>(planned_factors_.size());
   }
 
-  void GbpSolver::performThresholdIteration(FactorGraph& factor_graph) {
+  void GbpSolver::applyThresholdRelinearization(FactorGraph& factor_graph) {
     planThresholdRound(factor_graph);
+    if (applied_)
+      return;
     auto& st = threshold_stats_;
 
     // Re-freeze the moved variables at their beliefs, then relinearize every factor touching them
@@ -231,9 +234,21 @@ namespace gsolver {
       for (int v : factor_vars_[f])
         D_dirty_[v] = 1;
     st.relinearized_factors = static_cast<int>(factors.size());
-    planned_                = false;
+    applied_                = true;
+  }
 
+  void GbpSolver::performThresholdIteration(FactorGraph& factor_graph) {
+    applyThresholdRelinearization(factor_graph);
     performSynchronousPhases(factor_graph);
+    planned_ = false;
+    applied_ = false;
+  }
+
+  void GbpSolver::setAsleep(FactorGraph& factor_graph, size_t v, bool asleep) {
+    if (asleep_.size() < factor_graph.variable_nodes_.size())
+      asleep_.resize(factor_graph.variable_nodes_.size(), 0);
+    asleep_[v] = asleep ? 1 : 0;
+    factor_graph.variable_nodes_[v]->setEdgesAsleep(asleep);
   }
 
   void GbpSolver::relinearizeAllAtBeliefs(FactorGraph& factor_graph) {
@@ -245,10 +260,15 @@ namespace gsolver {
       factor_graph.factor_nodes_[f]->freezeLinearization();
     std::fill(D_dirty_.begin(), D_dirty_.end(), 1);
     planned_ = false;
+    applied_ = false;
   }
 
   void GbpSolver::performSynchronousPhases(FactorGraph& factor_graph) {
-    // The four phases of performIteration(), on the frozen linear model
+    // The four phases of performIteration(), on the frozen linear model. A sleeping variable (setAsleep) neither
+    // updates its belief nor sends messages, and factors do not recompute their messages to it.
+    const size_t nv = factor_graph.variable_nodes_.size();
+    if (asleep_.size() < nv)
+      asleep_.resize(nv, 0);
     if (dynamic_schedule_) {
 #pragma omp parallel for schedule(dynamic, 16)
       for (auto& factor_node : factor_graph.factor_nodes_) {
@@ -259,12 +279,14 @@ namespace gsolver {
         factor_node->sendAllMessages();
       }
 #pragma omp parallel for schedule(dynamic, 16)
-      for (auto& variable_node : factor_graph.variable_nodes_) {
-        variable_node->updateMuAndSigma();
+      for (size_t v = 0; v < nv; ++v) {
+        if (!asleep_[v])
+          factor_graph.variable_nodes_[v]->updateMuAndSigma();
       }
 #pragma omp parallel for schedule(dynamic, 16)
-      for (auto& variable_node : factor_graph.variable_nodes_) {
-        variable_node->sendAllMessages();
+      for (size_t v = 0; v < nv; ++v) {
+        if (!asleep_[v])
+          factor_graph.variable_nodes_[v]->sendAllMessages();
       }
       return;
     }
@@ -277,12 +299,14 @@ namespace gsolver {
       factor_node->sendAllMessages();
     }
 #pragma omp parallel for
-    for (auto& variable_node : factor_graph.variable_nodes_) {
-      variable_node->updateMuAndSigma();
+    for (size_t v = 0; v < nv; ++v) {
+      if (!asleep_[v])
+        factor_graph.variable_nodes_[v]->updateMuAndSigma();
     }
 #pragma omp parallel for
-    for (auto& variable_node : factor_graph.variable_nodes_) {
-      variable_node->sendAllMessages();
+    for (size_t v = 0; v < nv; ++v) {
+      if (!asleep_[v])
+        factor_graph.variable_nodes_[v]->sendAllMessages();
     }
   }
 

@@ -34,6 +34,10 @@
  *                                  OUT/at_budget (work = linearizations + messages; certify_common.h)
  *     --curve-every K              export the state at the beliefs every K rounds to OUT/curve/
  *     --pause-at N                 after round N write OUT/checkpoint_rN and wait for OUT/continue (or OUT/abort)
+ *     --sidecar DIR                Phase D, WP2 (threshold mode): certify every round with the Python sidecar through
+ *                                  DIR (certify/SIDECAR.md); the sidecar decides which poses sleep
+ *     --persist-rounds LIST        with --sidecar: also export these rounds (and the last) to OUT/export_rNNNNN
+ *     --pause-every N              with --sidecar: checkpoint every N rounds (export, wait for OUT/continue)
  */
 
 #include <cmath>
@@ -67,7 +71,9 @@ struct Args {
   std::string final_export;
   std::string relin_metric = "physical";
   long long work_budget  = 0;
-  int curve_every = 0, pause_at = 0;
+  int curve_every = 0, pause_at = 0, pause_every = 0;
+  std::string sidecar;
+  std::vector<int> persist_rounds;
 };
 
 static Args parse(int argc, char** argv) {
@@ -103,6 +109,9 @@ static Args parse(int argc, char** argv) {
     else if (k == "--work-budget") a.work_budget = std::stoll(next());
     else if (k == "--curve-every") a.curve_every = std::stoi(next());
     else if (k == "--pause-at") a.pause_at = std::stoi(next());
+    else if (k == "--sidecar") a.sidecar = next();
+    else if (k == "--persist-rounds") a.persist_rounds = certify::parseIntList(next());
+    else if (k == "--pause-every") a.pause_every = std::stoi(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.g2o.empty() || a.out.empty())
@@ -201,6 +210,15 @@ int main(int argc, char** argv) {
     auto t0             = std::chrono::steady_clock::now();
     // Every round goes through the work account (WP1b); performIteration() itself is unchanged
     certify::RoundRunner runner(solver, graph, a.out, a.work_budget, a.curve_every, meta);
+    if (!a.sidecar.empty()) {
+      if (!threshold)
+        throw std::runtime_error("--sidecar needs --relin-threshold");
+      runner.sidecar        = a.sidecar;
+      runner.persist        = a.out;
+      runner.persist_rounds = a.persist_rounds;
+      runner.last_round     = max_iters;
+      runner.pause_every    = a.pause_every;
+    }
     auto maybePause = [&]() {
       return !(a.pause_at > 0 && iteration == a.pause_at && iteration < max_iters) || runner.pause("r" + std::to_string(iteration));
     };

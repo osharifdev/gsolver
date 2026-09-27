@@ -1,0 +1,54 @@
+{
+ "run": "kf40",
+ "rounds": 100,
+ "a0_fail_rounds": [],
+ "poses_end": 40,
+ "validity_double": {
+  "upper": 0,
+  "lower": 0,
+  "pose_rounds": 4000
+ },
+ "validity_extended": {
+  "1": {
+   "upper_violations": 0,
+   "lower_violations": 0,
+   "worst_upper_margin": -0.061237180812904655,
+   "worst_lower_margin": -0.04867527758472078,
+   "max_rel_err_double_vs_ext": 2.2032128551008877e-13,
+   "S_lo_violations": 0
+  },
+  "10": {
+   "upper_violations": 0,
+   "lower_violations": 0,
+   "worst_upper_margin": -0.023141831466077616,
+   "worst_lower_margin": -0.02184086315486824,
+   "max_rel_err_double_vs_ext": 7.93086317343839e-14,
+   "S_lo_violations": 0
+  },
+  "100": {
+   "upper_violations": 0,
+   "lower_violations": 0,
+   "worst_upper_margin": 1.3503169025535767e-11,
+   "worst_lower_margin": 3.909072972728787e-12,
+   "max_rel_err_double_vs_ext": 1.3504598285032225e-11,
+   "S_lo_violations": 0
+  }
+ },
+ "loewner_sampled": {
+  "1": 2.8004091561196565e-13,
+  "10": null,
+  "100": -3.1894527894173876e-14
+ },
+ "certified_stop_end": 0.1,
+ "oracle_stop_end": 0.125,
+ "max_abs_gap": 0.05,
+ "rounds_gap_over_5pt": 0,
+ "first_round_gap_over_5pt": null,
+ "refactorizations_per_pose_per_100_rounds": 100.0,
+ "wakes": {
+  "woke_recheck": 0,
+  "woke_relinearization": 0,
+  "woke_new_factor": 0
+ },
+ "relinearize_now": "not implemented (R = 1: cannot fire)"
+}

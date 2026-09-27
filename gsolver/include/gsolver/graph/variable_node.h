@@ -55,6 +55,10 @@ namespace gsolver {
     // Evaluation at the beliefs without changing the solver state (e.g. an export in the middle of a run):
     // the belief mean is mu_ when not frozen and mu_lin_ ⊞ z_ when frozen.
     void beginEvaluateAtBelief() override;
+    void setEdgesAsleep(bool asleep) override {
+      for (auto& edge : edges_)
+        edge->asleep_ = asleep;
+    }
     EstimateType beliefMean();
     VectorLieDim offsetFromBelief(const EstimateType& point); // point ⊟ belief, in the chart at the belief
     VectorLieDim cavityOffsetFromBelief(size_t i);            // incoming-to-factor mean of edge i, ⊟ belief

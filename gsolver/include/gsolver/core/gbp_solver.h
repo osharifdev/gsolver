@@ -57,6 +57,13 @@ namespace gsolver {
     // return its linearizations: new factors plus factors relinearized by the rule. performIteration() then
     // runs exactly this round. Lets a caller stop at a work budget.
     int planThresholdRound(FactorGraph& factor_graph);
+    // Threshold mode: apply the planned round's re-freezes and relinearizations now (performIteration() then runs
+    // only the message passing), so a caller can inspect the current linearization before the messages.
+    void applyThresholdRelinearization(FactorGraph& factor_graph);
+    // Threshold mode: put variable v (index into variable_nodes_) to sleep or wake it. A sleeping variable keeps its
+    // state and its last messages; it does not update, send, or take part in the relinearization test.
+    void setAsleep(FactorGraph& factor_graph, size_t v, bool asleep);
+    std::vector<char> asleep_;
 
     struct ThresholdStats {
       int round = 0;                      // threshold rounds planned so far (the current one included)
@@ -90,6 +97,7 @@ namespace gsolver {
     size_t known_vars_    = 0;
     size_t known_factors_ = 0;
     bool planned_         = false; // a round has been planned and not yet run
+    bool applied_         = false; // its relinearizations have been applied
     std::vector<char> planned_relin_;
     std::vector<int> planned_factors_;
   };

@@ -1,0 +1,47 @@
+{
+ "1": {
+  "round": 1,
+  "poses": 161,
+  "rel_S_fast_vs_extended": 1.4870924852604235e-14,
+  "upper_checked": 161,
+  "lower_checked": 161,
+  "upper_violations": 0,
+  "lower_violations": 0,
+  "worst_upper_margin": -0.06786069875690455,
+  "worst_lower_margin": -0.05334001505896987,
+  "max_rel_err_double_vs_ext": 2.679140308841961e-13,
+  "S_lo_checked": 161,
+  "S_lo_violations": 0,
+  "max_rel_S_exact_double_vs_ext": 5.910867606697558e-14
+ },
+ "10": {
+  "round": 10,
+  "poses": 161,
+  "rel_S_fast_vs_extended": 1.2452015941336456e-14,
+  "upper_checked": 161,
+  "lower_checked": 161,
+  "upper_violations": 0,
+  "lower_violations": 0,
+  "worst_upper_margin": -0.007982395469684647,
+  "worst_lower_margin": -0.008204164392987611,
+  "max_rel_err_double_vs_ext": 1.127985014256333e-12,
+  "S_lo_checked": 0,
+  "S_lo_violations": 0,
+  "max_rel_S_exact_double_vs_ext": 5.476300530429742e-14
+ },
+ "200": {
+  "round": 200,
+  "poses": 161,
+  "rel_S_fast_vs_extended": 2.422179665247895e-14,
+  "upper_checked": 161,
+  "lower_checked": 161,
+  "upper_violations": 0,
+  "lower_violations": 0,
+  "worst_upper_margin": -0.0017922561946019239,
+  "worst_lower_margin": -0.0018527054827146856,
+  "max_rel_err_double_vs_ext": 3.108847031026272e-11,
+  "S_lo_checked": 137,
+  "S_lo_violations": 0,
+  "max_rel_S_exact_double_vs_ext": 1.0783837637735526e-13
+ }
+}

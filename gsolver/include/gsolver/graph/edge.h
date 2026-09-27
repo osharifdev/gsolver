@@ -30,6 +30,7 @@ namespace gsolver {
     MessageType factor_to_variable_message_;
 
     bool frozen_ = false; // Frozen (linear) mode: messages on this edge live in tau_, not mu_
+    bool asleep_ = false; // Threshold mode: the variable is asleep, its factor-to-variable message is not recomputed
   };
 
 } // namespace gsolver

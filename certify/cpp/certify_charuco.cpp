@@ -30,6 +30,10 @@
  *     --work-budget W              islam: export the state after the last round with cumulative work <= W to
  *                                  OUT/at_budget (work = linearizations + messages; certify_common.h)
  *     --curve-every K              islam: export the state at the beliefs every K rounds to OUT/curve/
+ *     --sidecar DIR                Phase D, WP2 (threshold mode): certify every round with the Python sidecar through
+ *                                  DIR (certify/SIDECAR.md); the sidecar decides which poses sleep
+ *     --persist-rounds LIST        with --sidecar: also export these rounds (and the last) to OUT/export_rNNNNN
+ *     --pause-every N              with --sidecar: checkpoint every N rounds (export, wait for OUT/continue)
  */
 
 #include <cmath>
@@ -125,6 +129,9 @@ struct Args {
   std::string relin_metric = "physical";
   long long work_budget  = 0;
   int curve_every        = 0;
+  std::string sidecar;
+  std::vector<int> persist_rounds;
+  int pause_every = 0;
 };
 
 static Args parse(int argc, char** argv) {
@@ -157,6 +164,9 @@ static Args parse(int argc, char** argv) {
     else if (k == "--relin-metric") a.relin_metric = next();
     else if (k == "--work-budget") a.work_budget = std::stoll(next());
     else if (k == "--curve-every") a.curve_every = std::stoi(next());
+    else if (k == "--sidecar") a.sidecar = next();
+    else if (k == "--persist-rounds") a.persist_rounds = certify::parseIntList(next());
+    else if (k == "--pause-every") a.pause_every = std::stoi(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.relin_threshold >= 0 && (a.mode != "islam" || a.freeze || !a.unfrozen_iters.empty()))
@@ -243,6 +253,15 @@ int run_islam(const Args& a) {
   }
   // Every round goes through the work account (WP1b); performIteration() itself is unchanged
   certify::RoundRunner runner(solver, factor_graph, a.out, a.work_budget, a.curve_every, meta);
+  if (!a.sidecar.empty()) {
+    if (!threshold)
+      throw std::runtime_error("--sidecar needs --relin-threshold");
+    runner.sidecar        = a.sidecar;
+    runner.persist        = a.out;
+    runner.persist_rounds = a.persist_rounds;
+    runner.last_round     = (n_total - 1) * iterations_per_pose + final_ba_iterations + a.extra_final_rounds;
+    runner.pause_every    = a.pause_every;
+  }
   auto round = [&]() { runner.round(); };
 
   int iteration  = 0;

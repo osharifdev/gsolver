@@ -1,0 +1,14 @@
+{
+ "export": "exports/phaseD/wp1b/diag/default/final",
+ "poses": 40,
+ "move_median": 0.3631286608786627,
+ "move_p95": 0.9393713209251544,
+ "move_max": 1.8886931457265084,
+ "S_lo_median": 4.114961128962046,
+ "S_exact_median": 4.115100377053706,
+ "frac_move_gt_eta_S_lo": 0.45,
+ "frac_move_gt_eta_S_exact": 0.45,
+ "ratio_move_to_eta_S_lo_median": 0.8622162581225885,
+ "ratio_move_to_eta_S_lo_max": 4.85197214054493,
+ "worst_pose_time": 8.003122
+}
