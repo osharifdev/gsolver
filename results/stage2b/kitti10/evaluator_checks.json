@@ -1,0 +1,45 @@
+{
+ "dataset": "kitti10",
+ "load_check": {
+  "variables": 4268,
+  "gp": {
+   "factors": 39,
+   "max_abs_dJ": 0,
+   "max_abs_J": 9.920308181664042,
+   "max_abs_de": 0,
+   "max_abs_e": 1.3747771873015147
+  },
+  "stereo": {
+   "factors": 12680,
+   "max_abs_dJ": 0,
+   "max_abs_J": 1217.8819002420764,
+   "max_abs_de": 0,
+   "max_abs_e": 9.053495587189374
+  }
+ },
+ "F0_vs_solver_stereo": {
+  "median": 8.505454412077972e-13,
+  "p99": 9.95488351770927e-09,
+  "max": 4.9790659755635445e-08
+ },
+ "F0_vs_solver_gp": {
+  "median": 4.470634782343254e-08,
+  "p99": 4.631855053993172e-06,
+  "max": 4.7681672997357654e-06
+ },
+ "dF_vs_central_differences_max_rel": 3.3154105612476926e-09,
+ "enclosures": {
+  "stereo": {
+   "point_contains_double": true,
+   "point_F_width_max": 3.532170467224205e-08,
+   "box_flags": 0,
+   "box_random_points_outside": 0
+  },
+  "gp": {
+   "point_contains_double": true,
+   "point_F_width_max": 4.361916126072174e-07,
+   "box_flags": 0,
+   "box_random_points_outside": 0
+  }
+ }
+}

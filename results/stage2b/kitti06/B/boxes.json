@@ -1,0 +1,250 @@
+{
+ "option": "B",
+ "collatz_wielandt": {
+  "max_row_sum": 0.29891942480211897,
+  "perron_witness_ratio": 0.23766489397984247,
+  "certified_rho_lt_1": true
+ },
+ "attempts": [
+  {
+   "c": 1,
+   "verified": false,
+   "poses_ok": 0,
+   "landmarks_ok": 0,
+   "landmarks": 4676,
+   "pose_ratio_max": Infinity,
+   "pose_ratio_median": Infinity,
+   "landmark_ratio_max": Infinity,
+   "landmark_ratio_p99": NaN,
+   "landmarks_failing": 4676,
+   "unbounded_factors": 69,
+   "unbounded_types": {
+    "stereo": 69,
+    "gp": 0
+   },
+   "poses_touching_unbounded": 25,
+   "s_landmark_over_u_max": 0.9997053500443653,
+   "s_pose_over_u": {
+    "n": 40,
+    "median": 0.8424175747725786,
+    "p95": 1.3976344679435888,
+    "max": 1.665112653708899
+   },
+   "poses_with_infinite_Psi": 40,
+   "landmarks_s_over_u": 0,
+   "delta_stats": {
+    "pose-pose": {
+     "n": 93,
+     "median": 0.0030112072913672577,
+     "p95": 1.234670747261458,
+     "max": 7.200012274245113
+    },
+    "pose-landmark": {
+     "n": 22594,
+     "median": 0.007486564860634569,
+     "p95": 0.1333782793585146,
+     "max": 8935.303940109165
+    },
+    "landmark-landmark": {
+     "n": 4607,
+     "median": 1.7292455330618948,
+     "p95": 51.38218044960592,
+     "max": 312261963.55101275
+    }
+   }
+  },
+  {
+   "c": 2,
+   "verified": false,
+   "poses_ok": 0,
+   "landmarks_ok": 0,
+   "landmarks": 4676,
+   "pose_ratio_max": Infinity,
+   "pose_ratio_median": Infinity,
+   "landmark_ratio_max": Infinity,
+   "landmark_ratio_p99": NaN,
+   "landmarks_failing": 4676,
+   "unbounded_factors": 120,
+   "unbounded_types": {
+    "stereo": 120,
+    "gp": 0
+   },
+   "poses_touching_unbounded": 32,
+   "s_landmark_over_u_max": 0.49985267502218267,
+   "s_pose_over_u": {
+    "n": 40,
+    "median": 0.4212087873862893,
+    "p95": 0.6988172339717944,
+    "max": 0.8325563268544495
+   },
+   "poses_with_infinite_Psi": 40,
+   "landmarks_s_over_u": 0,
+   "delta_stats": {
+    "pose-pose": {
+     "n": 86,
+     "median": 0.005775371748381212,
+     "p95": 2.0113523176680763,
+     "max": 74.3064403247165
+    },
+    "pose-landmark": {
+     "n": 22492,
+     "median": 0.01530594492580072,
+     "p95": 0.2683118344264623,
+     "max": 261848.77911896963
+    },
+    "landmark-landmark": {
+     "n": 4562,
+     "median": 1.7314198555937246,
+     "p95": 103.67802049092009,
+     "max": 21685633693.6615
+    }
+   }
+  },
+  {
+   "c": 4,
+   "verified": false,
+   "poses_ok": 0,
+   "landmarks_ok": 0,
+   "landmarks": 4676,
+   "pose_ratio_max": Infinity,
+   "pose_ratio_median": Infinity,
+   "landmark_ratio_max": Infinity,
+   "landmark_ratio_p99": NaN,
+   "landmarks_failing": 4676,
+   "unbounded_factors": 230,
+   "unbounded_types": {
+    "stereo": 230,
+    "gp": 0
+   },
+   "poses_touching_unbounded": 39,
+   "s_landmark_over_u_max": 0.24992633751109133,
+   "s_pose_over_u": {
+    "n": 40,
+    "median": 0.21060439369314465,
+    "p95": 0.3494086169858972,
+    "max": 0.41627816342722473
+   },
+   "poses_with_infinite_Psi": 40,
+   "landmarks_s_over_u": 0,
+   "delta_stats": {
+    "pose-pose": {
+     "n": 79,
+     "median": 0.01113533757903584,
+     "p95": 0.1137931629118127,
+     "max": 4.023790990601185
+    },
+    "pose-landmark": {
+     "n": 22280,
+     "median": 0.0313949501525596,
+     "p95": 0.525541185686399,
+     "max": 605.5600586619431
+    },
+    "landmark-landmark": {
+     "n": 4486,
+     "median": 1.9167331923602449,
+     "p95": 217.9211376811781,
+     "max": 9097405.11847703
+    }
+   }
+  },
+  {
+   "c": 8,
+   "verified": false,
+   "poses_ok": 0,
+   "landmarks_ok": 0,
+   "landmarks": 4676,
+   "pose_ratio_max": Infinity,
+   "pose_ratio_median": Infinity,
+   "landmark_ratio_max": Infinity,
+   "landmark_ratio_p99": NaN,
+   "landmarks_failing": 4676,
+   "unbounded_factors": 332,
+   "unbounded_types": {
+    "stereo": 332,
+    "gp": 0
+   },
+   "poses_touching_unbounded": 40,
+   "s_landmark_over_u_max": 0.12496316875554567,
+   "s_pose_over_u": {
+    "n": 40,
+    "median": 0.10530219684657233,
+    "p95": 0.1747043084929486,
+    "max": 0.20813908171361237
+   },
+   "poses_with_infinite_Psi": 40,
+   "landmarks_s_over_u": 0,
+   "delta_stats": {
+    "pose-pose": {
+     "n": 78,
+     "median": 0.02226873626835099,
+     "p95": 0.17917352745646473,
+     "max": 0.2772497364745703
+    },
+    "pose-landmark": {
+     "n": 22076,
+     "median": 0.06586211129487166,
+     "p95": 1.1559649779671763,
+     "max": 6685.619380758682
+    },
+    "landmark-landmark": {
+     "n": 4385,
+     "median": 4.078861127371395,
+     "p95": 490.2379698440012,
+     "max": 364145625.8988128
+    }
+   }
+  },
+  {
+   "c": 16,
+   "verified": false,
+   "poses_ok": 0,
+   "landmarks_ok": 0,
+   "landmarks": 4676,
+   "pose_ratio_max": Infinity,
+   "pose_ratio_median": Infinity,
+   "landmark_ratio_max": Infinity,
+   "landmark_ratio_p99": NaN,
+   "landmarks_failing": 4676,
+   "unbounded_factors": 553,
+   "unbounded_types": {
+    "stereo": 553,
+    "gp": 0
+   },
+   "poses_touching_unbounded": 40,
+   "s_landmark_over_u_max": 0.062481584377772834,
+   "s_pose_over_u": {
+    "n": 40,
+    "median": 0.05265109842328616,
+    "p95": 0.0873521542464743,
+    "max": 0.10406954085680618
+   },
+   "poses_with_infinite_Psi": 40,
+   "landmarks_s_over_u": 0,
+   "delta_stats": {
+    "pose-pose": {
+     "n": 78,
+     "median": 0.04475781759069067,
+     "p95": 0.3641627900820045,
+     "max": 0.5671443461541712
+    },
+    "pose-landmark": {
+     "n": 21634,
+     "median": 0.13714179545399224,
+     "p95": 2.644762523552794,
+     "max": 1367.8693539577203
+    },
+    "landmark-landmark": {
+     "n": 4172,
+     "median": 9.195778696947585,
+     "p95": 1264.4254509856344,
+     "max": 50685650.05223978
+    }
+   }
+  }
+ ],
+ "landmark_radius": {
+  "option_A_median": 6.39823368062413,
+  "option_B_median": 0.016707117525775982,
+  "option_B_max": 339385.9788539443
+ }
+}

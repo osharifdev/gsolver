@@ -1,0 +1,42 @@
+{
+ "A": {
+  "kitti06": {
+   "box_verifies": false,
+   "c": null
+  },
+  "kitti03": {
+   "box_verifies": false,
+   "c": null
+  },
+  "kitti04": {
+   "box_verifies": false,
+   "c": null
+  },
+  "kitti10": {
+   "box_verifies": false,
+   "c": null
+  },
+  "segments_passing": 0,
+  "gate_B2": false
+ },
+ "B": {
+  "kitti06": {
+   "box_verifies": false,
+   "c": null
+  },
+  "kitti03": {
+   "box_verifies": false,
+   "c": null
+  },
+  "kitti04": {
+   "box_verifies": false,
+   "c": null
+  },
+  "kitti10": {
+   "box_verifies": false,
+   "c": null
+  },
+  "segments_passing": 0,
+  "gate_B2": false
+ }
+}

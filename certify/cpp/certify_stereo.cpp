@@ -44,6 +44,8 @@
  *                                  export DIR into the built graph (checked against its J and e) and serve nonlinear
  *                                  residual probes through --probe-dir (certify/NL_PROBE.md) until probe_quit
  *     --probe-dir DIR              the probe exchange directory (in /dev/shm)
+ *     --t1-export DIR --t1-dir DIR Stage 2b: load a belief-chart export and serve the estimating equation's factors with
+ *                                  exact derivatives and interval enclosures (certify/cpp/t1_server.h)
  *     --true-jacobians             Stage 1: the stereo and GP factors use their true derivatives (certify/TRUE_JACOBIANS.md)
  *     --eval-dir DIR --eval-every N  Stage 1 (threshold mode): after every N-th round export the linearization and the beliefs
  *                                  to DIR and wait for the evaluator (scripts/stage1_evaluator.py); --eval-pause-every M
@@ -71,6 +73,7 @@
 #include <gsolver/maths/gp_interpolation.h>
 
 #include "certify_common.h"
+#include "t1_server.h"
 
 using namespace gsolver;
 using namespace examples;
@@ -92,7 +95,7 @@ struct Args {
   std::vector<int> persist_rounds;
   bool count_flops     = false;
   int flop_trace_round = -1;
-  std::string probe_export, probe_dir;
+  std::string probe_export, probe_dir, t1_export, t1_dir;
   bool true_jacobians = false;
   std::string eval_dir;
   int eval_every = 0, eval_pause_every = 0, change_from = 1, fd_check_at = -1;
@@ -140,6 +143,8 @@ static Args parse(int argc, char** argv) {
     else if (k == "--flop-trace-round") a.flop_trace_round = std::stoi(next());
     else if (k == "--probe-export") a.probe_export = next();
     else if (k == "--probe-dir") a.probe_dir = next();
+    else if (k == "--t1-export") a.t1_export = next();
+    else if (k == "--t1-dir") a.t1_dir = next();
     else if (k == "--true-jacobians") a.true_jacobians = true;
     else if (k == "--eval-dir") a.eval_dir = next();
     else if (k == "--eval-every") a.eval_every = std::stoi(next());
@@ -223,6 +228,19 @@ int main(int argc, char** argv) {
 
     if (a.true_jacobians)
       gsolver::true_jacobians = true;
+    if (!a.t1_export.empty()) {
+      // Stage 2b: the estimating equation's factors at a loaded state, with derivatives and interval enclosures
+      if (a.t1_dir.empty())
+        throw std::runtime_error("--t1-export needs --t1-dir");
+      certify::T1Server server(graph, a.t1_dir);
+      const certify::Json check = certify::loadFrozenState(graph, a.t1_export);
+      server.setup();
+      std::ofstream(a.t1_dir + "/load_check.json") << check.dump() << "\n";
+      std::ofstream(a.t1_dir + "/t1_counts.txt") << server.stereo.size() << " " << server.gp.size() << "\n";
+      std::ofstream(a.t1_dir + "/server_ready") << "1\n";
+      server.serve();
+      return 0;
+    }
     if (!a.probe_export.empty()) {
       // Phase D, WP6b: nonlinear residual probes at a persisted export's linearization (no solver run)
       if (a.probe_dir.empty())
