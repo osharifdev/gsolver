@@ -1,0 +1,628 @@
+{
+ "kitti06/corrected": {
+  "certified_stop": "130",
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 0.575,
+    "unfinished_relinearized": 0.575,
+    "certified_pass": 0.425,
+    "move_median": 0.7057528618610607,
+    "move_p95": 5.940952001984501,
+    "move_true_median": 0.7057528618610607,
+    "ate_aligned": 0.0878893311560592,
+    "source": "exports/stage1/kitti06/corrected"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 0.15,
+    "unfinished_relinearized": 0.15,
+    "certified_pass": 0.85,
+    "move_median": 0.04100897729229138,
+    "move_p95": 2.160402951317921,
+    "move_true_median": 0.04100897729229138,
+    "ate_aligned": 0.08388209382358386,
+    "source": "exports/stage1/kitti06/corrected"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 0.05,
+    "unfinished_relinearized": 0.05,
+    "certified_pass": 0.95,
+    "move_median": 0.0319108044205304,
+    "move_p95": 0.6512385474730259,
+    "move_true_median": 0.0319108044205304,
+    "ate_aligned": 0.08227808439349991,
+    "source": "exports/stage1/kitti06/corrected"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.02255395900039929,
+    "move_p95": 0.10533109449302841,
+    "move_true_median": 0.02255395900039929,
+    "ate_aligned": 0.08172312888333282,
+    "source": "exports/stage1/kitti06/corrected"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.02195802566695572,
+    "move_p95": 0.07828938447255634,
+    "move_true_median": 0.02195802566695572,
+    "ate_aligned": 0.08167876598113413,
+    "source": "exports/stage1/kitti06/corrected"
+   }
+  ]
+ },
+ "kitti06/shipped": {
+  "certified_stop": "150",
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 2.1239421300128685,
+    "move_p95": 14.364239415450983,
+    "move_true_median": 2.134619151170003,
+    "ate_aligned": 0.09815717542196035,
+    "source": "exports/stage1/kitti06/shipped"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 0.175,
+    "unfinished_relinearized": 0.325,
+    "certified_pass": 0.825,
+    "move_median": 0.24630357326222935,
+    "move_p95": 4.489134250423215,
+    "move_true_median": 0.4631074682173146,
+    "ate_aligned": 0.08632533837201703,
+    "source": "exports/stage1/kitti06/shipped"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 0.15,
+    "unfinished_relinearized": 0.3,
+    "certified_pass": 0.85,
+    "move_median": 0.1951131965538451,
+    "move_p95": 1.0887348143828313,
+    "move_true_median": 0.4481634641366369,
+    "ate_aligned": 0.0825125819362171,
+    "source": "exports/stage1/kitti06/shipped"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.15,
+    "certified_pass": 1.0,
+    "move_median": 0.15382885257851886,
+    "move_p95": 0.6327620748009262,
+    "move_true_median": 0.31454146583418785,
+    "ate_aligned": 0.0814447724700706,
+    "source": "exports/stage1/kitti06/shipped"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.15,
+    "certified_pass": 1.0,
+    "move_median": 0.11275142868434432,
+    "move_p95": 0.6326230556523054,
+    "move_true_median": 0.3110506777091493,
+    "ate_aligned": 0.08137771550078078,
+    "source": "exports/stage1/kitti06/shipped"
+   }
+  ]
+ },
+ "kitti03/corrected": {
+  "certified_stop": "250",
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 42.203322792489296,
+    "move_p95": 511.2003083693642,
+    "move_true_median": 42.203322792489296,
+    "ate_aligned": 0.3384432190085529,
+    "source": "exports/stage1/kitti03/corrected"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 22.75423367251137,
+    "move_p95": 55.128658808672384,
+    "move_true_median": 22.75423367251137,
+    "ate_aligned": 0.254758563297977,
+    "source": "exports/stage1/kitti03/corrected"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 0.975,
+    "unfinished_relinearized": 0.975,
+    "certified_pass": 0.025,
+    "move_median": 8.404796619218551,
+    "move_p95": 16.37323821808839,
+    "move_true_median": 8.404796619218551,
+    "ate_aligned": 0.24541473912298642,
+    "source": "exports/stage1/kitti03/corrected"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 0.625,
+    "unfinished_relinearized": 0.625,
+    "certified_pass": 0.375,
+    "move_median": 1.010217425732487,
+    "move_p95": 1.7433959735519797,
+    "move_true_median": 1.010217425732487,
+    "ate_aligned": 0.2470113752838055,
+    "source": "exports/stage1/kitti03/corrected"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.13078096801684735,
+    "move_p95": 0.2032007000563661,
+    "move_true_median": 0.13078096801684735,
+    "ate_aligned": 0.2476487727451139,
+    "source": "exports/stage1/kitti03/corrected"
+   }
+  ]
+ },
+ "kitti03/shipped": {
+  "certified_stop": null,
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 136.31174822538645,
+    "move_p95": 5277.176941957911,
+    "move_true_median": 132.80598406635985,
+    "ate_aligned": 43.66978162155796,
+    "source": "exports/stage1/kitti03/shipped"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 102.66503719346478,
+    "move_p95": 313.69523824219766,
+    "move_true_median": 107.87816725079256,
+    "ate_aligned": 0.24573348882075208,
+    "source": "exports/stage1/kitti03/shipped"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 28.248050104890744,
+    "move_p95": 196.06934664141755,
+    "move_true_median": 34.59273886549785,
+    "ate_aligned": 0.22666911309879806,
+    "source": "exports/stage1/kitti03/shipped"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 4.244198376994429,
+    "move_p95": 123.24576131532466,
+    "move_true_median": 4.411738972263407,
+    "ate_aligned": 0.24472585496762903,
+    "source": "exports/stage1/kitti03/shipped"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.775,
+    "unfinished_relinearized": 0.875,
+    "certified_pass": 0.225,
+    "move_median": 1.4548398606083155,
+    "move_p95": 123.176457691669,
+    "move_true_median": 4.6632437383782905,
+    "ate_aligned": 0.24716141112155385,
+    "source": "exports/stage1/kitti03/shipped"
+   }
+  ]
+ },
+ "kitti04/corrected": {
+  "certified_stop": "170",
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 8.737373742487017,
+    "move_p95": 13.069028898116063,
+    "move_true_median": 8.737373742487017,
+    "ate_aligned": 0.131995597080065,
+    "source": "exports/stage1/kitti04/corrected"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 0.95,
+    "unfinished_relinearized": 0.95,
+    "certified_pass": 0.05,
+    "move_median": 3.342527976896281,
+    "move_p95": 4.831048485512926,
+    "move_true_median": 3.342527976896281,
+    "ate_aligned": 0.13240510447882345,
+    "source": "exports/stage1/kitti04/corrected"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 0.9,
+    "unfinished_relinearized": 0.9,
+    "certified_pass": 0.1,
+    "move_median": 1.170260884595562,
+    "move_p95": 1.8009790399702443,
+    "move_true_median": 1.170260884595562,
+    "ate_aligned": 0.1328272202881546,
+    "source": "exports/stage1/kitti04/corrected"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.23547130026959567,
+    "move_p95": 0.37542807965465447,
+    "move_true_median": 0.23547130026959567,
+    "ate_aligned": 0.13321333101954264,
+    "source": "exports/stage1/kitti04/corrected"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.06440089995202386,
+    "move_p95": 0.09247552137731298,
+    "move_true_median": 0.06440089995202386,
+    "ate_aligned": 0.1333364206116153,
+    "source": "exports/stage1/kitti04/corrected"
+   }
+  ]
+ },
+ "kitti04/shipped": {
+  "certified_stop": null,
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 27.10511634437841,
+    "move_p95": 132.615055528608,
+    "move_true_median": 27.10270310904218,
+    "ate_aligned": 0.1997466751441471,
+    "source": "exports/stage1/kitti04/shipped"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 11.001781027296289,
+    "move_p95": 34.36910689039315,
+    "move_true_median": 11.006654327642172,
+    "ate_aligned": 0.14347399562515264,
+    "source": "exports/stage1/kitti04/shipped"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 4.835551439582906,
+    "move_p95": 15.07155584001943,
+    "move_true_median": 4.8440620008835715,
+    "ate_aligned": 0.13608216537608203,
+    "source": "exports/stage1/kitti04/shipped"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 0.925,
+    "unfinished_relinearized": 0.95,
+    "certified_pass": 0.075,
+    "move_median": 1.4080132345342151,
+    "move_p95": 3.88707046253469,
+    "move_true_median": 1.422080373648805,
+    "ate_aligned": 0.133688178262229,
+    "source": "exports/stage1/kitti04/shipped"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.275,
+    "unfinished_relinearized": 0.275,
+    "certified_pass": 0.725,
+    "move_median": 0.4150618178451112,
+    "move_p95": 1.0630702329846413,
+    "move_true_median": 0.5269484628489361,
+    "ate_aligned": 0.13336482500874655,
+    "source": "exports/stage1/kitti04/shipped"
+   }
+  ]
+ },
+ "kitti10/corrected": {
+  "certified_stop": "50",
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 1.7279425055631148,
+    "move_p95": 3.3739290858342303,
+    "move_true_median": 1.7279425055631148,
+    "ate_aligned": 0.08508808806035412,
+    "source": "exports/stage1/kitti10/corrected"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.4536275074056386,
+    "move_p95": 0.7859896750806082,
+    "move_true_median": 0.4536275074056386,
+    "ate_aligned": 0.08504077934592146,
+    "source": "exports/stage1/kitti10/corrected"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.08188912629262071,
+    "move_p95": 0.2578888632683527,
+    "move_true_median": 0.08188912629262071,
+    "ate_aligned": 0.08525352151775868,
+    "source": "exports/stage1/kitti10/corrected"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.010994861150072022,
+    "move_p95": 0.024289433057635822,
+    "move_true_median": 0.010994861150072022,
+    "ate_aligned": 0.08525554953336417,
+    "source": "exports/stage1/kitti10/corrected"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.0,
+    "certified_pass": 1.0,
+    "move_median": 0.004737734842410952,
+    "move_p95": 0.012795676587667146,
+    "move_true_median": 0.004737734842410952,
+    "ate_aligned": 0.08525060107884669,
+    "source": "exports/stage1/kitti10/corrected"
+   }
+  ]
+ },
+ "kitti10/shipped": {
+  "certified_stop": "240",
+  "budgets": [
+   {
+    "budget": 10,
+    "poses": 40,
+    "unfinished_current": 1.0,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.0,
+    "move_median": 13.163180063222187,
+    "move_p95": 25324.561193164343,
+    "move_true_median": 13.188198549731698,
+    "ate_aligned": 0.659628070327004,
+    "source": "exports/stage1/kitti10/shipped"
+   },
+   {
+    "budget": 50,
+    "poses": 40,
+    "unfinished_current": 0.975,
+    "unfinished_relinearized": 0.975,
+    "certified_pass": 0.025,
+    "move_median": 23.15661185457578,
+    "move_p95": 104.17507957721143,
+    "move_true_median": 23.14810581707618,
+    "ate_aligned": 0.168319753485288,
+    "source": "exports/stage1/kitti10/shipped"
+   },
+   {
+    "budget": 100,
+    "poses": 40,
+    "unfinished_current": 0.975,
+    "unfinished_relinearized": 1.0,
+    "certified_pass": 0.025,
+    "move_median": 4.890325034944972,
+    "move_p95": 19.538399474984608,
+    "move_true_median": 4.909175539769434,
+    "ate_aligned": 0.1008611109221767,
+    "source": "exports/stage1/kitti10/shipped"
+   },
+   {
+    "budget": 200,
+    "poses": 40,
+    "unfinished_current": 0.25,
+    "unfinished_relinearized": 0.7,
+    "certified_pass": 0.75,
+    "move_median": 0.7375154835462987,
+    "move_p95": 1.0473327403307064,
+    "move_true_median": 0.8118612893705731,
+    "ate_aligned": 0.09042569339149926,
+    "source": "exports/stage1/kitti10/shipped"
+   },
+   {
+    "budget": 300,
+    "poses": 40,
+    "unfinished_current": 0.0,
+    "unfinished_relinearized": 0.225,
+    "certified_pass": 1.0,
+    "move_median": 0.2704503875745435,
+    "move_p95": 0.8619257451084812,
+    "move_true_median": 0.527106245243574,
+    "ate_aligned": 0.09007819907873246,
+    "source": "exports/stage1/kitti10/shipped"
+   }
+  ]
+ },
+ "charuco/corrected": {
+  "certified_stop": null,
+  "budgets": [
+   {
+    "budget": 103,
+    "poses": 94,
+    "unfinished_current": 0.8191489361702128,
+    "unfinished_relinearized": 0.8191489361702128,
+    "certified_pass": 0.18085106382978725,
+    "move_median": 1.4249682769504703,
+    "move_p95": 19.012115065910333,
+    "move_true_median": 1.4249682769504703,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/corrected_partA"
+   },
+   {
+    "budget": 200,
+    "poses": 94,
+    "unfinished_current": 0.6808510638297872,
+    "unfinished_relinearized": 0.6808510638297872,
+    "certified_pass": 0.3191489361702128,
+    "move_median": 1.138739170277181,
+    "move_p95": 13.937451417232184,
+    "move_true_median": 1.138739170277181,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/corrected"
+   },
+   {
+    "budget": 500,
+    "poses": 94,
+    "unfinished_current": 0.2872340425531915,
+    "unfinished_relinearized": 0.2872340425531915,
+    "certified_pass": 0.7127659574468085,
+    "move_median": 0.5662931889109577,
+    "move_p95": 10.208523510903396,
+    "move_true_median": 0.5662931889109577,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/corrected"
+   },
+   {
+    "budget": 1030,
+    "poses": 94,
+    "unfinished_current": 0.22340425531914893,
+    "unfinished_relinearized": 0.22340425531914893,
+    "certified_pass": 0.776595744680851,
+    "move_median": 0.32053192668342323,
+    "move_p95": 6.56066022401849,
+    "move_true_median": 0.32053192668342323,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/corrected"
+   }
+  ]
+ },
+ "charuco/shipped": {
+  "certified_stop": null,
+  "budgets": [
+   {
+    "budget": 103,
+    "poses": 94,
+    "unfinished_current": 0.8297872340425532,
+    "unfinished_relinearized": 0.8297872340425532,
+    "certified_pass": 0.1702127659574468,
+    "move_median": 1.50570410643297,
+    "move_p95": 20.501633969807436,
+    "move_true_median": 1.4930465431347408,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/shipped_partA"
+   },
+   {
+    "budget": 200,
+    "poses": 94,
+    "unfinished_current": 0.723404255319149,
+    "unfinished_relinearized": 0.723404255319149,
+    "certified_pass": 0.2765957446808511,
+    "move_median": 1.212846677265098,
+    "move_p95": 15.327657685080903,
+    "move_true_median": 1.2107631261029557,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/shipped"
+   },
+   {
+    "budget": 500,
+    "poses": 94,
+    "unfinished_current": 0.3191489361702128,
+    "unfinished_relinearized": 0.3191489361702128,
+    "certified_pass": 0.6808510638297872,
+    "move_median": 0.6232108743684905,
+    "move_p95": 10.816278062081537,
+    "move_true_median": 0.6176355261199029,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/shipped"
+   },
+   {
+    "budget": 1030,
+    "poses": 94,
+    "unfinished_current": 0.22340425531914893,
+    "unfinished_relinearized": 0.22340425531914893,
+    "certified_pass": 0.776595744680851,
+    "move_median": 0.35381390943698754,
+    "move_p95": 6.847346920784872,
+    "move_true_median": 0.36148999306481544,
+    "ate_aligned": NaN,
+    "source": "exports/stage1/charuco/shipped"
+   }
+  ]
+ }
+}

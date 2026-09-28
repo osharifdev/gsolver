@@ -911,8 +911,11 @@ namespace certify {
             var_factors[v].push_back(static_cast<int>(k));
           factor_vars.push_back(vs);
           const std::vector<Eigen::VectorXd>* zp = &zev;
-          eval.push_back([fp, vs, zp](Eigen::VectorXd& gnl, Eigen::VectorXd& glin, Eigen::VectorXd& gjac, Eigen::VectorXd& gtrue,
-                                      int& flip) {
+          std::vector<std::shared_ptr<VariableNodeBase>> nodes;
+          for (int v : vs)
+            nodes.push_back(vars[v].node);
+          eval.push_back([fp, vs, zp, nodes](Eigen::VectorXd& gnl, Eigen::VectorXd& glin, Eigen::VectorXd& gjac, Eigen::VectorXd& gtrue,
+                                             int& flip) {
             const typename FT::VectorErrorDim e0    = fp->error_;
             const typename FT::MatrixJacobianDim J0 = fp->J_;
             bool in0                                = true;
@@ -931,11 +934,20 @@ namespace certify {
             const typename FT::VectorErrorDim elin = fp->error_lin_ + fp->J_lin_ * tau;
             glin                                    = fp->J_lin_.transpose() * (W * elin);
             gjac                                    = fp->J_.transpose() * (W * elin); // new Jacobian, linear error
-            // the true Jacobian at x_lin (Theorem T0: the stereo rotation columns without the factor 2 of
-            // se3_posevel_stereo_point.cpp; every other type's Jacobian is used as the solver's)
+            // the true Jacobian at x_lin (certify/TRUE_JACOBIANS.md): J_lin itself with --true-jacobians; otherwise
+            // the stereo rotation columns without the factor 2 and the GP velocity block replaced by its derivative
             typename FT::MatrixJacobianDim Jt = fp->J_lin_;
-            if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>)
-              Jt.template block<3, 3>(0, 3) *= 0.5;
+            if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>) {
+              if (!true_jacobians)
+                Jt.template block<3, 3>(0, 3) *= 0.5;
+            }
+            if constexpr (std::is_same_v<FT, SE3PoseVelGP>) {
+              if (!true_jacobians) {
+                const SE3PoseVelValue a = std::static_pointer_cast<SE3PoseVel>(nodes[0])->mu_lin_;
+                const SE3PoseVelValue b = std::static_pointer_cast<SE3PoseVel>(nodes[1])->mu_lin_;
+                Jt = DerivativeUtils::compute_se3vel_gp_jacobian(a.pose, b.pose, a.vel, b.vel, fp->dt_, true);
+              }
+            }
             gtrue = fp->J_.transpose() * (W * (fp->error_lin_ + Jt * tau));
             flip = (fp->J_lin_.isZero(0.0) != fp->J_.isZero(0.0)) ? 1 : 0;
             if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>)
@@ -1438,6 +1450,7 @@ namespace certify {
     // evaluator answers with <eval_dir>/done. eval_last: the final round (the evaluator exits after it).
     std::string eval_dir;
     int eval_every = 0, eval_last = -1, eval_pause_every = 0, fd_check_at = -1;
+    std::vector<int> eval_at; // extra evaluation rounds (Part A: ChArUco's shipped budget of 103)
     int evaluated_ = -1;
 
     void enableChangeCriterion(const std::vector<double>& taus, int from) {
@@ -1552,7 +1565,8 @@ namespace certify {
     // Periodic certification after `rounds` rounds. Called before the next round's message passing (the front end has
     // added that round's nodes, so the plan registers them) or, after the last round, from finish().
     void evaluate() {
-      if (eval_every <= 0 || rounds % eval_every != 0 || rounds == evaluated_ || rounds == 0)
+      const bool extra = std::find(eval_at.begin(), eval_at.end(), rounds) != eval_at.end();
+      if (eval_every <= 0 || (rounds % eval_every != 0 && !extra) || rounds == evaluated_ || rounds == 0)
         return;
       evaluated_ = rounds;
       solver.planThresholdRound(g);

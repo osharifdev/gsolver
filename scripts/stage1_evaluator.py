@@ -9,13 +9,15 @@ N-th round), reads <eval_dir>/model (the linearization the solver iterates on ne
   <out>/eval_summary.csv per evaluation round: fraction passing, all pass, violations, certificate operation counts and
                          flops, accuracy (median and p95 of the remaining GN move) and keyframe ATE, timings
 The beliefs of the first evaluation round (>= --stop-from) at which every pose passes are kept in
-<out>/certified_stop_beliefs. On an exception it writes <eval_dir>/abort. Exits after the round marked last.
+<out>/certified_stop_beliefs, its linearization in <out>/certified_stop_model and every pose's final and base patch (and
+E, L, S_lo) in <out>/certified_stop_patches.json (Stage 2a). On an exception it writes <eval_dir>/abort. Exits after the round marked last.
 
 Usage: python3 scripts/stage1_evaluator.py <eval_dir> <out_dir> [--eta 0.1] [--p-L 1e-6] [--gt GT.tum]
                                            [--sampled 10,150,300] [--stop-from R]
 """
 
 import csv
+import json
 import os
 import shutil
 import sys
@@ -103,6 +105,15 @@ class Evaluator:
         if summ.get("all_pass") and r >= self.stop_from and not self.stop_kept:
             shutil.copytree(self.edir / "beliefs", self.out / "certified_stop_beliefs", dirs_exist_ok=True)
             (self.out / "certified_stop_beliefs" / "ROUND").write_text("%d\n" % r)
+            # Stage 2a: the linearization and every pose's final and base patch at the certified stop
+            shutil.copytree(self.edir / "model", self.out / "certified_stop_model", dirs_exist_ok=True)
+            ids = [str(q) for q in model["pose_ids"]]
+            last = self.engine.last
+            patches = {row["pose"]: dict(P=[ids[k] for k in last["rows"][ids.index(row["pose"])].P],
+                                         base_P=list(self.engine.base[row["pose"]]["P"]), E=row["E"], L=row["L"], S_lo=row["S_lo"],
+                                         S_exact=row["S_exact"], err=row["err"], kappa=row["kappa"], grow_why=row["grow_why"])
+                       for row in per_pose}
+            (self.out / "certified_stop_patches.json").write_text(json.dumps(dict(round=r, patches=patches), indent=1))
             self.stop_kept = True
         print("round %d: %d poses, pass %.3f (oracle %.3f), all %d, violations %s/%s, cert %.3g flops, move med %.4g, %.2fs" % (
             r, summ["poses"], summ["frac_pass"], summ.get("frac_pass_oracle_exact", np.nan), summ["all_pass"],

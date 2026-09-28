@@ -53,6 +53,7 @@
  *     --export-beliefs-at LIST     export the beliefs after these rounds to OUT/beliefs_rNNNNN
  *     --fd-check-at R              with --eval-every: central-difference check of every factor's Jacobian at the evaluation
  *                                  after round R (OUT/fdcheck/fd_check.tsv)
+ *     --eval-at LIST               with --eval-every: also evaluate after these rounds
  */
 
 #include <cmath>
@@ -96,7 +97,7 @@ struct Args {
   std::string eval_dir;
   int eval_every = 0, eval_pause_every = 0, change_from = 1, fd_check_at = -1;
   std::vector<double> change_taus;
-  std::vector<int> beliefs_at;
+  std::vector<int> beliefs_at, eval_at;
 };
 
 static Args parse(int argc, char** argv) {
@@ -147,6 +148,7 @@ static Args parse(int argc, char** argv) {
     else if (k == "--change-from") a.change_from = std::stoi(next());
     else if (k == "--export-beliefs-at") a.beliefs_at = certify::parseIntList(next());
     else if (k == "--fd-check-at") a.fd_check_at = std::stoi(next());
+    else if (k == "--eval-at") a.eval_at = certify::parseIntList(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.g2o.empty() || a.out.empty())
@@ -270,6 +272,7 @@ int main(int argc, char** argv) {
       runner.eval_last        = max_iters;
       runner.eval_pause_every = a.eval_pause_every;
       runner.fd_check_at      = a.fd_check_at;
+      runner.eval_at          = a.eval_at;
     }
     if (!a.change_taus.empty())
       runner.enableChangeCriterion(a.change_taus, a.change_from);
