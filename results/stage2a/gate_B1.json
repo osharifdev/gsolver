@@ -1,0 +1,40 @@
+{
+ "corrected": {
+  "kitti06": {
+   "round": 130,
+   "frac_r_below_0_1": 0.975,
+   "meets_80": true
+  },
+  "kitti03": {
+   "round": 250,
+   "frac_r_below_0_1": 1.0,
+   "meets_80": true
+  },
+  "kitti04": {
+   "round": 170,
+   "frac_r_below_0_1": 1.0,
+   "meets_80": true
+  },
+  "kitti10": {
+   "round": 50,
+   "frac_r_below_0_1": 1.0,
+   "meets_80": true
+  },
+  "segments_meeting": 4,
+  "gate_B1": true
+ },
+ "shipped": {
+  "kitti06": {
+   "round": 150,
+   "frac_r_below_0_1": 0.0,
+   "meets_80": false
+  },
+  "kitti10": {
+   "round": 240,
+   "frac_r_below_0_1": 0.0,
+   "meets_80": false
+  },
+  "segments_meeting": 0,
+  "gate_B1": "not part of the gate (2 of 4 segments have a certified stop)"
+ }
+}

@@ -1,0 +1,17 @@
+IDENTICAL  1. shipped islam (modified lib) vs Phase 0
+IDENTICAL  1. shipped BA noise 0 (modified lib) vs Phase 0
+IDENTICAL  1. shipped BA noise 0.1 (modified lib) vs Phase 0
+IDENTICAL  2. certify islam vs shipped islam
+IDENTICAL  2. certify BA noise 0 vs shipped
+IDENTICAL  2. certify BA noise 0.1 vs shipped
+IDENTICAL  3. certify islam with unfrozen exports vs without
+IDENTICAL  1. shipped stereo KITTI 06 (modified lib) vs Phase 0
+IDENTICAL  2. certify stereo vs shipped stereo
+IDENTICAL  4. certify stereo, dynamic schedule vs Phase 0
+IDENTICAL  4. certify islam, dynamic schedule vs Phase 0
+IDENTICAL  4. frozen BA state dumps (2000 iterations), static vs dynamic schedule
+identical: 12  different: 0
+
+real	4m57.677s
+user	9m56.200s
+sys	0m4.820s

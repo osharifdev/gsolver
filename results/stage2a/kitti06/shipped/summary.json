@@ -1,0 +1,92 @@
+{
+ "0.1": {
+  "poses": 40,
+  "r_median": 0.28400705195425546,
+  "r_p90": 1.048592560418932,
+  "r_max": 1.9972689623009978,
+  "frac_below_0_1": 0.0,
+  "frac_below_1": 0.85,
+  "worst_pose": "POSE_6.755121000",
+  "inlier_flips": 0,
+  "worst_decile": {
+   "n": 4,
+   "r_min": 1.0849472180964124,
+   "share_gp": 0.026305586302958657,
+   "share_stereo": 1.0003277673430881,
+   "share_linear_residue": 0.003091039563493836,
+   "largest_landmark_step_before_clip": 2155.9029395415496
+  }
+ },
+ "1": {
+  "poses": 40,
+  "r_median": 0.32975714474855067,
+  "r_p90": 1.1524860137345196,
+  "r_max": 2.0239394387772833,
+  "frac_below_0_1": 0.0,
+  "frac_below_1": 0.85,
+  "worst_pose": "POSE_6.755121000",
+  "inlier_flips": 0,
+  "worst_decile": {
+   "n": 4,
+   "r_min": 1.1667633181354689,
+   "share_gp": 0.026227172268139223,
+   "share_stereo": 1.0009093271747167,
+   "share_linear_residue": 0.004974575239344564,
+   "largest_landmark_step_before_clip": 2155.9029395415496
+  }
+ },
+ "inf": {
+  "poses": 40,
+  "r_median": 0.4246944962993221,
+  "r_p90": 1.486667262402432,
+  "r_max": 2.1242181795994064,
+  "frac_below_0_1": 0.0,
+  "frac_below_1": 0.75,
+  "worst_pose": "POSE_6.755121000",
+  "inlier_flips": 0,
+  "worst_decile": {
+   "n": 4,
+   "r_min": 1.5361764236685524,
+   "share_gp": 0.02211482937763034,
+   "share_stereo": 0.9999598913815844,
+   "share_linear_residue": 0.0027661428021649405,
+   "largest_landmark_step_before_clip": 2155.9029395415496
+  }
+ },
+ "landmark_steps": {
+  "landmarks": 4636,
+  "median": 0.0006264949885805484,
+  "p99": 17.23482546503894,
+  "max": 2155.9029395415496,
+  "over_0_1m": 948,
+  "over_1m": 344
+ },
+ "checks": {
+  "round": 150,
+  "poses": 40,
+  "rel_E_rebuilt_vs_logged": 0.0,
+  "abs_L_rebuilt_vs_logged": 0.0,
+  "all_pass_logged": true,
+  "rel_S_full_vs_sidecar": 1.3095231747529602e-14,
+  "rel_g_full_vs_sidecar": 7.984377298296071e-13,
+  "load_check": {
+   "variables": 4719,
+   "gp": {
+    "factors": 39,
+    "max_abs_dJ": 0,
+    "max_abs_J": 11.645871043837802,
+    "max_abs_de": 0,
+    "max_abs_e": 0.1646714094772399
+   },
+   "stereo": {
+    "factors": 11487,
+    "max_abs_dJ": 0,
+    "max_abs_J": 2408.314655566157,
+    "max_abs_de": 0,
+    "max_abs_e": 7.008829649956141
+   }
+  },
+  "identity_max_abs_Fnl_minus_Flin_at_x_lin": 0.0
+ },
+ "seconds": 10.367525653913617
+}
