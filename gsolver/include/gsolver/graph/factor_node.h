@@ -79,6 +79,11 @@ namespace gsolver {
       return edges_.getEdgeAt(i)->variable_id_;
     }
     Eigen::MatrixXd linearizedInformationBlock(size_t i) override;
+    Eigen::MatrixXd currentInformationBlock(size_t i) override {
+      int offset = 0, dim = 0;
+      edges_.edgeSpan(i, offset, dim);
+      return Lambdaprime_.block(offset, offset, dim, dim);
+    }
   };
 
 } // namespace gsolver

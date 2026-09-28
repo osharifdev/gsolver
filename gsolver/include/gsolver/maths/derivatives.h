@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Eigen/Dense>
+#include <cmath>
 
+#include <gsolver/core/jacobian_mode.h>
 #include <gsolver/maths/geometry3d.h>
 
 namespace gsolver {
@@ -29,12 +31,16 @@ namespace gsolver {
                                                                     const Isometry3d& T_i_next,
                                                                     const Vector6d& v_i,
                                                                     const Vector6d& v_i_next,
-                                                                    const double& dt) {
+                                                                    const double& dt,
+                                                                    bool true_velocity_block = true_jacobians) {
       Eigen::Matrix<double, 12, 24> J = Eigen::Matrix<double, 12, 24>::Zero();
       const Isometry3d int_v_i_inv    = expMapSE3(dt * v_i).inverse();
 
       J.block<6, 6>(0, 0) = jacob_dDinvP1invP2_de1e2(int_v_i_inv, T_i, T_i_next, 1);
-      J.block<6, 6>(0, 6) = jacob_dDinvP1invP2_de1e2_gp(int_v_i_inv, T_i, T_i_next, dt);
+      if (true_velocity_block)
+        J.block<6, 6>(0, 6) = jacob_gp_pose_error_dv_true(T_i, T_i_next, v_i, dt); // certify/TRUE_JACOBIANS.md
+      else
+        J.block<6, 6>(0, 6) = jacob_dDinvP1invP2_de1e2_gp(int_v_i_inv, T_i, T_i_next, dt);
       J.block<3, 3>(6, 3) = skew(T_i.linear().transpose() * T_i_next.linear() * v_i_next.head(3));
       J.block<3, 3>(9, 3) = skew(T_i.linear().transpose() * T_i_next.linear() * v_i_next.tail(3));
       J.block<6, 6>(6, 6) = -Eigen::Matrix<double, 6, 6>::Identity(6, 6);
@@ -85,6 +91,50 @@ namespace gsolver {
       adj.block(0, 0, 3, 3)           = R;
       adj.block(3, 3, 3, 3)           = R;
       J.block<6, 6>(6, 6)             = adj;
+      return J;
+    }
+
+    // SO(3) right Jacobian J_r(w), with the branch of expMapSO3 (first-order exponential below |w|^2 = 1e-8, whose
+    // derivative is the identity)
+    static Matrix3d rightJacobianSO3(const Eigen::Vector3d& w) {
+      const double t2 = w.dot(w);
+      if (t2 < 1e-8)
+        return Matrix3d::Identity();
+      const double t = std::sqrt(t2);
+      const Matrix3d W = skew(w);
+      return Matrix3d::Identity() - (1.0 - std::cos(t)) / t2 * W + (t - std::sin(t)) / (t2 * t) * W * W;
+    }
+
+    // Inverse of the SO(3) left Jacobian, J_l(phi)^-1 = I - [phi]/2 + (1/t^2 - (1 + cos t) / (2 t sin t)) [phi]^2
+    static Matrix3d leftJacobianInverseSO3(const Eigen::Vector3d& phi) {
+      const double t2 = phi.dot(phi);
+      const Matrix3d P = skew(phi);
+      double c;
+      if (t2 < 1e-8) {
+        c = 1.0 / 12.0 + t2 / 720.0;
+      } else {
+        const double t = std::sqrt(t2);
+        c              = 1.0 / t2 - (1.0 + std::cos(t)) / (2.0 * t * std::sin(t));
+      }
+      return Matrix3d::Identity() - 0.5 * P + c * P * P;
+    }
+
+    // The true derivative of the GP pose error e_p = Log(Exp(dt v)^-1 T_i^-1 T_{i+1}) with respect to the first knot's
+    // velocity v = [nu; omega] (additive chart), for the decoupled Exp(t, r) = (Rodrigues(r), t) and Log of geometry3d.h.
+    // With R_v = Exp_SO3(dt omega), M = T_i^-1 T_{i+1}, p = R_v' (t_M - dt nu), phi = Log(R_v' R_M):
+    //   dp/dnu = -dt R_v',  dp/domega = dt [p]x J_r(dt omega),  dphi/dnu = 0,  dphi/domega = -dt J_l(phi)^-1 J_r(dt omega).
+    static Eigen::Matrix<double, 6, 6>
+    jacob_gp_pose_error_dv_true(const Isometry3d& T_i, const Isometry3d& T_i_next, const Vector6d& v_i, double dt) {
+      const Eigen::Vector3d w   = dt * v_i.tail(3);
+      const Matrix3d Rv         = expMapSO3(w);
+      const Isometry3d M        = T_i.inverse() * T_i_next;
+      const Eigen::Vector3d p   = Rv.transpose() * (M.translation() - dt * v_i.head(3));
+      const Eigen::Vector3d phi = logMapSO3(Rv.transpose() * M.linear());
+      const Matrix3d Jr         = rightJacobianSO3(w);
+      Eigen::Matrix<double, 6, 6> J = Eigen::Matrix<double, 6, 6>::Zero();
+      J.block<3, 3>(0, 0)           = -dt * Rv.transpose();
+      J.block<3, 3>(0, 3)           = dt * skew(p) * Jr;
+      J.block<3, 3>(3, 3)           = -dt * leftJacobianInverseSO3(phi) * Jr;
       return J;
     }
 

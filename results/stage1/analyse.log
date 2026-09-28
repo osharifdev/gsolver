@@ -1,0 +1,164 @@
+== charuco corrected
+   certified          round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   fixed_budget       round 103   move med 1.425      p95 19.01      ATE nan      total 2.1e+09 (alt 1.81e+09)
+   change_tau_1e-02   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== charuco shipped
+   certified          round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   fixed_budget       round 103   move med 1.506      p95 20.5       ATE nan      total 2.1e+09 (alt 1.81e+09)
+   change_tau_1e-02   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti03 corrected
+   certified          round 250   move med 0.3571     p95 0.5913     ATE 0.2474   total 6.74e+11 (alt 1.07e+11)
+   fixed_budget       round 100   move med 8.405      p95 16.37      ATE 0.2454   total 2.57e+11 (alt 3.06e+10)
+   change_tau_1e-02   round 265   move med 0.2603     p95 0.4299     ATE 0.2475   total 6.82e+11 (alt 8.16e+10)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti03 shipped
+   certified          round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   fixed_budget       round 100   move med 28.25      p95 196.1      ATE 0.2267   total 2.57e+11 (alt 3.06e+10)
+   change_tau_1e-02   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti04 corrected
+   certified          round 170   move med 0.3595     p95 0.5817     ATE 0.1331   total 5.54e+11 (alt 8.27e+10)
+   fixed_budget       round 100   move med 1.17       p95 1.801      ATE 0.1328   total 3.11e+11 (alt 3.38e+10)
+   change_tau_1e-02   round 168   move med 0.37       p95 0.5991     ATE 0.1331   total 5.23e+11 (alt 5.71e+10)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti04 shipped
+   certified          round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   fixed_budget       round 100   move med 4.836      p95 15.07      ATE 0.1361   total 3.11e+11 (alt 3.38e+10)
+   change_tau_1e-02   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti06 corrected
+   certified          round 130   move med 0.02794    p95 0.3343     ATE 0.08196  total 2.44e+11 (alt 4.32e+10)
+   fixed_budget       round 100   move med 0.03191    p95 0.6512     ATE 0.08228  total 1.8e+11 (alt 2.55e+10)
+   change_tau_1e-02   round 142   move med 0.02647    p95 0.261      ATE 0.08188  total 2.56e+11 (alt 3.65e+10)
+   change_tau_1e-03   round 237   move med 0.02218    p95 0.08711    ATE 0.08169  total 4.27e+11 (alt 6.09e+10)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti06 shipped
+   certified          round 150   move med 0.1728     p95 0.6328     ATE 0.08165  total 2.82e+11 (alt 5.07e+10)
+   fixed_budget       round 100   move med 0.1951     p95 1.089      ATE 0.08251  total 1.8e+11 (alt 2.55e+10)
+   change_tau_1e-02   round 166   move med 0.1696     p95 0.6328     ATE 0.08155  total 2.99e+11 (alt 4.26e+10)
+   change_tau_1e-03   round 263   move med 0.1132     p95 0.6327     ATE 0.08139  total 4.74e+11 (alt 6.76e+10)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti10 corrected
+   certified          round 50    move med 0.4536     p95 0.786      ATE 0.08504  total 1.18e+11 (alt 2.04e+10)
+   fixed_budget       round 100   move med 0.08189    p95 0.2579     ATE 0.08525  total 2.24e+11 (alt 2.81e+10)
+   change_tau_1e-02   round 209   move med 0.01192    p95 0.02874    ATE 0.08526  total 4.68e+11 (alt 5.92e+10)
+   change_tau_1e-03   round 273   move med 0.00525    p95 0.01257    ATE 0.08525  total 6.12e+11 (alt 7.73e+10)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== kitti10 shipped
+   certified          round 240   move med 0.351      p95 0.8982     ATE 0.09018  total 5.63e+11 (alt 9.29e+10)
+   fixed_budget       round 100   move med 4.89       p95 19.54      ATE 0.1009   total 2.24e+11 (alt 2.81e+10)
+   change_tau_1e-02   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== prefix corrected
+   certified          round 130   move med 0.007197   p95 0.2673     ATE 0.3824   total 1.32e+12 (alt 3.55e+11)
+   fixed_budget       round 100   move med 0.01511    p95 0.6241     ATE 0.3827   total 8.56e+11 (alt 1.12e+11)
+   change_tau_1e-02   round 194   move med 0.004166   p95 0.1324     ATE 0.3823   total 1.66e+12 (alt 2.19e+11)
+   change_tau_1e-03   round 252   move med 0.004061   p95 0.09725    ATE 0.3823   total 2.16e+12 (alt 2.84e+11)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+== prefix shipped
+   certified          round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   fixed_budget       round 100   move med 0.3773     p95 5.206      ATE 0.3842   total 8.56e+11 (alt 1.12e+11)
+   change_tau_1e-02   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-03   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+   change_tau_1e-04   round None  move med nan        p95 nan        ATE nan      total nan (alt nan)
+{
+ "corrected": {
+  "segments": {
+   "kitti06": {
+    "certified_round": 130,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.8754317945262364,
+    "cost_ratio": 1.3556645821124096,
+    "cost_ratio_alt": 1.6926409487578737,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti03": {
+    "certified_round": 250,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.042491517545112024,
+    "cost_ratio": 2.6199725507560165,
+    "cost_ratio_alt": 3.5090625538644353,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti04": {
+    "certified_round": 170,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.3071761169042675,
+    "cost_ratio": 1.7812838566496172,
+    "cost_ratio_alt": 2.448888135314795,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti10": {
+    "certified_round": 50,
+    "fixed_round": 100,
+    "stop_le_60": true,
+    "accuracy_ratio": 5.539532877474557,
+    "cost_ratio": 0.5284703100468456,
+    "cost_ratio_alt": 0.7268081914958356,
+    "passes": false,
+    "passes_alt_baseline": false
+   }
+  },
+  "passing": 0,
+  "gate_A": false
+ },
+ "shipped": {
+  "segments": {
+   "kitti06": {
+    "certified_round": 150,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.8858279196486913,
+    "cost_ratio": 1.5689108619302428,
+    "cost_ratio_alt": 1.9860761579665451,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti03": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti04": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti10": {
+    "certified_round": 240,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.07178441673791973,
+    "cost_ratio": 2.5135713156917276,
+    "cost_ratio_alt": 3.304763758296242,
+    "passes": false,
+    "passes_alt_baseline": false
+   }
+  },
+  "passing": 0,
+  "gate_A": false
+ }
+}

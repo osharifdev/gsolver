@@ -1,0 +1,6 @@
+criterion,round,note,move_median,move_p95,move_true_median,move_true_p95,ate_aligned,gbp_flops,extra_flops,total_flops,gbp_flops_alt,total_flops_alt,evaluations
+certified,,not by 300,,,,,,,,,,,
+fixed_budget,100,,28.248050104890744,196.06934664141755,34.59273886549785,392.7471203393486,0.22666911309879806,257179250700.0,0.0,257179250700.0,30577341900.0,30577341900.0,0
+change_tau_1e-02,,not by 300,,,,,,,,,,,
+change_tau_1e-03,,not by 300,,,,,,,,,,,
+change_tau_1e-04,,not by 300,,,,,,,,,,,

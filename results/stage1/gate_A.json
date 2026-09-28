@@ -1,0 +1,92 @@
+{
+ "corrected": {
+  "segments": {
+   "kitti06": {
+    "certified_round": 130,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.8754317945262364,
+    "cost_ratio": 1.3556645821124096,
+    "cost_ratio_alt": 1.6926409487578737,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti03": {
+    "certified_round": 250,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.042491517545112024,
+    "cost_ratio": 2.6199725507560165,
+    "cost_ratio_alt": 3.5090625538644353,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti04": {
+    "certified_round": 170,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.3071761169042675,
+    "cost_ratio": 1.7812838566496172,
+    "cost_ratio_alt": 2.448888135314795,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti10": {
+    "certified_round": 50,
+    "fixed_round": 100,
+    "stop_le_60": true,
+    "accuracy_ratio": 5.539532877474557,
+    "cost_ratio": 0.5284703100468456,
+    "cost_ratio_alt": 0.7268081914958356,
+    "passes": false,
+    "passes_alt_baseline": false
+   }
+  },
+  "passing": 0,
+  "gate_A": false
+ },
+ "shipped": {
+  "segments": {
+   "kitti06": {
+    "certified_round": 150,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.8858279196486913,
+    "cost_ratio": 1.5689108619302428,
+    "cost_ratio_alt": 1.9860761579665451,
+    "passes": false,
+    "passes_alt_baseline": false
+   },
+   "kitti03": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti04": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti10": {
+    "certified_round": 240,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": 0.07178441673791973,
+    "cost_ratio": 2.5135713156917276,
+    "cost_ratio_alt": 3.304763758296242,
+    "passes": false,
+    "passes_alt_baseline": false
+   }
+  },
+  "passing": 0,
+  "gate_A": false
+ }
+}

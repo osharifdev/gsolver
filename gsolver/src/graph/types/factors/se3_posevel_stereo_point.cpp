@@ -1,3 +1,4 @@
+#include <gsolver/core/jacobian_mode.h>
 #include <gsolver/graph/types/factors/se3_posevel_stereo_point.h>
 
 namespace gsolver {
@@ -74,7 +75,10 @@ namespace gsolver {
     //   Velocity part:    zero (velocity does not affect stereo projection)
     Eigen::Matrix<double, 4, 12> J_proj = Eigen::Matrix<double, 4, 12>::Zero();
     J_proj.block<4, 3>(0, 0) = -P_ext.block<4, 3>(0, 0);
-    J_proj.block<4, 3>(0, 3) =  2.0 * P_ext.block<4, 3>(0, 0) * skew(p_cam);
+    if (true_jacobians)
+      J_proj.block<4, 3>(0, 3) = P_ext.block<4, 3>(0, 0) * skew(p_cam); // the derivative (certify/TRUE_JACOBIANS.md)
+    else
+      J_proj.block<4, 3>(0, 3) =  2.0 * P_ext.block<4, 3>(0, 0) * skew(p_cam);
 
     // Jacobian of [xl; y; z_cam; xr] w.r.t. SE3Point (world frame)
     Eigen::Matrix<double, 4, 3> J_lm = P_ext.block<4, 3>(0, 0) * T_world.linear().transpose();

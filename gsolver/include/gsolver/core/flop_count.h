@@ -25,6 +25,7 @@ namespace gsolver {
       F2V          = 2, // factor-to-variable message (Schur-complement marginalization, the small inverses)
       Belief       = 3, // updateMuAndSigma(): the belief update
       V2F          = 4, // variable-to-factor messages of one variable
+      V2FAlt       = 5, // the same messages formed as belief minus the one incoming message (a baseline; not executed)
       NumCategories
     };
     constexpr int kClasses = 8; // node classes, set by the driver (FactorNodeBase/VariableNodeBase::flop_class_)
@@ -131,6 +132,13 @@ namespace gsolver {
     // VariableNode::sendMessage(i), frozen, one outgoing message; the other deg - 1 incoming messages are summed afresh
     constexpr uint64_t v2f(uint64_t d, uint64_t deg) {
       return (deg - 1) * (d + prod(d, d, 1) + d + d * d) + d + inv(d) + prod(d, d, 1) + d;
+    }
+
+    // The usual GBP implementation of one outgoing message (not what G-solver executes): Lambda' = Lambda_b - Lambda_in
+    // (d^2), eta' = eta_b - Lambda_in (tau_in - z) (d + 2d^2 + d), + eps I (d), delta = Lambda'^-1 eta' (2d^3 + 2d^2),
+    // tau = z + delta (d); the belief itself is already counted in Belief
+    constexpr uint64_t v2fAlt(uint64_t d) {
+      return d * d + (d + 2 * d * d + d) + d + inv(d) + prod(d, d, 1) + d;
     }
 
   } // namespace flops

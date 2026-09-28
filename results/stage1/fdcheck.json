@@ -1,0 +1,1082 @@
+{
+ "exports/stage1/kitti06/corrected": {
+  "factors_checked": 11417,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 2.5834425834425836e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 3.440009739117888e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 5.53248e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 1.71432e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 1.43556e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 3.441711152791805e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 1.5947907322795197e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 4.263756901325915e-12,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 11487,
+    "rel_max": 1.2113278351166574e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 11487,
+    "rel_max": 2.082557338320701e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 11487,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 11487,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 11487,
+    "rel_max": 1.2722397642353436e-06,
+    "ratio_min": 0.999999,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "stereo slot 1 cols 0-2",
+  "worst_rel": 1.2722397642353436e-06
+ },
+ "exports/stage1/kitti06/shipped": {
+  "factors_checked": 11417,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 2.8622428622428626e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 8.387277080435893e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 6.01365e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 1.13679,
+    "ratio_min": 0.995007,
+    "ratio_max": 1.00343
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 1.62051e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 8.384886197609532e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 1.2656412656412657e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 4.193696130657437e-12,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 11487,
+    "rel_max": 1.1559472643375083e-06,
+    "ratio_min": 0.999999,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 11487,
+    "rel_max": 1.0,
+    "ratio_min": 2.0,
+    "ratio_max": 2.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 11487,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 11487,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 11487,
+    "rel_max": 1.3171644130493844e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 9-11",
+  "worst_rel": 1.13679
+ },
+ "exports/stage1/kitti03/corrected": {
+  "factors_checked": 13726,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 1.312379037702729e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 1.1196613187921578e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 3.52375e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 1.05406e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 8.582291797921129e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 1.119483821486075e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 1.0785821571643143e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 4.27570350487338e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 13807,
+    "rel_max": 1.3910918558989242e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 13807,
+    "rel_max": 1.962200745043895e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 13807,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 13807,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 13807,
+    "rel_max": 2.055723778802223e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 3-5",
+  "worst_rel": 1.1196613187921578e-06
+ },
+ "exports/stage1/kitti03/shipped": {
+  "factors_checked": 13726,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 4.0397761591046364e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 1.0017329978954356e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 2.09258e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 2.10569,
+    "ratio_min": -0.222326,
+    "ratio_max": 1.17184
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 2.5013019537164624e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 9.989486327820997e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 2.429051022978193e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 5.426958234248705e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 13807,
+    "rel_max": 1.2234097391662945e-05,
+    "ratio_min": 0.999997,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 13807,
+    "rel_max": 1.0000013237809302,
+    "ratio_min": 2.0,
+    "ratio_max": 2.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 13807,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 13807,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 13807,
+    "rel_max": 9.0410473890021e-06,
+    "ratio_min": 0.999996,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 9-11",
+  "worst_rel": 2.10569
+ },
+ "exports/stage1/kitti04/corrected": {
+  "factors_checked": 15142,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 1.80623e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 3.81138934078508e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 6.0127e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 2.21824e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 1.07877e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 3.811231320049813e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 1.537841537841538e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 2.5927025927025928e-12,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 15267,
+    "rel_max": 7.682657212752318e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 15267,
+    "rel_max": 9.871974093725902e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 15267,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 15267,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 15267,
+    "rel_max": 9.178326902771229e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 3-5",
+  "worst_rel": 3.81138934078508e-07
+ },
+ "exports/stage1/kitti04/shipped": {
+  "factors_checked": 15142,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 3.39409e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 6.565926237007484e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 5.87848e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 1.34075,
+    "ratio_min": 0.978889,
+    "ratio_max": 1.01314
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 1.73253e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 6.565553547458174e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 1.5212215212215214e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 3.499766999533999e-12,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 15267,
+    "rel_max": 7.029658127982857e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 15267,
+    "rel_max": 1.0000013678730395,
+    "ratio_min": 2.0,
+    "ratio_max": 2.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 15267,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 15267,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 15267,
+    "rel_max": 1.1531001655062987e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 9-11",
+  "worst_rel": 1.34075
+ },
+ "exports/stage1/kitti10/corrected": {
+  "factors_checked": 12632,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 1.1965835043381216e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 2.0820920844419217e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 3.27144e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 1.09066e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 8.033998203989223e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 2.052979599915876e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 1.4275310051190834e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 5.0176952654289815e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 12680,
+    "rel_max": 1.0432913584372577e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 12680,
+    "rel_max": 1.176662061014995e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 12680,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 12680,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 12680,
+    "rel_max": 1.8244085075077837e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 3-5",
+  "worst_rel": 2.0820920844419217e-06
+ },
+ "exports/stage1/kitti10/shipped": {
+  "factors_checked": 12632,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 39,
+    "rel_max": 2.409889279114233e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 39,
+    "rel_max": 4.810749174228919e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 39,
+    "rel_max": 2.98724e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 39,
+    "rel_max": 2.34515,
+    "ratio_min": 0.418786,
+    "ratio_max": 1.03869
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 39,
+    "rel_max": 6.23024e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 39,
+    "rel_max": 4.81379534013233e-07,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 39,
+    "rel_max": 1.39312e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 39,
+    "rel_max": 1.8108216232434866e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 12680,
+    "rel_max": 5.164635708537963e-06,
+    "ratio_min": 0.999999,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 12680,
+    "rel_max": 1.0,
+    "ratio_min": 2.0,
+    "ratio_max": 2.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 12680,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 12680,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 12680,
+    "rel_max": 4.128571480127467e-06,
+    "ratio_min": 0.999999,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 9-11",
+  "worst_rel": 2.34515
+ },
+ "exports/stage1/charuco/corrected": {
+  "factors_checked": 711,
+  "blocks": {
+   "prior slot 0 cols 0-2": {
+    "factors": 1,
+    "rel_max": 1.91207e-25,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "prior slot 0 cols 3-5": {
+    "factors": 1,
+    "rel_max": 6.92685e-25,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "prior slot 0 cols 6-8": {
+    "factors": 1,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "prior slot 0 cols 9-11": {
+    "factors": 1,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "posevel_pose slot 0 cols 0-2": {
+    "factors": 617,
+    "rel_max": 2.57646099049205e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "posevel_pose slot 0 cols 3-5": {
+    "factors": 617,
+    "rel_max": 4.063658322449889e-06,
+    "ratio_min": 0.999998,
+    "ratio_max": 1.0
+   },
+   "posevel_pose slot 0 cols 6-8": {
+    "factors": 617,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "posevel_pose slot 0 cols 9-11": {
+    "factors": 617,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "posevel_pose slot 1 cols 0-2": {
+    "factors": 617,
+    "rel_max": 7.134335433069292e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "posevel_pose slot 1 cols 3-5": {
+    "factors": 617,
+    "rel_max": 9.35257e-06,
+    "ratio_min": 0.999995,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 0-2": {
+    "factors": 93,
+    "rel_max": 2.464927394782184e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 93,
+    "rel_max": 7.38519322427219e-06,
+    "ratio_min": 0.999995,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 93,
+    "rel_max": 1.05482e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 93,
+    "rel_max": 1.25626e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 93,
+    "rel_max": 2.13242e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 93,
+    "rel_max": 7.3727e-06,
+    "ratio_min": 0.999995,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 93,
+    "rel_max": 1.347442126979143e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 93,
+    "rel_max": 1.1849073962958518e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "posevel_pose slot 1 cols 3-5",
+  "worst_rel": 9.35257e-06
+ },
+ "exports/stage1/charuco/shipped": {
+  "factors_checked": 711,
+  "blocks": {
+   "prior slot 0 cols 0-2": {
+    "factors": 1,
+    "rel_max": 7.4713e-25,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "prior slot 0 cols 3-5": {
+    "factors": 1,
+    "rel_max": 1.27042e-24,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "prior slot 0 cols 6-8": {
+    "factors": 1,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "prior slot 0 cols 9-11": {
+    "factors": 1,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "posevel_pose slot 0 cols 0-2": {
+    "factors": 617,
+    "rel_max": 3.1230970983712255e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "posevel_pose slot 0 cols 3-5": {
+    "factors": 617,
+    "rel_max": 4.105040401834461e-06,
+    "ratio_min": 0.999999,
+    "ratio_max": 1.0
+   },
+   "posevel_pose slot 0 cols 6-8": {
+    "factors": 617,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "posevel_pose slot 0 cols 9-11": {
+    "factors": 617,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "posevel_pose slot 1 cols 0-2": {
+    "factors": 617,
+    "rel_max": 6.875515020600824e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "posevel_pose slot 1 cols 3-5": {
+    "factors": 617,
+    "rel_max": 9.50921e-06,
+    "ratio_min": 0.999995,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 0-2": {
+    "factors": 93,
+    "rel_max": 2.901455693164362e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 93,
+    "rel_max": 9.087218153410966e-06,
+    "ratio_min": 0.999995,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 93,
+    "rel_max": 1.03778e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 93,
+    "rel_max": 0.0894479,
+    "ratio_min": 0.999239,
+    "ratio_max": 1.00384
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 93,
+    "rel_max": 2.05512e-10,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 93,
+    "rel_max": 9.08442e-06,
+    "ratio_min": 0.999995,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 93,
+    "rel_max": 1.1503925645248873e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 93,
+    "rel_max": 1.1716056099141552e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 9-11",
+  "worst_rel": 0.0894479
+ },
+ "exports/stage1/prefix/corrected": {
+  "factors_checked": 50065,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 160,
+    "rel_max": 6.329966969702727e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 160,
+    "rel_max": 2.0466761700253775e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 160,
+    "rel_max": 2.80942e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 160,
+    "rel_max": 7.68596e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 160,
+    "rel_max": 6.8578e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 160,
+    "rel_max": 2.017095451280984e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 160,
+    "rel_max": 1.533801533801534e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 160,
+    "rel_max": 4.8311150559013916e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 50480,
+    "rel_max": 1.0517082531568267e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 50480,
+    "rel_max": 1.3699857295903267e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 50480,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 50480,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 50480,
+    "rel_max": 1.2616202768252631e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 3-5",
+  "worst_rel": 2.0466761700253775e-06
+ },
+ "exports/stage1/prefix/shipped": {
+  "factors_checked": 50065,
+  "blocks": {
+   "gp slot 0 cols 0-2": {
+    "factors": 160,
+    "rel_max": 8.088910889108892e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 3-5": {
+    "factors": 160,
+    "rel_max": 1.5336217168765078e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 6-8": {
+    "factors": 160,
+    "rel_max": 2.66121e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 0 cols 9-11": {
+    "factors": 160,
+    "rel_max": 1.92475,
+    "ratio_min": 0.716065,
+    "ratio_max": 1.03889
+   },
+   "gp slot 1 cols 0-2": {
+    "factors": 160,
+    "rel_max": 6.882281293687761e-08,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 3-5": {
+    "factors": 160,
+    "rel_max": 1.533573611491725e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 6-8": {
+    "factors": 160,
+    "rel_max": 1.6021116021116021e-09,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "gp slot 1 cols 9-11": {
+    "factors": 160,
+    "rel_max": 7.511767706572511e-11,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 0-2": {
+    "factors": 50480,
+    "rel_max": 1.0533034128145952e-06,
+    "ratio_min": 1.0,
+    "ratio_max": 1.0
+   },
+   "stereo slot 0 cols 3-5": {
+    "factors": 50480,
+    "rel_max": 1.0000014125650485,
+    "ratio_min": 2.0,
+    "ratio_max": 2.0
+   },
+   "stereo slot 0 cols 6-8": {
+    "factors": 50480,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 0 cols 9-11": {
+    "factors": 50480,
+    "rel_max": 0.0,
+    "ratio_min": null,
+    "ratio_max": null
+   },
+   "stereo slot 1 cols 0-2": {
+    "factors": 50480,
+    "rel_max": 1.1452039853829284e-06,
+    "ratio_min": 0.999999,
+    "ratio_max": 1.0
+   }
+  },
+  "worst_block": "gp slot 0 cols 9-11",
+  "worst_rel": 1.92475
+ }
+}

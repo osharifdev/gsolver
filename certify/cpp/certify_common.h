@@ -33,6 +33,8 @@
 
 #include <gsolver/core/flop_count.h>
 #include <gsolver/core/frozen_mode.h>
+#include <gsolver/core/jacobian_mode.h>
+#include <gsolver/maths/derivatives.h>
 #include <gsolver/core/gbp_solver.h>
 #include <gsolver/graph/factor_graph.h>
 #include <gsolver/graph/types/all_types.h>
@@ -145,6 +147,16 @@ namespace certify {
         o += ", ";
     }
     return o + "]";
+  }
+
+  inline std::vector<double> parseDoubleList(const std::string& s) {
+    std::vector<double> out;
+    std::stringstream ss(s);
+    std::string tok;
+    while (std::getline(ss, tok, ','))
+      if (!tok.empty())
+        out.push_back(std::stod(tok));
+    return out;
   }
 
   inline std::vector<int> parseIntList(const std::string& s) {
@@ -269,6 +281,7 @@ namespace certify {
     size_t n    = 0;
     std::vector<int64_t> vars;                // n x nvars block indices
     std::vector<double> J, e, Sigma, msg_tau; // n x m x d, n x m, n x m x m, n x d
+    std::vector<double> Jtrue;                // n x m x d: the true derivative at the same point (Theorem T0; Stage 1)
     std::vector<double> dt;                   // gp only
     std::vector<int64_t> inlier;              // stereo only
     std::vector<std::string> ids;
@@ -320,6 +333,28 @@ namespace certify {
         }
         appendRowMajor(G.J, J);
         appendRowMajor(G.e, e);
+        {
+          // The true Jacobian at the same point: with --true-jacobians it is J itself; otherwise the stereo rotation
+          // columns without the factor 2, and the GP block of the first knot's velocity replaced by its derivative
+          // (certify/TRUE_JACOBIANS.md). Frozen: at the variables' linearization points; Beliefs: at the beliefs.
+          typename FT::MatrixJacobianDim Jt = J;
+          if constexpr (std::is_same_v<FT, SE3PoseVelStereoPoint>) {
+            if (!true_jacobians)
+              Jt.template block<3, 3>(0, 3) *= 0.5;
+          }
+          if constexpr (std::is_same_v<FT, SE3PoseVelGP>) {
+            if (!true_jacobians) {
+              SE3PoseVelValue a = fp->edges_.template at<0>()->variable_to_factor_message_.mu_;
+              SE3PoseVelValue b = fp->edges_.template at<1>()->variable_to_factor_message_.mu_;
+              if (charts == Charts::Frozen) {
+                a = std::dynamic_pointer_cast<SE3PoseVel>(vars[index.at(fp->edges_.template at<0>()->variable_id_)].node)->mu_lin_;
+                b = std::dynamic_pointer_cast<SE3PoseVel>(vars[index.at(fp->edges_.template at<1>()->variable_id_)].node)->mu_lin_;
+              }
+              Jt = DerivativeUtils::compute_se3vel_gp_jacobian(a.pose, b.pose, a.vel, b.vel, fp->dt_, true);
+            }
+          }
+          appendRowMajor(G.Jtrue, Jt);
+        }
         appendRowMajor(G.Sigma, fp->Sigma_);
         G.ids.push_back(fp->id_);
         forEachEdge<0>(*fp, [&](int, auto& edge) {
@@ -366,6 +401,7 @@ namespace certify {
       const std::string p = dir + "/f_" + type + "_";
       writeNpy(p + "vars.npy", G.vars, {G.n, size_t(G.nvars)});
       writeNpy(p + "J.npy", G.J, {G.n, size_t(G.err_dim), size_t(G.var_dim)});
+      writeNpy(p + "Jtrue.npy", G.Jtrue, {G.n, size_t(G.err_dim), size_t(G.var_dim)});
       writeNpy(p + "e.npy", G.e, {G.n, size_t(G.err_dim)});
       writeNpy(p + "Sigma.npy", G.Sigma, {G.n, size_t(G.err_dim), size_t(G.err_dim)});
       writeNpy(p + "msg_tau.npy", G.msg_tau, {G.n, size_t(G.var_dim)});
@@ -453,6 +489,7 @@ namespace certify {
            << vars[i].pose_index << "\t" << jsonNum(vars[i].timestamp) << "\n";
     }
     meta.str("charts", charts == Charts::Frozen ? "frozen" : "beliefs");
+    meta.boolean("true_jacobians", true_jacobians);
     meta.integer("n_variables", static_cast<long long>(vars.size()));
     meta.integer("n_dof", N);
     meta.integer("n_factors", static_cast<long long>(g.factor_nodes_.size()));
@@ -712,300 +749,6 @@ namespace certify {
       f.flush();
     }
   };
-
-  /**
-   * Phase D, WP1b: rounds with a work account, curve exports and an optional stop point.
-   * Work of a round = linearizations + message computations:
-   *  - linearizations: every factor for G-solver's per-round schedule (each re-evaluates its error and Jacobian);
-   *    in threshold mode the factors linearized for the first time plus those the rule relinearizes;
-   *  - messages: every factor-to-variable message, and every variable-to-factor message of the variables with at
-   *    least two edges (a single-edge variable never sends; variable_node.cpp).
-   * A round is accounted before it runs (GbpSolver::planThresholdRound), so a budget W stops exactly after the
-   * last round whose cumulative work is <= W: the state there is exported to <out>/at_budget (charts at the
-   * beliefs) and the run continues. Every `curve_every` rounds the state is exported to <out>/curve/rNNNNN.
-   */
-  struct RoundRunner {
-    GbpSolver& solver;
-    FactorGraph& g;
-    std::string out;
-    long long budget = 0; // 0: none
-    int curve_every  = 0; // 0: no curve exports
-    Json meta;
-    int rounds = 0, budget_round = -1;
-    long long cumulative = 0, budget_work = 0;
-    std::ofstream log;
-    std::unique_ptr<RelinLog> relin_log;
-    size_t nv_ = SIZE_MAX, nf_ = SIZE_MAX;
-    long long messages_ = 0;
-
-    // Phase D, WP6a: per-round GBP flops (gsolver/core/flop_count.h, certify/FLOPS.md)
-    bool count_flops     = false;
-    int flop_trace_round = -1; // record one operation of every kind in this round (hand-count validation)
-    std::ofstream flop_log, flop_class_log;
-    size_t classed_vars_ = 0, classed_factors_ = 0;
-
-    void enableFlops(int trace_round) {
-      count_flops      = true;
-      flop_trace_round = trace_round;
-      flops::enabled   = true;
-      flops::collect(); // discard anything counted before
-      flop_log.open(out + "/flops.csv");
-      flop_log << "round,gbp_flops,factor_update,f2v,belief,v2f,linearizations,factor_updates,f2v_messages,belief_updates,"
-                  "v2f_messages\n";
-      flop_class_log.open(out + "/flops_by_class.csv");
-      flop_class_log << "round,category,class,flops,ops\n";
-    }
-    void beforeRound() {
-      if (!count_flops)
-        return;
-      assignFlopClasses(g, classed_vars_, classed_factors_);
-      if (rounds + 1 == flop_trace_round)
-        flops::trace_per_kind = 1;
-    }
-    void afterRound() {
-      if (!count_flops)
-        return;
-      const flops::Tally t = flops::collect();
-      uint64_t F[flops::NumCategories] = {}, N[flops::NumCategories] = {};
-      static const char* cat[] = {"linearize", "factor_update", "f2v", "belief", "v2f"};
-      for (int c = 0; c < flops::kClasses; ++c)
-        for (int k = 0; k < flops::NumCategories; ++k) {
-          F[k] += t.flops[c][k];
-          N[k] += t.ops[c][k];
-          if (t.ops[c][k])
-            flop_class_log << rounds << "," << cat[k] << ","
-                           << (k <= flops::F2V ? factorClassNames()[c] : variableClassNames()[c]) << "," << t.flops[c][k] << ","
-                           << t.ops[c][k] << "\n";
-        }
-      const uint64_t total = F[flops::FactorUpdate] + F[flops::F2V] + F[flops::Belief] + F[flops::V2F];
-      flop_log << rounds << "," << total << "," << F[flops::FactorUpdate] << "," << F[flops::F2V] << "," << F[flops::Belief] << ","
-               << F[flops::V2F] << "," << N[flops::Linearize] << "," << N[flops::FactorUpdate] << "," << N[flops::F2V] << ","
-               << N[flops::Belief] << "," << N[flops::V2F] << "\n";
-      flop_log.flush();
-      flop_class_log.flush();
-      if (flops::trace_per_kind > 0) {
-        flops::trace_per_kind = 0;
-        std::ofstream tr(out + "/flops_trace.csv");
-        tr << "round,category,class,a,b,degree,flops\n";
-        for (const auto& r : flops::trace)
-          tr << rounds << "," << cat[r.cat] << ","
-             << (r.cat <= flops::F2V ? factorClassNames()[r.cls] : variableClassNames()[r.cls]) << "," << r.a << "," << r.b << ","
-             << r.deg << "," << r.flops << "\n";
-        flops::trace.clear();
-      }
-    }
-
-    RoundRunner(GbpSolver& s, FactorGraph& graph, const std::string& dir, long long work_budget, int every, Json m)
-        : solver(s), g(graph), out(dir), budget(work_budget), curve_every(every), meta(std::move(m)) {
-      makeDirs(out);
-      log.open(out + "/work.csv");
-      log << "round,linearizations,messages,cumulative_work,wall_s,node_updates,asleep\n";
-      if (solver.threshold_relinearization_)
-        relin_log = std::make_unique<RelinLog>(out + "/relin_rounds.csv");
-    }
-
-    long long messageCount() {
-      if (g.variable_nodes_.size() == nv_ && g.factor_nodes_.size() == nf_)
-        return messages_;
-      std::unordered_map<std::string, int> degree;
-      long long f2v = 0, v2f = 0;
-      for (auto& f : g.factor_nodes_) {
-        const size_t k = f->numberOfEdges();
-        f2v += static_cast<long long>(k);
-        for (size_t i = 0; i < k; ++i)
-          degree[f->edgeVariableId(i)]++;
-      }
-      for (auto& [id, d] : degree)
-        if (d >= 2)
-          v2f += d;
-      nv_       = g.variable_nodes_.size();
-      nf_       = g.factor_nodes_.size();
-      messages_ = f2v + v2f;
-      return messages_;
-    }
-
-    void exportBeliefs(const std::string& dir, const std::string& what) {
-      Json m = meta;
-      m.integer("round", rounds).num("cumulative_work", static_cast<double>(cumulative)).str("export", what);
-      exportModel(g, dir, Charts::Beliefs, m);
-    }
-
-    // ---- Phase D, WP2: the sidecar protocol (certify/SIDECAR.md). Before the message passing of every round the
-    // current linearization is exported to <sidecar>/model (frozen charts, state z), the per-pose round data to
-    // <sidecar>/round_info.tsv, and <sidecar>/ready is written; the sidecar answers with <sidecar>/decision (the
-    // round number, then the ids of the poses that sleep during this round's message passing).
-    std::string sidecar;              // empty: off
-    std::string persist;              // exports of the sampled rounds go to <persist>/export_rNNNNN
-    std::vector<int> persist_rounds;  // e.g. 1, 10 and the last
-    int last_round = -1;
-    int pause_every = 0;              // checkpoint pause every N rounds (0: none)
-    long long node_updates = 0;       // cumulative variable updates (awake variables with at least one edge)
-    std::unordered_map<std::string, int> var_index_;
-
-    void writeAtomic(const std::string& path, const std::string& text) {
-      std::ofstream(path + ".tmp") << text;
-      std::rename((path + ".tmp").c_str(), path.c_str());
-    }
-
-    // Messages and node updates of a round with the given sleep mask (sleeping variables neither send nor receive)
-    std::pair<long long, long long> awakeWork() {
-      if (var_index_.size() != g.variable_nodes_.size()) {
-        var_index_.clear();
-        for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
-          var_index_[g.variable_nodes_[v]->id_] = static_cast<int>(v);
-      }
-      const auto& asleep = solver.asleep_;
-      auto sleeping = [&](int v) { return v < static_cast<int>(asleep.size()) && asleep[v]; };
-      std::vector<int> degree(g.variable_nodes_.size(), 0);
-      long long f2v = 0;
-      for (auto& f : g.factor_nodes_)
-        for (size_t i = 0; i < f->numberOfEdges(); ++i) {
-          const int v = var_index_.at(f->edgeVariableId(i));
-          degree[v]++;
-          if (!sleeping(v))
-            f2v++;
-        }
-      long long v2f = 0, updates = 0;
-      for (size_t v = 0; v < degree.size(); ++v)
-        if (!sleeping(static_cast<int>(v)) && degree[v] > 0) {
-          updates++;
-          if (degree[v] >= 2)
-            v2f += degree[v];
-        }
-      return {f2v + v2f, updates};
-    }
-
-    void sidecarRound() {
-      beforeRound();
-      const long long lin = solver.planThresholdRound(g);
-      solver.applyThresholdRelinearization(g);
-      const int r = solver.threshold_stats_.round;
-      exportModel(g, sidecar + "/model", Charts::Frozen, meta);
-      {
-        const auto& st = solver.threshold_stats_;
-        std::vector<char> relin(g.variable_nodes_.size(), 0);
-        for (int v : st.relinearized_vars)
-          relin[v] = 1;
-        std::ostringstream info;
-        info << "round\t" << r << "\nlast\t" << (r == last_round ? 1 : 0) << "\nnew_factors\t" << st.new_factors
-             << "\nrelinearized_factors\t" << st.relinearized_factors << "\n";
-        info << "id\td\trelinearized\tasleep\n";
-        for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
-          if (isPoseId(g.variable_nodes_[v]->id_))
-            info << g.variable_nodes_[v]->id_ << "\t" << jsonNum(st.displacement[v]) << "\t" << int(relin[v]) << "\t"
-                 << int(v < solver.asleep_.size() && solver.asleep_[v]) << "\n";
-        writeAtomic(sidecar + "/round_info.tsv", info.str());
-        writeAtomic(sidecar + "/ready", std::to_string(r) + "\n");
-      }
-      if (std::find(persist_rounds.begin(), persist_rounds.end(), r) != persist_rounds.end() || r == last_round) {
-        char name[48];
-        snprintf(name, sizeof(name), "/export_r%05d", r);
-        Json m = meta;
-        m.integer("round", r).str("export", "linearization and state before this round's message passing");
-        exportModel(g, persist + name, Charts::Frozen, m);
-      }
-      // wait for the decision of this round
-      std::set<std::string> sleep_ids;
-      while (true) {
-        std::ifstream f(sidecar + "/decision");
-        int rr = -1;
-        if (f && (f >> rr) && rr == r) {
-          std::string id;
-          while (f >> id)
-            sleep_ids.insert(id);
-          break;
-        }
-        struct stat stt;
-        if (stat((sidecar + "/abort").c_str(), &stt) == 0)
-          throw std::runtime_error("sidecar aborted at round " + std::to_string(r));
-        std::this_thread::sleep_for(std::chrono::milliseconds(2));
-      }
-      for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
-        if (isPoseId(g.variable_nodes_[v]->id_))
-          solver.setAsleep(g, v, sleep_ids.count(g.variable_nodes_[v]->id_) > 0);
-      const auto [msg, updates] = awakeWork();
-      auto t0 = std::chrono::steady_clock::now();
-      solver.performIteration(g);
-      const double wall = seconds_since(t0);
-      ++rounds;
-      cumulative += lin + msg;
-      node_updates += updates;
-      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << "," << updates << ","
-          << sleep_ids.size() << "\n";
-      log.flush();
-      afterRound();
-      if (relin_log)
-        relin_log->row(solver, g, wall);
-      if (pause_every > 0 && rounds % pause_every == 0 && rounds != last_round)
-        if (!pause("r" + std::to_string(rounds)))
-          throw std::runtime_error("aborted at the checkpoint after round " + std::to_string(rounds));
-    }
-
-    void round() {
-      if (!sidecar.empty()) {
-        sidecarRound();
-        return;
-      }
-      beforeRound();
-      const long long lin = solver.threshold_relinearization_ ? solver.planThresholdRound(g)
-                                                              : static_cast<long long>(g.factor_nodes_.size());
-      const long long msg = messageCount();
-      if (budget > 0 && budget_round < 0 && cumulative + lin + msg > budget) {
-        budget_round = rounds;
-        budget_work  = cumulative;
-        exportBeliefs(out + "/at_budget", "state after the last round within the work budget");
-      }
-      auto t0 = std::chrono::steady_clock::now();
-      solver.performIteration(g);
-      const double wall = seconds_since(t0);
-      ++rounds;
-      cumulative += lin + msg;
-      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << ",,\n";
-      log.flush();
-      afterRound();
-      if (relin_log)
-        relin_log->row(solver, g, wall);
-      if (curve_every > 0 && rounds % curve_every == 0) {
-        char name[32];
-        snprintf(name, sizeof(name), "/curve/r%05d", rounds);
-        exportBeliefs(out + name, "curve point");
-      }
-    }
-
-    // Stop point for a checkpointed run: export, then wait until <out>/continue (or <out>/abort) exists.
-    bool pause(const std::string& tag) {
-      exportBeliefs(out + "/checkpoint_" + tag, "checkpoint");
-      std::cout << "checkpoint " << tag << " written after round " << rounds << "; waiting for " << out << "/continue"
-                << std::endl;
-      while (true) {
-        struct stat st;
-        if (stat((out + "/abort").c_str(), &st) == 0)
-          return false;
-        if (stat((out + "/continue").c_str(), &st) == 0) {
-          std::remove((out + "/continue").c_str());
-          return true;
-        }
-        std::this_thread::sleep_for(std::chrono::seconds(2));
-      }
-    }
-
-    void finish() {
-      std::ofstream(out + "/work_summary.json")
-        << "{\"rounds\": " << rounds << ", \"cumulative_work\": " << cumulative << ", \"budget\": " << budget
-        << ", \"budget_round\": " << budget_round << ", \"budget_work\": " << budget_work << "}\n";
-    }
-  };
-
-  /** Re-freezes per variable over the whole run: id, pose flag, round of first linearization, count, and the
-   *  rounds the run had (rounds per linearization = (rounds - created_round + 1) / (1 + relinearizations)). */
-  inline void writeRelinCounts(const std::string& path, const GbpSolver& solver, const FactorGraph& g) {
-    std::ofstream f(path);
-    f << "id,is_pose,created_round,relinearizations,rounds\n";
-    const auto& st = solver.threshold_stats_;
-    for (size_t v = 0; v < st.relinearizations.size(); ++v)
-      f << g.variable_nodes_[v]->id_ << "," << (isPoseId(g.variable_nodes_[v]->id_) ? 1 : 0) << ","
-        << st.created_round[v] << "," << st.relinearizations[v] << "," << st.round << "\n";
-  }
 
   // ---- Phase D, WP6b: the nonlinear estimating-equation residual at a stepped point (certify/NL_PROBE.md)
 
@@ -1407,5 +1150,483 @@ namespace certify {
       endSession();
     }
   };
+
+  /**
+   * Phase D, WP1b: rounds with a work account, curve exports and an optional stop point.
+   * Work of a round = linearizations + message computations:
+   *  - linearizations: every factor for G-solver's per-round schedule (each re-evaluates its error and Jacobian);
+   *    in threshold mode the factors linearized for the first time plus those the rule relinearizes;
+   *  - messages: every factor-to-variable message, and every variable-to-factor message of the variables with at
+   *    least two edges (a single-edge variable never sends; variable_node.cpp).
+   * A round is accounted before it runs (GbpSolver::planThresholdRound), so a budget W stops exactly after the
+   * last round whose cumulative work is <= W: the state there is exported to <out>/at_budget (charts at the
+   * beliefs) and the run continues. Every `curve_every` rounds the state is exported to <out>/curve/rNNNNN.
+   */
+  struct RoundRunner {
+    GbpSolver& solver;
+    FactorGraph& g;
+    std::string out;
+    long long budget = 0; // 0: none
+    int curve_every  = 0; // 0: no curve exports
+    Json meta;
+    int rounds = 0, budget_round = -1;
+    long long cumulative = 0, budget_work = 0;
+    std::ofstream log;
+    std::unique_ptr<RelinLog> relin_log;
+    size_t nv_ = SIZE_MAX, nf_ = SIZE_MAX;
+    long long messages_ = 0;
+
+    // Phase D, WP6a: per-round GBP flops (gsolver/core/flop_count.h, certify/FLOPS.md)
+    bool count_flops     = false;
+    int flop_trace_round = -1; // record one operation of every kind in this round (hand-count validation)
+    std::ofstream flop_log, flop_class_log;
+    size_t classed_vars_ = 0, classed_factors_ = 0;
+
+    void enableFlops(int trace_round) {
+      count_flops      = true;
+      flop_trace_round = trace_round;
+      flops::enabled   = true;
+      flops::collect(); // discard anything counted before
+      flop_log.open(out + "/flops.csv");
+      flop_log << "round,gbp_flops,factor_update,f2v,belief,v2f,linearizations,factor_updates,f2v_messages,belief_updates,"
+                  "v2f_messages,v2f_alt,gbp_flops_alt\n";
+      flop_class_log.open(out + "/flops_by_class.csv");
+      flop_class_log << "round,category,class,flops,ops\n";
+    }
+    void beforeRound() {
+      if (!count_flops)
+        return;
+      assignFlopClasses(g, classed_vars_, classed_factors_);
+      if (rounds + 1 == flop_trace_round)
+        flops::trace_per_kind = 1;
+    }
+    void afterRound() {
+      if (!count_flops)
+        return;
+      const flops::Tally t = flops::collect();
+      uint64_t F[flops::NumCategories] = {}, N[flops::NumCategories] = {};
+      static const char* cat[] = {"linearize", "factor_update", "f2v", "belief", "v2f", "v2f_alt"};
+      for (int c = 0; c < flops::kClasses; ++c)
+        for (int k = 0; k < flops::NumCategories; ++k) {
+          F[k] += t.flops[c][k];
+          N[k] += t.ops[c][k];
+          if (t.ops[c][k])
+            flop_class_log << rounds << "," << cat[k] << ","
+                           << (k <= flops::F2V ? factorClassNames()[c] : variableClassNames()[c]) << "," << t.flops[c][k] << ","
+                           << t.ops[c][k] << "\n";
+        }
+      const uint64_t total = F[flops::FactorUpdate] + F[flops::F2V] + F[flops::Belief] + F[flops::V2F];
+      flop_log << rounds << "," << total << "," << F[flops::FactorUpdate] << "," << F[flops::F2V] << "," << F[flops::Belief] << ","
+               << F[flops::V2F] << "," << N[flops::Linearize] << "," << N[flops::FactorUpdate] << "," << N[flops::F2V] << ","
+               << N[flops::Belief] << "," << N[flops::V2F] << "," << F[flops::V2FAlt] << ","
+               << (total - F[flops::V2F] + F[flops::V2FAlt]) << "\n";
+      flop_log.flush();
+      flop_class_log.flush();
+      if (flops::trace_per_kind > 0) {
+        flops::trace_per_kind = 0;
+        std::ofstream tr(out + "/flops_trace.csv");
+        tr << "round,category,class,a,b,degree,flops\n";
+        for (const auto& r : flops::trace)
+          tr << rounds << "," << cat[r.cat] << ","
+             << (r.cat <= flops::F2V ? factorClassNames()[r.cls] : variableClassNames()[r.cls]) << "," << r.a << "," << r.b << ","
+             << r.deg << "," << r.flops << "\n";
+        flops::trace.clear();
+      }
+    }
+
+    RoundRunner(GbpSolver& s, FactorGraph& graph, const std::string& dir, long long work_budget, int every, Json m)
+        : solver(s), g(graph), out(dir), budget(work_budget), curve_every(every), meta(std::move(m)) {
+      makeDirs(out);
+      log.open(out + "/work.csv");
+      log << "round,linearizations,messages,cumulative_work,wall_s,node_updates,asleep\n";
+      if (solver.threshold_relinearization_)
+        relin_log = std::make_unique<RelinLog>(out + "/relin_rounds.csv");
+    }
+
+    long long messageCount() {
+      if (g.variable_nodes_.size() == nv_ && g.factor_nodes_.size() == nf_)
+        return messages_;
+      std::unordered_map<std::string, int> degree;
+      long long f2v = 0, v2f = 0;
+      for (auto& f : g.factor_nodes_) {
+        const size_t k = f->numberOfEdges();
+        f2v += static_cast<long long>(k);
+        for (size_t i = 0; i < k; ++i)
+          degree[f->edgeVariableId(i)]++;
+      }
+      for (auto& [id, d] : degree)
+        if (d >= 2)
+          v2f += d;
+      nv_       = g.variable_nodes_.size();
+      nf_       = g.factor_nodes_.size();
+      messages_ = f2v + v2f;
+      return messages_;
+    }
+
+    void exportBeliefs(const std::string& dir, const std::string& what) {
+      Json m = meta;
+      m.integer("round", rounds).num("cumulative_work", static_cast<double>(cumulative)).str("export", what);
+      exportModel(g, dir, Charts::Beliefs, m);
+    }
+
+    // ---- Phase D, WP2: the sidecar protocol (certify/SIDECAR.md). Before the message passing of every round the
+    // current linearization is exported to <sidecar>/model (frozen charts, state z), the per-pose round data to
+    // <sidecar>/round_info.tsv, and <sidecar>/ready is written; the sidecar answers with <sidecar>/decision (the
+    // round number, then the ids of the poses that sleep during this round's message passing).
+    std::string sidecar;              // empty: off
+    std::string persist;              // exports of the sampled rounds go to <persist>/export_rNNNNN
+    std::vector<int> persist_rounds;  // e.g. 1, 10 and the last
+    int last_round = -1;
+    int pause_every = 0;              // checkpoint pause every N rounds (0: none)
+    long long node_updates = 0;       // cumulative variable updates (awake variables with at least one edge)
+    std::unordered_map<std::string, int> var_index_;
+
+    void writeAtomic(const std::string& path, const std::string& text) {
+      std::ofstream(path + ".tmp") << text;
+      std::rename((path + ".tmp").c_str(), path.c_str());
+    }
+
+    // Messages and node updates of a round with the given sleep mask (sleeping variables neither send nor receive)
+    std::pair<long long, long long> awakeWork() {
+      if (var_index_.size() != g.variable_nodes_.size()) {
+        var_index_.clear();
+        for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
+          var_index_[g.variable_nodes_[v]->id_] = static_cast<int>(v);
+      }
+      const auto& asleep = solver.asleep_;
+      auto sleeping = [&](int v) { return v < static_cast<int>(asleep.size()) && asleep[v]; };
+      std::vector<int> degree(g.variable_nodes_.size(), 0);
+      long long f2v = 0;
+      for (auto& f : g.factor_nodes_)
+        for (size_t i = 0; i < f->numberOfEdges(); ++i) {
+          const int v = var_index_.at(f->edgeVariableId(i));
+          degree[v]++;
+          if (!sleeping(v))
+            f2v++;
+        }
+      long long v2f = 0, updates = 0;
+      for (size_t v = 0; v < degree.size(); ++v)
+        if (!sleeping(static_cast<int>(v)) && degree[v] > 0) {
+          updates++;
+          if (degree[v] >= 2)
+            v2f += degree[v];
+        }
+      return {f2v + v2f, updates};
+    }
+
+    void sidecarRound() {
+      beforeRound();
+      const long long lin = solver.planThresholdRound(g);
+      solver.applyThresholdRelinearization(g);
+      const int r = solver.threshold_stats_.round;
+      exportModel(g, sidecar + "/model", Charts::Frozen, meta);
+      {
+        const auto& st = solver.threshold_stats_;
+        std::vector<char> relin(g.variable_nodes_.size(), 0);
+        for (int v : st.relinearized_vars)
+          relin[v] = 1;
+        std::ostringstream info;
+        info << "round\t" << r << "\nlast\t" << (r == last_round ? 1 : 0) << "\nnew_factors\t" << st.new_factors
+             << "\nrelinearized_factors\t" << st.relinearized_factors << "\n";
+        info << "id\td\trelinearized\tasleep\n";
+        for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
+          if (isPoseId(g.variable_nodes_[v]->id_))
+            info << g.variable_nodes_[v]->id_ << "\t" << jsonNum(st.displacement[v]) << "\t" << int(relin[v]) << "\t"
+                 << int(v < solver.asleep_.size() && solver.asleep_[v]) << "\n";
+        writeAtomic(sidecar + "/round_info.tsv", info.str());
+        writeAtomic(sidecar + "/ready", std::to_string(r) + "\n");
+      }
+      if (std::find(persist_rounds.begin(), persist_rounds.end(), r) != persist_rounds.end() || r == last_round) {
+        char name[48];
+        snprintf(name, sizeof(name), "/export_r%05d", r);
+        Json m = meta;
+        m.integer("round", r).str("export", "linearization and state before this round's message passing");
+        exportModel(g, persist + name, Charts::Frozen, m);
+      }
+      // wait for the decision of this round
+      std::set<std::string> sleep_ids;
+      while (true) {
+        std::ifstream f(sidecar + "/decision");
+        int rr = -1;
+        if (f && (f >> rr) && rr == r) {
+          std::string id;
+          while (f >> id)
+            sleep_ids.insert(id);
+          break;
+        }
+        struct stat stt;
+        if (stat((sidecar + "/abort").c_str(), &stt) == 0)
+          throw std::runtime_error("sidecar aborted at round " + std::to_string(r));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+      }
+      for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
+        if (isPoseId(g.variable_nodes_[v]->id_))
+          solver.setAsleep(g, v, sleep_ids.count(g.variable_nodes_[v]->id_) > 0);
+      const auto [msg, updates] = awakeWork();
+      auto t0 = std::chrono::steady_clock::now();
+      solver.performIteration(g);
+      const double wall = seconds_since(t0);
+      ++rounds;
+      cumulative += lin + msg;
+      node_updates += updates;
+      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << "," << updates << ","
+          << sleep_ids.size() << "\n";
+      log.flush();
+      afterRound();
+      if (relin_log)
+        relin_log->row(solver, g, wall);
+      if (pause_every > 0 && rounds % pause_every == 0 && rounds != last_round)
+        if (!pause("r" + std::to_string(rounds)))
+          throw std::runtime_error("aborted at the checkpoint after round " + std::to_string(rounds));
+    }
+
+    void round() {
+      if (!sidecar.empty()) {
+        sidecarRound();
+        return;
+      }
+      beforeRound();
+      const long long lin = solver.threshold_relinearization_ ? solver.planThresholdRound(g)
+                                                              : static_cast<long long>(g.factor_nodes_.size());
+      evaluate(); // Stage 1: certification of the state after the previous round (no-op otherwise)
+      const long long msg = messageCount();
+      if (budget > 0 && budget_round < 0 && cumulative + lin + msg > budget) {
+        budget_round = rounds;
+        budget_work  = cumulative;
+        exportBeliefs(out + "/at_budget", "state after the last round within the work budget");
+      }
+      auto t0 = std::chrono::steady_clock::now();
+      solver.performIteration(g);
+      const double wall = seconds_since(t0);
+      ++rounds;
+      cumulative += lin + msg;
+      log << rounds << "," << lin << "," << msg << "," << cumulative << "," << wall << ",,\n";
+      log.flush();
+      afterRound();
+      afterRoundStage1();
+      if (relin_log)
+        relin_log->row(solver, g, wall);
+      if (curve_every > 0 && rounds % curve_every == 0) {
+        char name[32];
+        snprintf(name, sizeof(name), "/curve/r%05d", rounds);
+        exportBeliefs(out + name, "curve point");
+      }
+    }
+
+    // ---- Stage 1 (certify/STAGE1.md): the change-based stop, periodic certification, and exports for accuracy.
+    //
+    // Change-based criterion, every round after its message passing: c(t) = max over variables present in both rounds
+    // of || belief(t) [-] belief(t-1) ||_{D_v}, D_v = the sum of the variable's diagonal blocks of this round's factor
+    // information (Lambdaprime_, already formed by updateFactor; = H_vv of the current linearization in threshold mode).
+    // Logged to heuristics.csv; the first round >= change_from with c < tau exports the beliefs to stop_tau_<tau>.
+    std::vector<double> change_taus;
+    std::vector<char> change_fired;
+    int change_from = 1;
+    std::ofstream heur_log;
+    std::vector<std::vector<std::pair<int, int>>> var_edges_; // variable -> (factor, edge)
+    size_t ve_nf_ = 0;
+    struct Belief {
+      int kind = -1; // 0 SE3PoseVel, 1 SE3Pose, 2 SE3Point
+      SE3PoseVelValue pv;
+      Eigen::Isometry3d T;
+      Eigen::Vector3d p;
+    };
+    std::vector<Belief> prev_belief_;
+    std::vector<int> beliefs_at;        // export the beliefs after these rounds to <out>/beliefs_rNNNNN
+    // Periodic certification: after every eval_every-th round the linearization the solver iterates on next (this round's
+    // relinearizations applied) goes to <eval_dir>/model (frozen charts) and the beliefs to <eval_dir>/beliefs; the
+    // evaluator answers with <eval_dir>/done. eval_last: the final round (the evaluator exits after it).
+    std::string eval_dir;
+    int eval_every = 0, eval_last = -1, eval_pause_every = 0, fd_check_at = -1;
+    int evaluated_ = -1;
+
+    void enableChangeCriterion(const std::vector<double>& taus, int from) {
+      change_taus = taus;
+      change_fired.assign(taus.size(), 0);
+      change_from = from;
+      heur_log.open(out + "/heuristics.csv");
+      heur_log << "round,max_change,argmax_id,variables_compared,criterion_flops";
+      for (double t : taus)
+        heur_log << ",below_" << jsonNum(t);
+      heur_log << "\n";
+    }
+
+    void takeBeliefs(std::vector<Belief>& b) {
+      b.resize(g.variable_nodes_.size());
+      for (size_t v = 0; v < g.variable_nodes_.size(); ++v)
+        withVariable(g.variable_nodes_[v], [&](auto vp) {
+          using VT = typename std::decay_t<decltype(*vp)>;
+          if constexpr (std::is_same_v<VT, SE3PoseVel>) {
+            b[v].kind = 0;
+            b[v].pv   = vp->beliefMean();
+          } else if constexpr (std::is_same_v<VT, SE3Pose>) {
+            b[v].kind = 1;
+            b[v].T    = vp->beliefMean();
+          } else {
+            b[v].kind = 2;
+            b[v].p    = vp->beliefMean();
+          }
+        });
+    }
+
+    void changeCriterion() {
+      if (change_taus.empty())
+        return;
+      const size_t nv = g.variable_nodes_.size();
+      if (var_edges_.size() != nv || ve_nf_ != g.factor_nodes_.size()) {
+        std::unordered_map<std::string, int> idx;
+        for (size_t v = 0; v < nv; ++v)
+          idx[g.variable_nodes_[v]->id_] = static_cast<int>(v);
+        var_edges_.assign(nv, {});
+        for (size_t f = 0; f < g.factor_nodes_.size(); ++f)
+          for (size_t i = 0; i < g.factor_nodes_[f]->numberOfEdges(); ++i)
+            var_edges_[idx.at(g.factor_nodes_[f]->edgeVariableId(i))].emplace_back(static_cast<int>(f), static_cast<int>(i));
+        ve_nf_ = g.factor_nodes_.size();
+      }
+      const size_t compare = std::min(prev_belief_.size(), nv);
+      std::vector<double> c(compare, -1.0);
+      std::vector<uint64_t> fl(compare, 0);
+#pragma omp parallel for schedule(dynamic, 256)
+      for (size_t v = 0; v < compare; ++v) {
+        if (var_edges_[v].empty())
+          continue;
+        withVariable(g.variable_nodes_[v], [&](auto vp) {
+          using VT = typename std::decay_t<decltype(*vp)>;
+          typename VT::EstimateType prev;
+          if constexpr (std::is_same_v<VT, SE3PoseVel>)
+            prev = prev_belief_[v].pv;
+          else if constexpr (std::is_same_v<VT, SE3Pose>)
+            prev = prev_belief_[v].T;
+          else
+            prev = prev_belief_[v].p;
+          const typename VT::VectorLieDim d = -vp->offsetFromBelief(prev); // belief(t) [-] belief(t-1), chart at belief(t)
+          typename VT::MatrixLieDim D       = VT::MatrixLieDim::Zero();
+          for (const auto& [f, i] : var_edges_[v])
+            D += g.factor_nodes_[f]->currentInformationBlock(i);
+          c[v]            = std::sqrt(std::max(0.0, d.dot(D * d)));
+          const uint64_t n = VT::LieDim;
+          fl[v]            = var_edges_[v].size() * n * n + 2 * n * n + n; // block sums and the quadratic form
+        });
+      }
+      double cmax = 0.0;
+      long long arg = -1, compared = 0;
+      uint64_t flops_total = 0;
+      for (size_t v = 0; v < compare; ++v) {
+        if (c[v] < 0)
+          continue;
+        ++compared;
+        flops_total += fl[v];
+        if (c[v] > cmax) {
+          cmax = c[v];
+          arg  = static_cast<long long>(v);
+        }
+      }
+      heur_log << rounds << "," << jsonNum(compare ? cmax : std::nan("")) << "," << (arg >= 0 ? g.variable_nodes_[arg]->id_ : "")
+               << "," << compared << "," << flops_total;
+      for (size_t k = 0; k < change_taus.size(); ++k) {
+        const bool below = compared > 0 && cmax < change_taus[k];
+        heur_log << "," << int(below);
+        if (below && rounds >= change_from && !change_fired[k]) {
+          change_fired[k] = 1;
+          char tag[64];
+          snprintf(tag, sizeof(tag), "/stop_tau_%.0e", change_taus[k]);
+          exportBeliefs(out + tag, "first round of the change-based stop at this tau");
+        }
+      }
+      heur_log << "\n";
+      heur_log.flush();
+    }
+
+    // After a round: change criterion, then the beliefs snapshot for the next one, then any requested beliefs export
+    void afterRoundStage1() {
+      changeCriterion();
+      if (!change_taus.empty())
+        takeBeliefs(prev_belief_);
+      if (std::find(beliefs_at.begin(), beliefs_at.end(), rounds) != beliefs_at.end()) {
+        char name[48];
+        snprintf(name, sizeof(name), "/beliefs_r%05d", rounds);
+        exportBeliefs(out + name, "beliefs after this round");
+      }
+    }
+
+    // Periodic certification after `rounds` rounds. Called before the next round's message passing (the front end has
+    // added that round's nodes, so the plan registers them) or, after the last round, from finish().
+    void evaluate() {
+      if (eval_every <= 0 || rounds % eval_every != 0 || rounds == evaluated_ || rounds == 0)
+        return;
+      evaluated_ = rounds;
+      solver.planThresholdRound(g);
+      solver.applyThresholdRelinearization(g);
+      Json m = meta;
+      m.integer("round", rounds).str("export", "linearization after this round's relinearization, state after this round");
+      exportModel(g, eval_dir + "/model", Charts::Frozen, m);
+      exportModel(g, eval_dir + "/beliefs", Charts::Beliefs, m);
+      if (rounds == fd_check_at) {
+        ProbeServer ps(g, out + "/fdcheck");
+        ps.beginSession();
+        ps.fdCheck(1 << 30, 1e-6);
+        ps.endSession();
+      }
+      {
+        std::ostringstream info;
+        size_t np = 0;
+        for (auto& v : g.variable_nodes_)
+          np += isPoseId(v->id_) ? 1 : 0;
+        info << "round\t" << rounds << "\nlast\t" << (rounds == eval_last ? 1 : 0) << "\nposes\t" << np << "\n";
+        writeAtomic(eval_dir + "/round_info.tsv", info.str());
+        writeAtomic(eval_dir + "/ready", std::to_string(rounds) + "\n");
+      }
+      while (true) {
+        std::ifstream f(eval_dir + "/done");
+        int rr = -1;
+        if (f && (f >> rr) && rr == rounds)
+          break;
+        struct stat stt;
+        if (stat((eval_dir + "/abort").c_str(), &stt) == 0)
+          throw std::runtime_error("evaluator aborted after round " + std::to_string(rounds));
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+      }
+      if (eval_pause_every > 0 && rounds % eval_pause_every == 0 && rounds != eval_last)
+        if (!pause("r" + std::to_string(rounds)))
+          throw std::runtime_error("aborted at the checkpoint after round " + std::to_string(rounds));
+    }
+
+    // Stop point for a checkpointed run: export, then wait until <out>/continue (or <out>/abort) exists.
+    bool pause(const std::string& tag) {
+      exportBeliefs(out + "/checkpoint_" + tag, "checkpoint");
+      std::cout << "checkpoint " << tag << " written after round " << rounds << "; waiting for " << out << "/continue"
+                << std::endl;
+      while (true) {
+        struct stat st;
+        if (stat((out + "/abort").c_str(), &st) == 0)
+          return false;
+        if (stat((out + "/continue").c_str(), &st) == 0) {
+          std::remove((out + "/continue").c_str());
+          return true;
+        }
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+      }
+    }
+
+    void finish() {
+      evaluate(); // the state after the last round
+      if (eval_every > 0)
+        writeAtomic(eval_dir + "/finished", std::to_string(rounds) + "\n"); // no further evaluations
+      std::ofstream(out + "/work_summary.json")
+        << "{\"rounds\": " << rounds << ", \"cumulative_work\": " << cumulative << ", \"budget\": " << budget
+        << ", \"budget_round\": " << budget_round << ", \"budget_work\": " << budget_work << "}\n";
+    }
+  };
+
+  /** Re-freezes per variable over the whole run: id, pose flag, round of first linearization, count, and the
+   *  rounds the run had (rounds per linearization = (rounds - created_round + 1) / (1 + relinearizations)). */
+  inline void writeRelinCounts(const std::string& path, const GbpSolver& solver, const FactorGraph& g) {
+    std::ofstream f(path);
+    f << "id,is_pose,created_round,relinearizations,rounds\n";
+    const auto& st = solver.threshold_stats_;
+    for (size_t v = 0; v < st.relinearizations.size(); ++v)
+      f << g.variable_nodes_[v]->id_ << "," << (isPoseId(g.variable_nodes_[v]->id_) ? 1 : 0) << ","
+        << st.created_round[v] << "," << st.relinearizations[v] << "," << st.round << "\n";
+  }
 
 } // namespace certify

@@ -1,0 +1,32 @@
+{
+ "pose_evaluations": 1200,
+ "evaluations": 30,
+ "violations_upper": 0,
+ "violations_lower": 0,
+ "worst_rel_upper": 1.1865444301398058e-15,
+ "worst_rel_upper_at": {
+  "round": "140",
+  "pose": "POSE_0.208254000"
+ },
+ "worst_rel_lower": 1.5847227161904739e-15,
+ "worst_rel_lower_at": {
+  "round": "250",
+  "pose": "POSE_1.979377000"
+ },
+ "loewner_min": -1.1724806539405295e-13,
+ "loewner_rounds": [
+  10,
+  150,
+  300
+ ],
+ "E_over_err_median": 1.1241848938475498,
+ "E_over_err_p95": 1.734079959088507,
+ "certified_vs_oracle_pass_disagreements": 0,
+ "grow_exits": {
+  "stop": 191,
+  "continue": 1009,
+  "cap": 0,
+  "steps": 0,
+  "no_c0": 0
+ }
+}

@@ -11,7 +11,8 @@ then eliminates every non-pose block exactly (landmarks, and ChArUco markers) an
     S = H_PP - H_PL H_LL^-1 H_LP,   b_red = b_P - H_PL H_LL^-1 b_L,
 with poses ordered by time. With true_jacobian=True the stereo factors' rotation columns (pose tangent 3:6) are
 halved first (Theorem T0: J is the solver's J~ without the factor 2 of se3_posevel_stereo_point.cpp:77), giving the
-reduced Fisher information used for S_lo. Double precision throughout (the sidecar's precision; the three sampled
+reduced Fisher information used for S_lo; when the export carries f_<type>_Jtrue.npy (the true Jacobian of every
+factor, certify/TRUE_JACOBIANS.md) that is used instead. Double precision throughout (the sidecar's precision; the three sampled
 rounds are re-validated with the extended-precision Phase C pipeline).
 """
 
@@ -54,7 +55,9 @@ class PoseModelBuilder:
             if not keep.any():
                 continue
             J = J[keep].copy()
-            if true_jacobian and t == "stereo":
+            if true_jacobian and "Jtrue" in g and not (J_override and t in J_override):
+                J = g["Jtrue"][keep].astype(float)  # the exported true Jacobian (Stage 1: stereo and GP)
+            elif true_jacobian and t == "stereo":
                 J[:, :, 3:6] *= 0.5
             groups.append(dict(type=t, vars=g["vars"][keep].astype(int), J=J, Lam=np.linalg.inv(g["Sigma"][keep]),
                                r=-g["e"][keep].astype(float)))
@@ -164,6 +167,7 @@ class PoseModelBuilder:
                     # (elim, pose) pairs are the transposes of the (pose, elim) ones
 
         N = 12 * npo
+        H_pose_diag = np.array([PP[k, k] for k in range(npo)])  # pose blocks before any landmark elimination
         S = PP.transpose(0, 2, 1, 3).reshape(N, N)
         b = bP.reshape(N).copy()
         if len(elim):
@@ -192,6 +196,6 @@ class PoseModelBuilder:
         S = 0.5 * (S + S.T)
         z = ex.z
         xP = np.concatenate([z[ex.offsets[i]:ex.offsets[i] + 12] for i in poses]) if npo else np.zeros(0)
-        return dict(S=S, b=b, x=xP, pose_blocks=poses, pose_ids=ex.var_id[poses], times=ex.timestamp[poses],
+        return dict(S=S, b=b, x=xP, pose_blocks=poses, pose_ids=ex.var_id[poses], times=ex.timestamp[poses], H_pose_diag=H_pose_diag,
                     n_eliminated=int(len(elim)), n_removed_single_edge=int(removed.sum()),
                     n_zero_info=int(np.sum(~removed & (touched == 0))), export=ex)

@@ -36,6 +36,15 @@
  *     --pause-every N              with --sidecar: checkpoint every N rounds (export, wait for OUT/continue)
  *     --count-flops                Phase D, WP6a (threshold mode): per-round GBP flops to OUT/flops.csv (certify/FLOPS.md)
  *     --flop-trace-round R         with --count-flops: one operation of every kind in round R to OUT/flops_trace.csv
+ *     --true-jacobians             Stage 1: the stereo and GP factors use their true derivatives (certify/TRUE_JACOBIANS.md)
+ *     --eval-dir DIR --eval-every N  Stage 1 (threshold mode): after every N-th round export the linearization and the beliefs
+ *                                  to DIR and wait for the evaluator (scripts/stage1_evaluator.py); --eval-pause-every M
+ *                                  checkpoints after every M-th round
+ *     --change-taus LIST           Stage 1: log the change-based criterion per round (heuristics.csv) and export the beliefs
+ *                                  at its first round below each tau (--change-from R: not before round R)
+ *     --export-beliefs-at LIST     export the beliefs after these rounds to OUT/beliefs_rNNNNN
+ *     --fd-check-at R              with --eval-every: central-difference check of every factor's Jacobian at the evaluation
+ *                                  after round R (OUT/fdcheck/fd_check.tsv)
  */
 
 #include <cmath>
@@ -136,6 +145,11 @@ struct Args {
   int pause_every = 0;
   bool count_flops = false;
   int flop_trace_round = -1;
+  bool true_jacobians = false;
+  std::string eval_dir;
+  int eval_every = 0, eval_pause_every = 0, change_from = 1, fd_check_at = -1;
+  std::vector<double> change_taus;
+  std::vector<int> beliefs_at;
 };
 
 static Args parse(int argc, char** argv) {
@@ -173,6 +187,14 @@ static Args parse(int argc, char** argv) {
     else if (k == "--pause-every") a.pause_every = std::stoi(next());
     else if (k == "--count-flops") a.count_flops = true;
     else if (k == "--flop-trace-round") a.flop_trace_round = std::stoi(next());
+    else if (k == "--true-jacobians") a.true_jacobians = true;
+    else if (k == "--eval-dir") a.eval_dir = next();
+    else if (k == "--eval-every") a.eval_every = std::stoi(next());
+    else if (k == "--eval-pause-every") a.eval_pause_every = std::stoi(next());
+    else if (k == "--change-taus") a.change_taus = certify::parseDoubleList(next());
+    else if (k == "--change-from") a.change_from = std::stoi(next());
+    else if (k == "--export-beliefs-at") a.beliefs_at = certify::parseIntList(next());
+    else if (k == "--fd-check-at") a.fd_check_at = std::stoi(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.relin_threshold >= 0 && (a.mode != "islam" || a.freeze || !a.unfrozen_iters.empty()))
@@ -259,6 +281,21 @@ int run_islam(const Args& a) {
   }
   // Every round goes through the work account (WP1b); performIteration() itself is unchanged
   certify::RoundRunner runner(solver, factor_graph, a.out, a.work_budget, a.curve_every, meta);
+  if (a.true_jacobians)
+    gsolver::true_jacobians = true;
+  meta.boolean("true_jacobians", a.true_jacobians);
+  if (a.eval_every > 0) {
+    if (a.relin_threshold < 0 || a.eval_dir.empty())
+      throw std::runtime_error("--eval-every needs --relin-threshold and --eval-dir");
+    runner.eval_dir         = a.eval_dir;
+    runner.eval_every       = a.eval_every;
+    runner.eval_last        = (n_total - 1) * iterations_per_pose + final_ba_iterations + a.extra_final_rounds;
+    runner.eval_pause_every = a.eval_pause_every;
+    runner.fd_check_at      = a.fd_check_at;
+  }
+  if (!a.change_taus.empty())
+    runner.enableChangeCriterion(a.change_taus, a.change_from);
+  runner.beliefs_at = a.beliefs_at;
   if (a.count_flops) {
     if (a.relin_threshold < 0)
       throw std::runtime_error("--count-flops counts the frozen (threshold-mode) operations: it needs --relin-threshold");

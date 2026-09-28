@@ -47,7 +47,7 @@ class Export:
         for f in sorted(self.path.glob("f_*_vars.npy")):
             t = f.name[2:-9]
             g = {k: np.load(self.path / f"f_{t}_{k}.npy") for k in ("vars", "J", "e", "Sigma", "msg_tau")}
-            for opt in ("dt", "inlier"):
+            for opt in ("dt", "inlier", "Jtrue"):
                 p = self.path / f"f_{t}_{opt}.npy"
                 if p.exists():
                     g[opt] = np.load(p)

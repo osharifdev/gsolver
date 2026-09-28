@@ -29,6 +29,7 @@ namespace gsolver {
     virtual size_t numberOfEdges() const                         = 0;
     virtual std::string edgeVariableId(size_t i)                 = 0;
     virtual Eigen::MatrixXd linearizedInformationBlock(size_t i) = 0; // J_lin,iᵀ Σ⁻¹ J_lin,i for edge i
+    virtual Eigen::MatrixXd currentInformationBlock(size_t i)    = 0; // edge i's diagonal block of Lambdaprime_ (this round's)
   };
 
 } // namespace gsolver

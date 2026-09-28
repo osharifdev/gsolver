@@ -65,6 +65,7 @@ namespace gsolver {
       edges_[outedge_id]->variable_to_factor_message_.Lambda_ = tangent_Lambdaprime;
       edges_[outedge_id]->variable_to_factor_message_.tau_    = z_ + tangent_delta_mu;
       flops::add(flop_class_, flops::V2F, flops::v2f(Dim_, edges_.size()), Dim_, 0, static_cast<int>(edges_.size()));
+      flops::add(flop_class_, flops::V2FAlt, flops::v2fAlt(Dim_), Dim_, 0, static_cast<int>(edges_.size()));
       return;
     }
 
@@ -137,6 +138,7 @@ namespace gsolver {
       edges_[outedge_id]->variable_to_factor_message_.Lambda_ = tangent_Lambdaprime;
       edges_[outedge_id]->variable_to_factor_message_.tau_    = z_ + tangent_delta_mu;
       flops::add(flop_class_, flops::V2F, flops::v2f(Dim_, edges_.size()), Dim_, 0, static_cast<int>(edges_.size()));
+      flops::add(flop_class_, flops::V2FAlt, flops::v2fAlt(Dim_), Dim_, 0, static_cast<int>(edges_.size()));
       return;
     }
 
