@@ -1,0 +1,5 @@
+dataset,held_out_budget,rounds_needed,certified_stop,unfinished_current_at_budget,unfinished_relinearized_at_budget,budget_finishes,certified_total_flops,budget_gbp_flops,ratio,certified_total_flops_alt,budget_gbp_flops_alt,ratio_alt,note
+kitti06,,,,,,,,,,,,,held-out budget undefined: another segment's rounds needed exceed the 300-round runs; no certified stop by round 300
+kitti03,,,,,,,,,,,,,held-out budget undefined: another segment's rounds needed exceed the 300-round runs; no certified stop by round 300
+kitti04,,,,,,,,,,,,,held-out budget undefined: another segment's rounds needed exceed the 300-round runs; no certified stop by round 300
+kitti10,,,,,,,,,,,,,held-out budget undefined: another segment's rounds needed exceed the 300-round runs; no certified stop by round 300

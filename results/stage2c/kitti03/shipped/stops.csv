@@ -1,0 +1,6 @@
+criterion,round,note,move_median,move_p95,move_true_median,move_true_p95,ate_aligned,gbp_flops,extra_flops,total_flops,gbp_flops_alt,total_flops_alt,evaluations
+certified,,not by 300,,,,,,,,,,,
+fixed_budget,100,,4200.213849976115,79339.48885600113,6459.548183095133,76195.55188413402,11.61556396549379,239494288800.0,0.0,239494288800.0,29413807200.0,29413807200.0,0
+change_tau_1e-02,,fires at round 151 on a non-finite (diverged) state: not a stop,,,,,,,,,,,
+change_tau_1e-03,,fires at round 151 on a non-finite (diverged) state: not a stop,,,,,,,,,,,
+change_tau_1e-04,,fires at round 151 on a non-finite (diverged) state: not a stop,,,,,,,,,,,

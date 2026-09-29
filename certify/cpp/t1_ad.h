@@ -356,6 +356,22 @@ namespace t1 {
             omj[1] - A.v[4], omj[2] - A.v[5]};
   }
 
+  // Pose prior (Stage 2c's anchor, se3_posevel_prior.cpp): e = Log(Z^-1 T) = [Rz'(t - tz); Log(Rz' R)], decoupled Log
+  struct PriorConst {
+    Eigen::Matrix3d Rc, Rz;
+    Eigen::Vector3d tc, tz;
+    Eigen::Matrix<double, 6, 1> vc;
+  };
+  template <class S>
+  inline std::array<S, 6> priorError(const PriorConst& k, const S* z, const S* dl) { // z, dl: 12 (the pose)
+    const PoseAt<S> P = poseAt<S>(k.Rc, k.tc, k.vc, z, dl);
+    const M3<S> Rz = mconst<S>(k.Rz);
+    const V3<S> tz = {cst<S>(k.tz(0)), cst<S>(k.tz(1)), cst<S>(k.tz(2))};
+    const V3<S> et = mtv(Rz, vsub(P.t, tz));
+    const V3<S> er = logR(mtmul(Rz, P.R));
+    return {et[0], et[1], et[2], er[0], er[1], er[2]};
+  }
+
   // F_f = J' Lambda e and F'_f = d/dz (J' Lambda e) from e as a nested dual (outer z, inner delta); only the active
   // coordinates `act` of the factor's stacked variables carry derivatives
   template <class T, int NA, int M>
@@ -427,6 +443,19 @@ namespace t1 {
     flags = 0;
     const std::array<S, 12> e = gpError<S>(k, z.data(), dl.data());
     assemble<T, NA, 12>(e, Lam, act, 24, F, dF);
+    return flags;
+  }
+
+  template <class T>
+  inline int priorF(const PriorConst& k, const Eigen::Matrix<double, 6, 6>& Lam, const T* zval, T* F, T* dF) {
+    constexpr int NA = 6;
+    const std::array<int, NA> act = {0, 1, 2, 3, 4, 5};
+    using S = D<D<T, NA>, NA>;
+    std::vector<S> z, dl;
+    seedVars<T, NA>(zval, act, 12, z, dl);
+    flags = 0;
+    const std::array<S, 6> e = priorError<S>(k, z.data(), dl.data());
+    assemble<T, NA, 6>(e, Lam, act, 12, F, dF);
     return flags;
   }
 

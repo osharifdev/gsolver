@@ -1,0 +1,6 @@
+{
+ "dataset": "kitti10",
+ "run": "exports/stage2c/kitti10/corrected",
+ "certified_stop": null,
+ "note": "no certified stop by round 300: there is no stop state to check"
+}

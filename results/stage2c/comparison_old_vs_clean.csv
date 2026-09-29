@@ -1,0 +1,115 @@
+quantity,dataset,variant,old,clean
+landmarks in the model,kitti06,both,4679,3282
+stereo factors in the model,kitti06,both,11487,10090
+certified stop round (300-round runs),kitti06,corrected,130,none
+"unfinished fraction, current problem, at round 100",kitti06,corrected,0.05,1.0
+median remaining GN move (D) at round 100,kitti06,corrected,0.0319108044205304,27.48001957421145
+aligned keyframe ATE (m) at round 100,kitti06,corrected,0.08227808439349991,0.07980440276365912
+"unfinished fraction, current problem, at round 300",kitti06,corrected,0.0,1.0
+median remaining GN move (D) at round 300,kitti06,corrected,0.02195802566695572,27.644807531458824
+aligned keyframe ATE (m) at round 300,kitti06,corrected,0.08167876598113413,0.07746727899797987
+GBP flops per round (median),kitti06,corrected,1798899207.0,1423014948.0
+certificate flops per evaluation (median),kitti06,corrected,635880042.0,516556800.0
+certified stop round (300-round runs),kitti06,shipped,150,none
+"unfinished fraction, current problem, at round 100",kitti06,shipped,0.15,1.0
+median remaining GN move (D) at round 100,kitti06,shipped,0.1951131965538451,51.73242579220777
+aligned keyframe ATE (m) at round 100,kitti06,shipped,0.0825125819362171,0.07157437223543889
+"unfinished fraction, current problem, at round 300",kitti06,shipped,0.0,1.0
+median remaining GN move (D) at round 300,kitti06,shipped,0.11275142868434432,53.204373524478605
+aligned keyframe ATE (m) at round 300,kitti06,shipped,0.08137771550078078,0.06298978458940684
+GBP flops per round (median),kitti06,shipped,1798899207.0,1423014948.0
+certificate flops per evaluation (median),kitti06,shipped,657206028.0,516556800.0
+Newton check: stop state,kitti06,corrected,round 130,no certified stop
+Newton check: poses within eta S_lo of x^,kitti06,corrected,0.95,no certified stop
+"Newton check: pose distance / E, median; max",kitti06,corrected,3.78; 6.76,no certified stop
+Newton check: largest landmark move (m),kitti06,corrected,1615.2818867995747,no certified stop
+landmarks in the model,kitti03,both,4628,4095
+stereo factors in the model,kitti03,both,13807,13274
+certified stop round (300-round runs),kitti03,corrected,250,none
+"unfinished fraction, current problem, at round 100",kitti03,corrected,0.975,1.0
+median remaining GN move (D) at round 100,kitti03,corrected,8.404796619218551,105.58343546232655
+aligned keyframe ATE (m) at round 100,kitti03,corrected,0.24541473912298642,0.2844219939540056
+"unfinished fraction, current problem, at round 300",kitti03,corrected,0.0,1.0
+median remaining GN move (D) at round 300,kitti03,corrected,0.13078096801684735,113.27982142978074
+aligned keyframe ATE (m) at round 300,kitti03,corrected,0.2476487727451139,0.258399362915472
+GBP flops per round (median),kitti03,corrected,2571792507.0,2394942888.0
+certificate flops per evaluation (median),kitti03,corrected,1171155969.0,516556800.0
+certified stop round (300-round runs),kitti03,shipped,none,none
+"unfinished fraction, current problem, at round 100",kitti03,shipped,1.0,1.0
+median remaining GN move (D) at round 100,kitti03,shipped,28.248050104890744,4200.213849976115
+aligned keyframe ATE (m) at round 100,kitti03,shipped,0.22666911309879806,11.61556396549379
+"unfinished fraction, current problem, at round 300",kitti03,shipped,0.775,1.0
+median remaining GN move (D) at round 300,kitti03,shipped,1.4548398606083155,nan
+aligned keyframe ATE (m) at round 300,kitti03,shipped,0.24716141112155385,nan
+GBP flops per round (median),kitti03,shipped,2571792507.0,2394942888.0
+certificate flops per evaluation (median),kitti03,shipped,1313361466.0,516556800.0
+Newton check: stop state,kitti03,corrected,round 250,no certified stop
+Newton check: poses within eta S_lo of x^,kitti03,corrected,0.975,no certified stop
+"Newton check: pose distance / E, median; max",kitti03,corrected,0.579; 2.23,no certified stop
+Newton check: largest landmark move (m),kitti03,corrected,1051.4917202649378,no certified stop
+landmarks in the model,kitti04,both,4652,4189
+stereo factors in the model,kitti04,both,15267,14804
+certified stop round (300-round runs),kitti04,corrected,170,none
+"unfinished fraction, current problem, at round 100",kitti04,corrected,0.9,1.0
+median remaining GN move (D) at round 100,kitti04,corrected,1.170260884595562,37.20149390433466
+aligned keyframe ATE (m) at round 100,kitti04,corrected,0.1328272202881546,0.12934993929067767
+"unfinished fraction, current problem, at round 300",kitti04,corrected,0.0,1.0
+median remaining GN move (D) at round 300,kitti04,corrected,0.06440089995202386,36.91099673074461
+aligned keyframe ATE (m) at round 300,kitti04,corrected,0.1333364206116153,0.12683258630477573
+GBP flops per round (median),kitti04,corrected,3110962911.0,2946178566.0
+certificate flops per evaluation (median),kitti04,corrected,1249555031.0,516556800.0
+certified stop round (300-round runs),kitti04,shipped,none,none
+"unfinished fraction, current problem, at round 100",kitti04,shipped,1.0,1.0
+median remaining GN move (D) at round 100,kitti04,shipped,4.835551439582906,66.61462991668094
+aligned keyframe ATE (m) at round 100,kitti04,shipped,0.13608216537608203,0.19685983303474205
+"unfinished fraction, current problem, at round 300",kitti04,shipped,0.275,1.0
+median remaining GN move (D) at round 300,kitti04,shipped,0.4150618178451112,71.5093846552506
+aligned keyframe ATE (m) at round 300,kitti04,shipped,0.13336482500874655,0.19324764806473782
+GBP flops per round (median),kitti04,shipped,3110962911.0,2946178566.0
+certificate flops per evaluation (median),kitti04,shipped,1209466431.0,516556800.0
+Newton check: stop state,kitti04,corrected,round 170,no certified stop
+Newton check: poses within eta S_lo of x^,kitti04,corrected,0.575,no certified stop
+"Newton check: pose distance / E, median; max",kitti04,corrected,1.5; 2.9,no certified stop
+Newton check: largest landmark move (m),kitti04,corrected,153.70112247385498,no certified stop
+landmarks in the model,kitti10,both,4228,3683
+stereo factors in the model,kitti10,both,12680,12135
+certified stop round (300-round runs),kitti10,corrected,50,none
+"unfinished fraction, current problem, at round 100",kitti10,corrected,0.0,1.0
+median remaining GN move (D) at round 100,kitti10,corrected,0.08188912629262071,12.419220031003103
+aligned keyframe ATE (m) at round 100,kitti10,corrected,0.08525352151775868,0.08075807033239137
+"unfinished fraction, current problem, at round 300",kitti10,corrected,0.0,1.0
+median remaining GN move (D) at round 300,kitti10,corrected,0.004737734842410952,10.920147244823543
+aligned keyframe ATE (m) at round 300,kitti10,corrected,0.08525060107884669,0.0833947053782182
+GBP flops per round (median),kitti10,corrected,2239476420.0,2074764093.0
+certificate flops per evaluation (median),kitti10,corrected,673945528.0,516556800.0
+certified stop round (300-round runs),kitti10,shipped,240,none
+"unfinished fraction, current problem, at round 100",kitti10,shipped,0.975,1.0
+median remaining GN move (D) at round 100,kitti10,shipped,4.890325034944972,101.6704558038135
+aligned keyframe ATE (m) at round 100,kitti10,shipped,0.1008611109221767,0.19607801768874283
+"unfinished fraction, current problem, at round 300",kitti10,shipped,0.0,1.0
+median remaining GN move (D) at round 300,kitti10,shipped,0.2704503875745435,131.92766272649885
+aligned keyframe ATE (m) at round 300,kitti10,shipped,0.09007819907873246,0.1397553600246108
+GBP flops per round (median),kitti10,shipped,2239476420.0,2074764093.0
+certificate flops per evaluation (median),kitti10,shipped,961611214.0,516556800.0
+Newton check: stop state,kitti10,corrected,round 50,no certified stop
+Newton check: poses within eta S_lo of x^,kitti10,corrected,1.0,no certified stop
+"Newton check: pose distance / E, median; max",kitti10,corrected,0.891; 1.33,no certified stop
+Newton check: largest landmark move (m),kitti10,corrected,175.11103454677544,no certified stop
+certified stop round (300-round runs),prefix,corrected,130,none
+"unfinished fraction, current problem, at round 100",prefix,corrected,0.012422360248447204,1.0
+median remaining GN move (D) at round 100,prefix,corrected,0.015108108850283864,250.0923486148732
+aligned keyframe ATE (m) at round 100,prefix,corrected,0.3826826160065925,0.3639102773256638
+"unfinished fraction, current problem, at round 300",prefix,corrected,0.0,1.0
+median remaining GN move (D) at round 300,prefix,corrected,0.004058457349733733,240.21738253302104
+aligned keyframe ATE (m) at round 300,prefix,corrected,0.3822703424088947,0.34222878025505304
+GBP flops per round (median),prefix,corrected,8559320952.0,7300953555.0
+certificate flops per evaluation (median),prefix,corrected,9453782208.0,33660803232.0
+certified stop round (300-round runs),prefix,shipped,none,none
+"unfinished fraction, current problem, at round 100",prefix,shipped,0.16149068322981366,1.0
+median remaining GN move (D) at round 100,prefix,shipped,0.3773395279458469,760.1020882166366
+aligned keyframe ATE (m) at round 100,prefix,shipped,0.3841726693251117,0.6702518047438139
+"unfinished fraction, current problem, at round 300",prefix,shipped,0.09316770186335403,1.0
+median remaining GN move (D) at round 300,prefix,shipped,0.3127810215924037,1251.0896144505762
+aligned keyframe ATE (m) at round 300,prefix,shipped,0.3829691264839041,0.8317803594116195
+GBP flops per round (median),prefix,shipped,8559320952.0,7300953555.0
+certificate flops per evaluation (median),prefix,shipped,10188197184.0,33660803232.0

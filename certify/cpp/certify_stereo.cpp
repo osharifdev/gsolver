@@ -56,12 +56,17 @@
  *     --fd-check-at R              with --eval-every: central-difference check of every factor's Jacobian at the evaluation
  *                                  after round R (OUT/fdcheck/fd_check.tsv)
  *     --eval-at LIST               with --eval-every: also evaluate after these rounds
+ *     --drop-single-landmarks      Stage 2c: before round 1, remove every landmark with exactly one stereo observation in
+ *                                  the window, with that observation (counts to OUT/cleaning.json)
+ *     --live-anchor P              Stage 2c: SE(3) prior on the first keyframe at its initial ORB-SLAM3 pose with
+ *                                  precision P*I (A3: 1e4), in the solver's graph from round 1 (factor PRIOR_ANCHOR_<pose>)
  */
 
 #include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <map>
 #include <set>
 #include <string>
 
@@ -101,6 +106,8 @@ struct Args {
   int eval_every = 0, eval_pause_every = 0, change_from = 1, fd_check_at = -1;
   std::vector<double> change_taus;
   std::vector<int> beliefs_at, eval_at;
+  bool drop_single_landmarks = false;
+  double live_anchor         = 0.0;
 };
 
 static Args parse(int argc, char** argv) {
@@ -154,6 +161,8 @@ static Args parse(int argc, char** argv) {
     else if (k == "--export-beliefs-at") a.beliefs_at = certify::parseIntList(next());
     else if (k == "--fd-check-at") a.fd_check_at = std::stoi(next());
     else if (k == "--eval-at") a.eval_at = certify::parseIntList(next());
+    else if (k == "--drop-single-landmarks") a.drop_single_landmarks = true;
+    else if (k == "--live-anchor") a.live_anchor = std::stod(next());
     else throw std::runtime_error("unknown argument " + k);
   }
   if (a.g2o.empty() || a.out.empty())
@@ -217,14 +226,72 @@ int main(int argc, char** argv) {
         robot_lm_ids.insert(obs.landmark_id);
       }
     }
+    certify::Json cleaning;
+    if (a.drop_single_landmarks) {
+      // Stage 2c: a landmark seen once is determined by that observation alone and carries no information about the
+      // poses; remove it and its observation from the input graph, once, before round 1
+      std::map<size_t, int> nobs;
+      for (const auto& obs : robot_stereo)
+        ++nobs[obs.landmark_id];
+      std::map<int, long long> hist;
+      for (const auto& [id, n] : nobs)
+        ++hist[n];
+      std::vector<StereoMeas> kept;
+      std::set<size_t> single;
+      for (const auto& [id, n] : nobs)
+        if (n == 1)
+          single.insert(id);
+      for (const auto& obs : robot_stereo)
+        if (!single.count(obs.landmark_id))
+          kept.push_back(obs);
+      std::set<double> seen_by;
+      for (const auto& obs : kept)
+        seen_by.insert(obs.timestamp);
+      long long poses_without = 0;
+      for (const auto& p : robot_poses) {
+        bool has = false;
+        for (double t : seen_by)
+          if (std::abs(t - p.timestamp) < 1e-9) {
+            has = true;
+            break;
+          }
+        poses_without += has ? 0 : 1;
+      }
+      cleaning.integer("landmarks_before", static_cast<long long>(robot_lm_ids.size()));
+      cleaning.integer("observations_before", static_cast<long long>(robot_stereo.size()));
+      cleaning.integer("landmarks_removed", static_cast<long long>(single.size()));
+      cleaning.integer("observations_removed", static_cast<long long>(robot_stereo.size() - kept.size()));
+      cleaning.integer("landmarks_remaining", static_cast<long long>(robot_lm_ids.size() - single.size()));
+      cleaning.integer("observations_remaining", static_cast<long long>(kept.size()));
+      cleaning.integer("poses_without_observations_after", poses_without);
+      std::vector<double> hk, hv;
+      for (const auto& [k, v] : hist) {
+        hk.push_back(k);
+        hv.push_back(static_cast<double>(v));
+      }
+      cleaning.set("observations_per_landmark_before", certify::jsonArray(hk));
+      cleaning.set("landmarks_with_that_many", certify::jsonArray(hv));
+      for (size_t id : single)
+        robot_lm_ids.erase(id);
+      robot_stereo.swap(kept);
+      std::ofstream(a.out + "/cleaning.json") << cleaning.dump() << "\n";
+    }
     std::vector<LandmarkInit> robot_landmarks;
     for (const auto& lm : all_landmarks)
       if (robot_lm_ids.count(lm.landmark_id))
         robot_landmarks.push_back(lm);
     add_landmark_variable_nodes(graph, robot_landmarks, 0);
     add_stereo_factor_nodes(graph, robot_stereo, camera, 0);
+    if (a.live_anchor > 0) {
+      // Stage 2c: the gauge of the stereo problem, fixed by a prior on the first keyframe at its initial pose (A3)
+      const Eigen::Isometry3d z0          = robot_poses.front().pose;
+      const Eigen::Matrix<double, 6, 6> C = Eigen::Matrix<double, 6, 6>::Identity() / a.live_anchor;
+      const std::string pid               = poseId(robot_poses.front().timestamp);
+      graph.addFactorNode(std::make_shared<SE3PoseVelPrior>("PRIOR_ANCHOR_" + pid, z0, C), {pid});
+    }
     std::cout << "graph: " << robot_poses.size() << " poses, " << robot_landmarks.size() << " landmarks, "
-              << robot_stereo.size() << " observations" << std::endl;
+              << robot_stereo.size() << " observations" << (a.live_anchor > 0 ? ", anchor on the first keyframe" : "")
+              << std::endl;
 
     if (a.true_jacobians)
       gsolver::true_jacobians = true;
@@ -236,7 +303,8 @@ int main(int argc, char** argv) {
       const certify::Json check = certify::loadFrozenState(graph, a.t1_export);
       server.setup();
       std::ofstream(a.t1_dir + "/load_check.json") << check.dump() << "\n";
-      std::ofstream(a.t1_dir + "/t1_counts.txt") << server.stereo.size() << " " << server.gp.size() << "\n";
+      std::ofstream(a.t1_dir + "/t1_counts.txt") << server.stereo.size() << " " << server.gp.size() << " " << server.prior.size() << "\n";
+      std::ofstream(a.t1_dir + "/t1_types.txt") << "stereo gp" << (server.prior.empty() ? "" : " prior") << "\n";
       std::ofstream(a.t1_dir + "/server_ready") << "1\n";
       server.serve();
       return 0;
@@ -258,6 +326,12 @@ int main(int argc, char** argv) {
     meta.set("qc_diag", certify::jsonArray(std::vector<double>(params.qc_diag.data(), params.qc_diag.data() + 6)));
     meta.integer("keyframes", static_cast<long long>(robot_poses.size()));
     meta.set("camera", certify::jsonArray(std::vector<double>{camera.fx, camera.fy, camera.cx, camera.cy, camera.bf}));
+    if (a.drop_single_landmarks) {
+      meta.boolean("drop_single_landmarks", true);
+      meta.set("cleaning", cleaning.dump());
+    }
+    if (a.live_anchor > 0)
+      meta.num("live_anchor_precision", a.live_anchor);
 
     // ---- normal (relinearizing) run: G-solver's per-round schedule, or the threshold rule (Phase D, WP1)
     const bool threshold = a.relin_threshold >= 0;

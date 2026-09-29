@@ -1,0 +1,34 @@
+{
+ "pose_evaluations": 1200,
+ "evaluations": 30,
+ "rounds_not_certifiable": [],
+ "rounds_nonfinite": [],
+ "violations_upper": 0,
+ "violations_lower": 0,
+ "worst_rel_upper": 7.70879060268338e-13,
+ "worst_rel_upper_at": {
+  "round": "10",
+  "pose": "POSE_0.000000000"
+ },
+ "worst_rel_lower": 6.199451554045136e-13,
+ "worst_rel_lower_at": {
+  "round": "20",
+  "pose": "POSE_0.000000000"
+ },
+ "loewner_min": -1.140860249402344e-09,
+ "loewner_rounds": [
+  10,
+  150,
+  300
+ ],
+ "E_over_err_median": 1.0000000000000047,
+ "E_over_err_p95": 1.0000000000001419,
+ "certified_vs_oracle_pass_disagreements": 0,
+ "grow_exits": {
+  "stop": 0,
+  "continue": 1200,
+  "cap": 0,
+  "steps": 0,
+  "no_c0": 0
+ }
+}

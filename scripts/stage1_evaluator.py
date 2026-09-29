@@ -10,10 +10,12 @@ N-th round), reads <eval_dir>/model (the linearization the solver iterates on ne
                          flops, accuracy (median and p95 of the remaining GN move) and keyframe ATE, timings
 The beliefs of the first evaluation round (>= --stop-from) at which every pose passes are kept in
 <out>/certified_stop_beliefs, its linearization in <out>/certified_stop_model and every pose's final and base patch (and
-E, L, S_lo) in <out>/certified_stop_patches.json (Stage 2a). On an exception it writes <eval_dir>/abort. Exits after the round marked last.
+E, L, S_lo) in <out>/certified_stop_patches.json (Stage 2a). With --keep-rounds, the linearization and beliefs of those
+evaluation rounds are kept in <out>/model_rNNNNN and <out>/beliefs_rNNNNN (Stage 2c's anchor check). On an exception it
+writes <eval_dir>/abort. Exits after the round marked last.
 
 Usage: python3 scripts/stage1_evaluator.py <eval_dir> <out_dir> [--eta 0.1] [--p-L 1e-6] [--gt GT.tum]
-                                           [--sampled 10,150,300] [--stop-from R]
+                                           [--sampled 10,150,300] [--stop-from R] [--keep-rounds 100]
 """
 
 import csv
@@ -41,7 +43,7 @@ SUMMARY_FIELDS = ["round", "poses", "a0_fails", "all_pass", "frac_pass", "frac_p
                   "factorizations", "factorizations_shared", "factor_flops", "solve_rhs", "solve_flops", "matvec_flops", "sweeps",
                   "sweep_flops", "yardstick_factorizations", "yardstick_flops", "certificate_flops", "move_median", "move_p95",
                   "move_max", "move_true_median", "move_true_p95", "ate_aligned", "ate_matched", "frac_move_gt_eta_S_lo",
-                  "load_s", "certify_s", "accuracy_s", "sampled"]
+                  "load_s", "certify_s", "accuracy_s", "sampled", "move_undefined", "nonfinite"]
 
 
 def read_info(path):
@@ -53,7 +55,8 @@ def read_info(path):
 
 
 class Evaluator:
-    def __init__(self, edir, out, eta, p_L, gt, sampled, stop_from):
+    def __init__(self, edir, out, eta, p_L, gt, sampled, stop_from, keep_rounds=()):
+        self.keep_rounds = set(keep_rounds)
         self.edir, self.out = Path(edir), Path(out)
         self.out.mkdir(parents=True, exist_ok=True)
         self.engine = StatEngine(eta)
@@ -72,6 +75,17 @@ class Evaluator:
         info = read_info(self.edir / "round_info.tsv")
         assert info["round"] == r, (info, r)
         ex, exB = Export(self.edir / "model"), Export(self.edir / "beliefs")
+        if not all(np.isfinite(e.z).all() and np.isfinite(e.pose_T_lin).all() and np.isfinite(e.point_p_lin).all()
+                   and all(np.isfinite(g["J"]).all() and np.isfinite(g["e"]).all() for g in e.factors.values()) for e in (ex, exB)):
+            # Stage 2c: a diverged run (non-finite state); nothing can be certified or measured, the round is recorded as such
+            pb = np.flatnonzero(ex.var_type == "SE3PoseVel")
+            pb = pb[np.argsort(ex.timestamp[pb], kind="stable")]
+            self.wr.writerows([dict(round=r, pose=str(ex.var_id[b]), t=float(ex.timestamp[b]), decision="NONFINITE", passed=0) for b in pb])
+            self.ws.writerow(dict(round=r, poses=len(pb), a0_fails=1, all_pass=0, frac_pass=0.0, nonfinite=1, load_s=time.perf_counter() - t0))
+            self.fr.flush()
+            self.fs.flush()
+            print("round %d: non-finite state (diverged)" % r, flush=True)
+            return info["last"] == 1
         if self.builder is None:
             g2o = ex.meta.get("g2o") if self.p_L else None
             if g2o and not os.path.isabs(g2o):
@@ -93,6 +107,7 @@ class Evaluator:
                            move_true_S=float(acc["move_true_S"][k]))
         slo = np.array([row.get("S_lo", np.nan) for row in per_pose], float)
         mvS = np.array([row.get("move_S", np.nan) for row in per_pose], float)
+        summ.update(move_undefined=acc.get("move_undefined", 0))
         summ.update(move_median=float(np.median(acc["move"])), move_p95=float(np.percentile(acc["move"], 95)),
                     move_max=float(np.max(acc["move"])), move_true_median=float(np.median(acc["move_true"])),
                     move_true_p95=float(np.percentile(acc["move_true"], 95)), ate_aligned=acc.get("ate_aligned", np.nan),
@@ -102,6 +117,9 @@ class Evaluator:
         self.ws.writerow(summ)
         self.fr.flush()
         self.fs.flush()
+        if r in self.keep_rounds:
+            shutil.copytree(self.edir / "model", self.out / ("model_r%05d" % r), dirs_exist_ok=True)
+            shutil.copytree(self.edir / "beliefs", self.out / ("beliefs_r%05d" % r), dirs_exist_ok=True)
         if summ.get("all_pass") and r >= self.stop_from and not self.stop_kept:
             shutil.copytree(self.edir / "beliefs", self.out / "certified_stop_beliefs", dirs_exist_ok=True)
             (self.out / "certified_stop_beliefs" / "ROUND").write_text("%d\n" % r)
@@ -153,4 +171,5 @@ if __name__ == "__main__":
 
     p_L = a[a.index("--p-L") + 1] if "--p-L" in a else "1e-6"
     Evaluator(a[0], a[1], eta=opt("--eta", 0.1), p_L=None if p_L == "none" else float(p_L), gt=opt("--gt", None, str),
-              sampled=[int(x) for x in opt("--sampled", "", str).split(",") if x], stop_from=opt("--stop-from", 0, int)).run()
+              sampled=[int(x) for x in opt("--sampled", "", str).split(",") if x], stop_from=opt("--stop-from", 0, int),
+              keep_rounds=[int(x) for x in opt("--keep-rounds", "", str).split(",") if x]).run()

@@ -1,0 +1,5 @@
+eta,round,note,move_median,move_p95,move_true_median,ate_aligned,gbp_flops,certificate_flops,total_flops,total_flops_alt,frac_pass_last,frac_pass_curve
+0.05,,not by 300,,,,,,,,,0.0,
+0.1,,not by 300,,,,,,,,,0.0,
+0.2,,not by 300,,,,,,,,,0.0,
+0.5,,not by 300,,,,,,,,,0.0,

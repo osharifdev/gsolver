@@ -1,0 +1,31 @@
+{
+ "criterion": "on at least 3 of the 4 segments, at least 95% of poses at the certified stop are within eta S_lo,i of x^",
+ "segments": {
+  "kitti06": {
+   "certified_stop": null,
+   "fraction_within_eta_S_lo": null,
+   "passes": false,
+   "note": "no certified stop by round 300: there is no stop state to check"
+  },
+  "kitti03": {
+   "certified_stop": null,
+   "fraction_within_eta_S_lo": null,
+   "passes": false,
+   "note": "no certified stop by round 300: there is no stop state to check"
+  },
+  "kitti04": {
+   "certified_stop": null,
+   "fraction_within_eta_S_lo": null,
+   "passes": false,
+   "note": "no certified stop by round 300: there is no stop state to check"
+  },
+  "kitti10": {
+   "certified_stop": null,
+   "fraction_within_eta_S_lo": null,
+   "passes": false,
+   "note": "no certified stop by round 300: there is no stop state to check"
+  }
+ },
+ "segments_passing": 0,
+ "gate_C": false
+}

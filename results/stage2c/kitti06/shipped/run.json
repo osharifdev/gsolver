@@ -1,0 +1,1 @@
+{"dataset": "kitti06", "variant": "shipped", "rounds": 300, "wall_s": 83.565, "driver_exit": 0, "evaluator_exit": 0, "extra_driver": "--drop-single-landmarks --live-anchor 1e4"}

@@ -1,0 +1,621 @@
+{
+ "protocol": "Stage 2c, Step 1 (BRIEF_stage2c.md \u00a71): the clean model's counts and the anchor check.",
+ "datasets": {
+  "kitti06": {
+   "cleaning": {
+    "landmarks_before": 4679,
+    "observations_before": 11487,
+    "landmarks_removed": 1397,
+    "observations_removed": 1397,
+    "landmarks_remaining": 3282,
+    "observations_remaining": 10090,
+    "poses_without_observations_after": 0,
+    "observations_per_landmark_before": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     27,
+     29,
+     31,
+     33,
+     35
+    ],
+    "landmarks_with_that_many": [
+     1397,
+     1916,
+     667,
+     293,
+     152,
+     86,
+     51,
+     34,
+     21,
+     9,
+     9,
+     7,
+     5,
+     1,
+     6,
+     5,
+     2,
+     2,
+     2,
+     2,
+     1,
+     2,
+     1,
+     1,
+     1,
+     1,
+     2,
+     1,
+     1,
+     1
+    ]
+   },
+   "cleaning_identical_in": [
+    "corrected",
+    "shipped"
+   ],
+   "single_edge_variables_in_export": 0,
+   "anchor_ids": [
+    "PRIOR_ANCHOR_POSE_0.000000000"
+   ],
+   "anchor_check": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 10317,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 0.05164864338318931,
+    "pose_solution_rel_change_worst_pose": "POSE_5.299899000",
+    "pose_solution_rel_change_median": 0.045920812131210076,
+    "pose_solution_rel_change_D_max": 0.07152149726873618,
+    "pose_solution_change_D_max": 2.846820677134929,
+    "pose_solution_change_D_over_eta_S_lo_max": 5.685284439516413,
+    "pose_solution_rel_change_reduced_model_max": 0.05164864522605344,
+    "landmark_solution_rel_change_max": 0.15160596242105756,
+    "landmark_solution_change_m_max": 0.6116146025774046,
+    "solve_rel_residual": {
+     "1e4": 4.421020765389504e-14,
+     "1e6": 2.8788804567435686e-14
+    },
+    "lambda_min_H": {
+     "1e4": 1.0004118074288032e-06,
+     "1e6": 1.0004118075556067e-06
+    },
+    "lambda_max_H": {
+     "1e4": 101370050.73727758,
+     "1e6": 101370050.73727779
+    },
+    "lambda_min_S": {
+     "1e4": 0.08560919541516625,
+     "1e6": 7.515375370833142
+    },
+    "lambda_max_S": {
+     "1e4": 73155981.13863735,
+     "1e6": 73155981.2035486
+    }
+   },
+   "anchor_check_without_p_L": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 10317,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 1.108988034881052e-06,
+    "pose_solution_rel_change_worst_pose": "POSE_5.299899000",
+    "pose_solution_rel_change_median": 9.644987115123204e-07,
+    "pose_solution_rel_change_D_max": 1.777648821974859e-06,
+    "pose_solution_change_D_max": 7.45665528945207e-05,
+    "pose_solution_change_D_over_eta_S_lo_max": 0.00014891421376995399,
+    "pose_solution_rel_change_reduced_model_max": 1.1070087538160108e-06,
+    "landmark_solution_rel_change_max": 2.9760996681776646e-06,
+    "landmark_solution_change_m_max": 0.0005262931853000693,
+    "solve_rel_residual": {
+     "1e4": 3.3653221655996567e-14,
+     "1e6": 2.8788804567435686e-14
+    },
+    "lambda_min_H": {
+     "1e4": 4.1180756637327006e-10,
+     "1e6": 4.1180756602984695e-10
+    },
+    "lambda_max_H": {
+     "1e4": 101370050.73727778,
+     "1e6": 101370050.73727791
+    },
+    "lambda_min_S": {
+     "1e4": 0.08460221214812508,
+     "1e6": 7.514347417568626
+    },
+    "lambda_max_S": {
+     "1e4": 73155377.99058765,
+     "1e6": 73155378.05567296
+    }
+   },
+   "p_L_gap_at_anchor_1e4": {
+    "pose_solution_change_D_max": 4.36183260470319,
+    "pose_solution_change_D_over_eta_S_lo_max": 8.710860938473871,
+    "pose_solution_rel_change_max": 0.06640555670182839,
+    "landmark_solution_change_m_max": 63543.3789904432,
+    "over_eta_S_lo_median": 3.143220951644091,
+    "poses_over_eta_S_lo": 39
+   }
+  },
+  "kitti03": {
+   "cleaning": {
+    "landmarks_before": 4628,
+    "observations_before": 13807,
+    "landmarks_removed": 533,
+    "observations_removed": 533,
+    "landmarks_remaining": 4095,
+    "observations_remaining": 13274,
+    "poses_without_observations_after": 0,
+    "observations_per_landmark_before": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     20,
+     22
+    ],
+    "landmarks_with_that_many": [
+     533,
+     2097,
+     840,
+     445,
+     272,
+     157,
+     107,
+     62,
+     47,
+     25,
+     20,
+     9,
+     2,
+     3,
+     2,
+     1,
+     2,
+     2,
+     2
+    ]
+   },
+   "cleaning_identical_in": [
+    "corrected",
+    "shipped"
+   ],
+   "single_edge_variables_in_export": 0,
+   "anchor_ids": [
+    "PRIOR_ANCHOR_POSE_0.000000000"
+   ],
+   "anchor_check": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 12711,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 0.0008089950153868441,
+    "pose_solution_rel_change_worst_pose": "POSE_14.692450000",
+    "pose_solution_rel_change_median": 0.0002760988053064193,
+    "pose_solution_rel_change_D_max": 0.007068756244753241,
+    "pose_solution_change_D_max": 0.1028475826752275,
+    "pose_solution_change_D_over_eta_S_lo_max": 0.20122806397967138,
+    "pose_solution_rel_change_reduced_model_max": 0.0008089933216797375,
+    "landmark_solution_rel_change_max": 0.013207993688001659,
+    "landmark_solution_change_m_max": 0.018089516061291742,
+    "solve_rel_residual": {
+     "1e4": 2.3484807969120283e-14,
+     "1e6": 1.7397031521260096e-14
+    },
+    "lambda_min_H": {
+     "1e4": 1.0175186404555782e-06,
+     "1e6": 1.0175186404559528e-06
+    },
+    "lambda_max_H": {
+     "1e4": 130431222.70471202,
+     "1e6": 130431222.70471188
+    },
+    "lambda_min_S": {
+     "1e4": 0.1274510595174891,
+     "1e6": 8.192362114625325
+    },
+    "lambda_max_S": {
+     "1e4": 105041843.82306167,
+     "1e6": 105041843.82336935
+    }
+   },
+   "anchor_check_without_p_L": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 12711,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 5.8329745081723474e-08,
+    "pose_solution_rel_change_worst_pose": "POSE_14.692450000",
+    "pose_solution_rel_change_median": 1.8630430963130883e-08,
+    "pose_solution_rel_change_D_max": 5.190549162331984e-07,
+    "pose_solution_change_D_max": 6.938248822359385e-06,
+    "pose_solution_change_D_over_eta_S_lo_max": 1.3575140432239874e-05,
+    "pose_solution_rel_change_reduced_model_max": 5.833757282459339e-08,
+    "landmark_solution_rel_change_max": 3.996988158490269e-06,
+    "landmark_solution_change_m_max": 0.00032147790194429277,
+    "solve_rel_residual": {
+     "1e4": 1.6613091838975162e-14,
+     "1e6": 1.9420415456557624e-14
+    },
+    "lambda_min_H": {
+     "1e4": 1.7518640388487516e-08,
+     "1e6": 1.7518640456851224e-08
+    },
+    "lambda_max_H": {
+     "1e4": 130431222.70471175,
+     "1e6": 130431222.70471187
+    },
+    "lambda_min_S": {
+     "1e4": 0.12689100682138438,
+     "1e6": 8.19235693689357
+    },
+    "lambda_max_S": {
+     "1e4": 105041822.41793463,
+     "1e6": 105041822.41824251
+    }
+   },
+   "p_L_gap_at_anchor_1e4": {
+    "pose_solution_change_D_max": 0.14076337774598588,
+    "pose_solution_change_D_over_eta_S_lo_max": 0.277673210045858,
+    "pose_solution_rel_change_max": 0.006254779025789316,
+    "landmark_solution_change_m_max": 1763.3625053555486,
+    "over_eta_S_lo_median": 0.14480773064046254,
+    "poses_over_eta_S_lo": 0
+   }
+  },
+  "kitti04": {
+   "cleaning": {
+    "landmarks_before": 4652,
+    "observations_before": 15267,
+    "landmarks_removed": 463,
+    "observations_removed": 463,
+    "landmarks_remaining": 4189,
+    "observations_remaining": 14804,
+    "poses_without_observations_after": 0,
+    "observations_per_landmark_before": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     27,
+     32,
+     42
+    ],
+    "landmarks_with_that_many": [
+     463,
+     2072,
+     874,
+     447,
+     237,
+     159,
+     120,
+     66,
+     51,
+     33,
+     29,
+     22,
+     13,
+     15,
+     10,
+     8,
+     3,
+     9,
+     3,
+     3,
+     2,
+     2,
+     2,
+     1,
+     4,
+     2,
+     1,
+     1
+    ]
+   },
+   "cleaning_identical_in": [
+    "corrected",
+    "shipped"
+   ],
+   "single_edge_variables_in_export": 0,
+   "anchor_ids": [
+    "PRIOR_ANCHOR_POSE_0.000000000"
+   ],
+   "anchor_check": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 13017,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 0.0016687156565256208,
+    "pose_solution_rel_change_worst_pose": "POSE_7.394135000",
+    "pose_solution_rel_change_median": 0.0014732291281179264,
+    "pose_solution_rel_change_D_max": 0.009539792433166716,
+    "pose_solution_change_D_max": 0.2312396425193555,
+    "pose_solution_change_D_over_eta_S_lo_max": 0.46783105410187475,
+    "pose_solution_rel_change_reduced_model_max": 0.0016687164461537639,
+    "landmark_solution_rel_change_max": 0.010682250652327682,
+    "landmark_solution_change_m_max": 0.0027420880829597564,
+    "solve_rel_residual": {
+     "1e4": 1.3058840034389573e-12,
+     "1e6": 1.2187635546495917e-13
+    },
+    "lambda_min_H": {
+     "1e4": 1.5492002545984277e-06,
+     "1e6": 1.5492002551030573e-06
+    },
+    "lambda_max_H": {
+     "1e4": 172040309.30289146,
+     "1e6": 172040309.30289146
+    },
+    "lambda_min_S": {
+     "1e4": 0.0692212277768551,
+     "1e6": 5.5364645763483535
+    },
+    "lambda_max_S": {
+     "1e4": 145134618.30427688,
+     "1e6": 145134618.31004173
+    }
+   },
+   "anchor_check_without_p_L": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 13017,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 5.530677162476629e-06,
+    "pose_solution_rel_change_worst_pose": "POSE_7.394135000",
+    "pose_solution_rel_change_median": 4.8832616208146666e-06,
+    "pose_solution_rel_change_D_max": 3.083720378578538e-05,
+    "pose_solution_change_D_max": 0.000772962083398951,
+    "pose_solution_change_D_over_eta_S_lo_max": 0.0015638134634594243,
+    "pose_solution_rel_change_reduced_model_max": 5.530357733928298e-06,
+    "landmark_solution_rel_change_max": 3.3965782091318754e-05,
+    "landmark_solution_change_m_max": 9.45769587323367e-06,
+    "solve_rel_residual": {
+     "1e4": 1.2442242772756877e-12,
+     "1e6": 1.7100928285052876e-13
+    },
+    "lambda_min_H": {
+     "1e4": 5.492002548488238e-07,
+     "1e6": 5.492002550967776e-07
+    },
+    "lambda_max_H": {
+     "1e4": 172040309.30289128,
+     "1e6": 172040309.3028913
+    },
+    "lambda_min_S": {
+     "1e4": 0.06893124406109166,
+     "1e6": 5.536223368385804
+    },
+    "lambda_max_S": {
+     "1e4": 145134235.12899444,
+     "1e6": 145134235.134757
+    }
+   },
+   "p_L_gap_at_anchor_1e4": {
+    "pose_solution_change_D_max": 0.2837303919146948,
+    "pose_solution_change_D_over_eta_S_lo_max": 0.5740273894389848,
+    "pose_solution_rel_change_max": 0.0021436081288554037,
+    "landmark_solution_change_m_max": 241.6449518538034,
+    "over_eta_S_lo_median": 0.2311539321457431,
+    "poses_over_eta_S_lo": 0
+   }
+  },
+  "kitti10": {
+   "cleaning": {
+    "landmarks_before": 4228,
+    "observations_before": 12680,
+    "landmarks_removed": 545,
+    "observations_removed": 545,
+    "landmarks_remaining": 3683,
+    "observations_remaining": 12135,
+    "poses_without_observations_after": 0,
+    "observations_per_landmark_before": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     21
+    ],
+    "landmarks_with_that_many": [
+     545,
+     1853,
+     789,
+     374,
+     244,
+     143,
+     94,
+     75,
+     34,
+     26,
+     11,
+     13,
+     15,
+     4,
+     1,
+     2,
+     4,
+     1
+    ]
+   },
+   "cleaning_identical_in": [
+    "corrected",
+    "shipped"
+   ],
+   "single_edge_variables_in_export": 0,
+   "anchor_ids": [
+    "PRIOR_ANCHOR_POSE_0.000000000"
+   ],
+   "anchor_check": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 11511,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 0.14794621749070927,
+    "pose_solution_rel_change_worst_pose": "POSE_10.275010000",
+    "pose_solution_rel_change_median": 0.06962727331110538,
+    "pose_solution_rel_change_D_max": 0.1269962229899301,
+    "pose_solution_change_D_max": 1.4288260876719108,
+    "pose_solution_change_D_over_eta_S_lo_max": 2.853401235078699,
+    "pose_solution_rel_change_reduced_model_max": 0.14794621699942825,
+    "landmark_solution_rel_change_max": 0.5309786137466569,
+    "landmark_solution_change_m_max": 1.2303311184221566,
+    "solve_rel_residual": {
+     "1e4": 2.3958022483759365e-15,
+     "1e6": 2.8565334499866936e-15
+    },
+    "lambda_min_H": {
+     "1e4": 1.0000002837269229e-06,
+     "1e6": 1.000000283701472e-06
+    },
+    "lambda_max_H": {
+     "1e4": 139448401.28010678,
+     "1e6": 139448401.7081792
+    },
+    "lambda_min_S": {
+     "1e4": 0.20439563071676933,
+     "1e6": 2.9631178374394955
+    },
+    "lambda_max_S": {
+     "1e4": 115041208.07916975,
+     "1e6": 115162865.52039897
+    }
+   },
+   "anchor_check_without_p_L": {
+    "state": "corrected variant, evaluation after round 100 (frozen charts)",
+    "dofs_full": 11511,
+    "dofs_pose": 480,
+    "pose_solution_rel_change_max": 2.7017778757733843e-06,
+    "pose_solution_rel_change_worst_pose": "POSE_10.275010000",
+    "pose_solution_rel_change_median": 1.602344162222695e-06,
+    "pose_solution_rel_change_D_max": 2.884284058436662e-06,
+    "pose_solution_change_D_max": 3.7798562518126615e-05,
+    "pose_solution_change_D_over_eta_S_lo_max": 7.548466948077421e-05,
+    "pose_solution_rel_change_reduced_model_max": 2.701348456649258e-06,
+    "landmark_solution_rel_change_max": 2.5040560807145078e-05,
+    "landmark_solution_change_m_max": 0.04140838110417025,
+    "solve_rel_residual": {
+     "1e4": 2.027217287087331e-15,
+     "1e6": 1.842924806443028e-15
+    },
+    "lambda_min_H": {
+     "1e4": 2.837014989428912e-13,
+     "1e6": 2.8370149894148857e-13
+    },
+    "lambda_max_H": {
+     "1e4": 139448401.28010666,
+     "1e6": 139448401.70817918
+    },
+    "lambda_min_S": {
+     "1e4": 0.1996934322769099,
+     "1e6": 2.963117546299047
+    },
+    "lambda_max_S": {
+     "1e4": 115036783.34492478,
+     "1e6": 115158385.55425367
+    }
+   },
+   "p_L_gap_at_anchor_1e4": {
+    "pose_solution_change_D_max": 1.5087173763710438,
+    "pose_solution_change_D_over_eta_S_lo_max": 3.0129461256801644,
+    "pose_solution_rel_change_max": 0.13394460259065866,
+    "landmark_solution_change_m_max": 2470900.364825477,
+    "over_eta_S_lo_median": 1.4701728143926842,
+    "poses_over_eta_S_lo": 37
+   }
+  }
+ },
+ "charuco": {
+  "source": "examples/data/datasets/charuco/printing_room_0.g2o (EDGE_POSE_LANDMARK_SE3 per marker; the islam run's complete graph, also checked on exports/stage1/charuco/corrected/beliefs_r00103: degree of every SE3Pose block, 0 single-edge variables)",
+  "markers": 24,
+  "markers_with_one_factor": 0,
+  "min_factors_per_marker": 3,
+  "factors_per_marker_histogram": {
+   "3": 2,
+   "5": 1,
+   "9": 1,
+   "13": 2,
+   "16": 1,
+   "18": 1,
+   "21": 1,
+   "22": 1,
+   "23": 1,
+   "24": 1,
+   "30": 1,
+   "32": 1,
+   "33": 1,
+   "34": 1,
+   "35": 1,
+   "36": 1,
+   "37": 1,
+   "38": 1,
+   "40": 2,
+   "41": 1,
+   "51": 1
+  },
+  "decision": "no marker has exactly one pose-marker factor: ChArUco is unaffected and is not rerun"
+ }
+}

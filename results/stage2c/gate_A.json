@@ -1,0 +1,86 @@
+{
+ "corrected": {
+  "segments": {
+   "kitti06": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti03": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti04": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti10": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   }
+  },
+  "passing": 0,
+  "gate_A": false
+ },
+ "shipped": {
+  "segments": {
+   "kitti06": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti03": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti04": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   },
+   "kitti10": {
+    "certified_round": null,
+    "fixed_round": 100,
+    "stop_le_60": false,
+    "accuracy_ratio": null,
+    "cost_ratio": null,
+    "cost_ratio_alt": null,
+    "passes": false
+   }
+  },
+  "passing": 0,
+  "gate_A": false
+ }
+}

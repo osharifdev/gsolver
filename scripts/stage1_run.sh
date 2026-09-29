@@ -5,20 +5,26 @@
 # variant: shipped | corrected (--true-jacobians)
 # Driver outputs (flops, heuristics, work log, change-based stop exports, fd check) and the evaluator's logs go to
 # exports/stage1/<dataset>/<variant>[_<tag>]; set TAG for one-tenth versions.
+# Stage 2c: STAGE=stage2c writes to exports/stage2c/..., EXTRA_DRIVER adds driver flags (the clean model:
+# "--drop-single-landmarks --live-anchor 1e4"), EXTRA_EVAL adds evaluator flags (--keep-rounds 100).
 set -u
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 B=${BUILD_DIR:-$REPO/build-certify}
 DS=$1; VAR=$2; ROUNDS=$3; shift 3
 TAG=${TAG:-}
-OUT=$REPO/exports/stage1/$DS/$VAR${TAG:+_$TAG}
+STAGE=${STAGE:-stage1}
+EXTRA_DRIVER=${EXTRA_DRIVER:-}
+EXTRA_EVAL=${EXTRA_EVAL:-}
+OUT=$REPO/exports/$STAGE/$DS/$VAR${TAG:+_$TAG}
 EDIR=/dev/shm/gbp_os717_s1_${DS}_${VAR}${TAG:+_$TAG}
+[ "$STAGE" != stage1 ] && EDIR=/dev/shm/gbp_os717_${STAGE}_${DS}_${VAR}${TAG:+_$TAG}
 S=$REPO/examples/data/datasets/stereo_visual
 export OMP_NUM_THREADS=${OMP_NUM_THREADS:-16}
 rm -rf "${OUT:?}" "${EDIR:?}"
 mkdir -p "$OUT" "$EDIR"
 JAC=""; [ "$VAR" = corrected ] && JAC="--true-jacobians"
 MID=$(( (ROUNDS / 2) / 10 * 10 )); [ $MID -lt 10 ] && MID=10
-COMMON="--relin-threshold 0.003 --relin-every 1 --relin-metric physical --count-flops --eval-dir $EDIR --eval-every 10 --change-taus 1e-2,1e-3,1e-4 --fd-check-at 10 $JAC"
+COMMON="--relin-threshold 0.003 --relin-every 1 --relin-metric physical --count-flops --eval-dir $EDIR --eval-every 10 --change-taus 1e-2,1e-3,1e-4 --fd-check-at 10 $JAC $EXTRA_DRIVER"
 case $DS in
   kitti06|kitti03|kitti04|kitti10|prefix)
     SEQ=${DS#kitti}; KF=40; CFG=kitti_$SEQ
@@ -35,13 +41,13 @@ case $DS in
     ;;
   *) echo "unknown dataset $DS"; exit 2;;
 esac
-python3 "$REPO/scripts/stage1_evaluator.py" "$EDIR" "$OUT/eval" $EVAL_ARGS > "$OUT/evaluator.log" 2>&1 &
+python3 "$REPO/scripts/stage1_evaluator.py" "$EDIR" "$OUT/eval" $EVAL_ARGS $EXTRA_EVAL > "$OUT/evaluator.log" 2>&1 &
 EV=$!
 t0=$(date +%s.%N)
 $DRIVER "$@" > "$OUT/stdout.txt" 2>&1
 rc=$?
 [ $rc -ne 0 ] && touch "$EDIR/abort"
 wait $EV; erc=$?
-printf '{"dataset": "%s", "variant": "%s", "rounds": %d, "wall_s": %.3f, "driver_exit": %d, "evaluator_exit": %d}\n' \
-  "$DS" "$VAR" "$ROUNDS" "$(echo "$(date +%s.%N) - $t0" | bc)" $rc $erc > "$OUT/run.json"
+printf '{"dataset": "%s", "variant": "%s", "rounds": %d, "wall_s": %.3f, "driver_exit": %d, "evaluator_exit": %d, "extra_driver": "%s"}\n' \
+  "$DS" "$VAR" "$ROUNDS" "$(echo "$(date +%s.%N) - $t0" | bc)" $rc $erc "$EXTRA_DRIVER" > "$OUT/run.json"
 cat "$OUT/run.json"

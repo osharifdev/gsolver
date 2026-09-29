@@ -1,0 +1,30 @@
+{
+ "source": "examples/data/datasets/charuco/printing_room_0.g2o (EDGE_POSE_LANDMARK_SE3 per marker; the islam run's complete graph, also checked on exports/stage1/charuco/corrected/beliefs_r00103: degree of every SE3Pose block, 0 single-edge variables)",
+ "markers": 24,
+ "markers_with_one_factor": 0,
+ "min_factors_per_marker": 3,
+ "factors_per_marker_histogram": {
+  "3": 2,
+  "5": 1,
+  "9": 1,
+  "13": 2,
+  "16": 1,
+  "18": 1,
+  "21": 1,
+  "22": 1,
+  "23": 1,
+  "24": 1,
+  "30": 1,
+  "32": 1,
+  "33": 1,
+  "34": 1,
+  "35": 1,
+  "36": 1,
+  "37": 1,
+  "38": 1,
+  "40": 2,
+  "41": 1,
+  "51": 1
+ },
+ "decision": "no marker has exactly one pose-marker factor: ChArUco is unaffected and is not rerun"
+}

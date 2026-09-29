@@ -1,0 +1,5 @@
+dataset,rounds_needed,common_budget,certified_stop,certified_total_flops,certified_total_flops_alt,budget_gbp_flops,budget_gbp_flops_alt,ratio,ratio_alt,note
+kitti06,,,,,,,,,,oracle test not passed by every pose by round 300; common budget undefined: a segment's rounds needed exceed the 300-round runs; no certified stop by round 300
+kitti03,,,,,,,,,,oracle test not passed by every pose by round 300; common budget undefined: a segment's rounds needed exceed the 300-round runs; no certified stop by round 300
+kitti04,,,,,,,,,,oracle test not passed by every pose by round 300; common budget undefined: a segment's rounds needed exceed the 300-round runs; no certified stop by round 300
+kitti10,,,,,,,,,,oracle test not passed by every pose by round 300; common budget undefined: a segment's rounds needed exceed the 300-round runs; no certified stop by round 300

@@ -203,9 +203,19 @@ def keyframe_ate(ex, gt_path, tol=1e-6):
 def accuracy(ex, builder, gt_path=None):
     m = builder.build(None, ex=ex)
     mT = builder.build(None, true_jacobian=True, ex=ex)
-    mH, mS = remaining_gn_move(m)
-    tH, tS = remaining_gn_move(mT)
-    out = dict(pose_ids=[str(p) for p in m["pose_ids"]], move=mH, move_S=mS, move_true=tH, move_true_S=tS)
+
+    def moves(model):
+        # Stage 2c: a diverged run can leave the reduced matrix at the beliefs numerically indefinite; the remaining
+        # Gauss-Newton move is then undefined and recorded as NaN (flagged in `move_undefined`) instead of stopping the run
+        try:
+            return remaining_gn_move(model) + (False,)
+        except np.linalg.LinAlgError:
+            nan = np.full(len(model["pose_ids"]), np.nan)
+            return nan, nan.copy(), True
+
+    mH, mS, bad = moves(m)
+    tH, tS, badT = moves(mT)
+    out = dict(pose_ids=[str(p) for p in m["pose_ids"]], move=mH, move_S=mS, move_true=tH, move_true_S=tS, move_undefined=int(bad or badT))
     if gt_path:
         out.update(keyframe_ate(ex, gt_path))
     return out

@@ -6,7 +6,7 @@
 # <tol> are reported and the run continues, as in WP2). Each segment is also capped at 6 minutes.
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 DS=$1; VAR=$2; R=$3; N=$4; TOL=$5; shift 5
-OUT=$REPO/exports/stage1/$DS/$VAR${TAG:+_$TAG}
+OUT=$REPO/exports/${STAGE:-stage1}/$DS/$VAR${TAG:+_$TAG}
 "$REPO/scripts/stage1_run.sh" $DS $VAR $R --eval-pause-every $N "$@" &
 RUN=$!
 seen=0; seg_start=$(date +%s)

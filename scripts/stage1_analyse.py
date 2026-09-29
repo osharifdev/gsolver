@@ -15,7 +15,9 @@ Costs to a stop at round t: GBP flops of rounds 1..t (as instrumented) plus, for
 its evaluation rounds <= t, and for a change-based stop the criterion's flops of rounds 1..t.
 Then results/stage1/gate_A.json from the corrected (and, reported, the shipped) variant of the four KITTI segments.
 
-Usage: python3 scripts/stage1_analyse.py [dataset/variant ...]   (default: every run under exports/stage1 without a tag)
+Usage: python3 scripts/stage1_analyse.py [--stage stage2c] [dataset/variant ...]
+       (default: every run under exports/<stage> without a tag; stage1 by default, Stage 2c's clean model with --stage stage2c,
+       which reads exports/stage2c and writes results/stage2c)
 """
 
 import csv
@@ -37,6 +39,7 @@ ETAS = (0.05, 0.1, 0.2, 0.5)
 TAUS = ("1e-02", "1e-03", "1e-04")
 KITTI = ("kitti06", "kitti03", "kitti04", "kitti10")
 GT = {"kitti06": "06", "kitti03": "03", "kitti04": "04", "kitti10": "10", "prefix": "06"}
+STAGE = "stage1"
 
 
 def rd(path):
@@ -51,8 +54,8 @@ def fnum(x):
 
 
 def analyse(ds, var):
-    src = REPO / "exports/stage1" / ds / var
-    dst = REPO / "results/stage1" / ds / var
+    src = REPO / "exports" / STAGE / ds / var
+    dst = REPO / "results" / STAGE / ds / var
     dst.mkdir(parents=True, exist_ok=True)
     for f in ("eval/eval_rounds.csv", "eval/eval_summary.csv", "heuristics.csv", "flops.csv", "work.csv", "run.json",
               "relin_rounds.csv"):
@@ -126,6 +129,12 @@ def analyse(ds, var):
                 s.update(acc_of_export(src / ("beliefs_r%05d" % t)))
             s.update(evaluations=0, extra_flops=0.0)
         else:
+            exs = Export(src / ("stop_tau_" + s["criterion"].split("_")[-1]))
+            if not (np.isfinite(exs.pose_T_lin).all() and np.isfinite(exs.point_p_lin).all()):
+                # Stage 2c: on a diverged (non-finite) state the logged largest change is 0 (NaN is skipped by the max),
+                # so the criterion "fires" spuriously; not a stop
+                s.update(round=None, note="fires at round %d on a non-finite (diverged) state: not a stop" % t)
+                continue
             s.update(acc_of_export(src / ("stop_tau_" + s["criterion"].split("_")[-1])))
             s.update(evaluations=t, extra_flops=cum(crit, t))
         s.update(gbp_flops=cum(gbp, t), gbp_flops_alt=cum(gbp_alt, t))
@@ -162,13 +171,17 @@ def analyse(ds, var):
         w.writeheader()
         w.writerows(eta_rows)
 
-    # validity
+    # validity (rounds at which the certificate could not run, A0_FAILS or NONFINITE, are counted and left out)
+    skipped = [x for x in rows if x.get("decision") in ("A0_FAILS", "NONFINITE")]
+    skipped_rounds = sorted(set(int(x["round"]) for x in skipped))
+    rows = [x for x in rows if x.get("decision") not in ("A0_FAILS", "NONFINITE")]
     up = np.array([fnum(x["rel_upper_margin"]) for x in rows])
     lo = np.array([fnum(x["rel_lower_margin"]) for x in rows])
     lw = np.array([fnum(x["loewner_margin"]) for x in rows])
     worst_up = int(np.nanargmax(up)) if np.isfinite(up).any() else None
     worst_lo = int(np.nanargmax(lo)) if np.isfinite(lo).any() else None
-    val = dict(pose_evaluations=len(rows), evaluations=len(summ),
+    val = dict(pose_evaluations=len(rows), evaluations=len(summ), rounds_not_certifiable=skipped_rounds,
+               rounds_nonfinite=sorted(set(int(x["round"]) for x in skipped if x.get("decision") == "NONFINITE")),
                violations_upper=int(sum(int(x["valid_upper"]) == 0 for x in rows if x.get("valid_upper") not in (None, ""))),
                violations_lower=int(sum(int(x["valid_lower"]) == 0 for x in rows if x.get("valid_lower") not in (None, ""))),
                worst_rel_upper=float(np.nanmax(up)) if worst_up is not None else None,
@@ -212,11 +225,16 @@ def gate(results):
 
 
 def main(args):
+    global STAGE
+    if "--stage" in args:
+        k = args.index("--stage")
+        STAGE = args[k + 1]
+        args = args[:k] + args[k + 2:]
     runs = []
     if args:
         runs = [tuple(a.split("/")) for a in args]
     else:
-        for p in sorted((REPO / "exports/stage1").glob("*/*")):
+        for p in sorted((REPO / "exports" / STAGE).glob("*/*")):
             if p.is_dir() and "_" not in p.name and (p / "eval/eval_summary.csv").exists():
                 runs.append((p.parent.name, p.name))
     results = {}
@@ -228,7 +246,7 @@ def main(args):
                 s["criterion"], s["round"], "%.4g" % s.get("move_median", np.nan), "%.4g" % s.get("move_p95", np.nan),
                 "%.4g" % s.get("ate_aligned", np.nan), s.get("total_flops", np.nan), s.get("total_flops_alt", np.nan)))
     g = gate(results)
-    (REPO / "results/stage1/gate_A.json").write_text(json.dumps(g, indent=1, default=str))
+    (REPO / "results" / STAGE / "gate_A.json").write_text(json.dumps(g, indent=1, default=str))
     print(json.dumps(g, indent=1, default=str))
 
 

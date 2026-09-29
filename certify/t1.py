@@ -4,6 +4,9 @@ F(z) = sum_f J_f(x)' Lambda_f e_f(x) + sum_pseudo Lambda (z - a) at x = x_c (+) 
 kept landmarks; stereo factors that are inliers at x_c, GP factors; the landmark priors p_L and the frozen single-edge
 messages as linear pseudo-factors), with the corrected (true) Jacobians. Per-factor values, exact derivatives F'_f and
 outward-rounded interval enclosures come from `certify_stereo --t1-export` (certify/cpp/t1_server.h).
+
+Stage 2c's clean model (export meta drop_single_landmarks / live_anchor_precision): the server rebuilds the clean graph, and
+the anchor prior on the first keyframe is a third factor type, "prior" (eval mode only).
 """
 
 import os
@@ -35,6 +38,10 @@ class T1Client:
         cmd = [str(BIN), "--g2o", str(REPO / ex.meta["g2o"]), "--gt", str(REPO / f"examples/data/datasets/stereo_visual/gt/{seq}.tum"),
                "--keyframes", str(ex.meta["keyframes"]), "--config", ex.meta["config"], "--out", str(self.dir / "out"),
                "--t1-export", str(export_dir), "--t1-dir", str(self.dir)] + (["--true-jacobians"] if true_jacobians else [])
+        if ex.meta.get("drop_single_landmarks"):
+            cmd.append("--drop-single-landmarks")
+        if ex.meta.get("live_anchor_precision"):
+            cmd += ["--live-anchor", repr(float(ex.meta["live_anchor_precision"]))]
         env = dict(os.environ, OMP_STACKSIZE="256M")
         self.proc = subprocess.Popen(cmd, stdout=open(self.dir / "server.log", "w"), stderr=subprocess.STDOUT, env=env)
         t0 = time.time()
@@ -46,6 +53,8 @@ class T1Client:
             time.sleep(0.05)
         import json
         self.load_check = json.loads((self.dir / "load_check.json").read_text())
+        tf = self.dir / "t1_types.txt"
+        self.types = tuple(tf.read_text().split()) if tf.exists() else ("stereo", "gp")
         self.req = 0
 
     def _request(self, mode, z, rad=None):
@@ -70,7 +79,7 @@ class T1Client:
     def eval(self, z):
         self._request("eval", z)
         return {t: dict(F=np.load(self.dir / f"t1_F_{t}.npy"), dF=np.load(self.dir / f"t1_dF_{t}.npy"),
-                        flags=np.load(self.dir / f"t1_flags_{t}.npy")) for t in ("stereo", "gp")}
+                        flags=np.load(self.dir / f"t1_flags_{t}.npy")) for t in self.types}
 
     def enclose(self, z, rad):
         self._request("enclose", z, rad)
@@ -112,7 +121,9 @@ class Problem:
             self.dof_of_export[ex.offsets[b]:ex.offsets[b] + ex.dims[b]] = np.arange(self.boff[k], self.boff[k + 1])
         # included factors: not gauge, nonzero Jacobian at x_c (the D2 zero-information exclusion), all variables kept
         self.fac = {}
-        for t in ("stereo", "gp"):
+        for t in ("stereo", "gp", "prior"):
+            if t not in ex.factors:
+                continue
             g = ex.factors[t]
             keep = ~np.char.startswith(g["ids"].astype(str), "CERTIFY_GAUGE_PRIOR")
             keep &= np.abs(g["J"]).reshape(len(g["J"]), -1).max(axis=1) > 0
@@ -135,7 +146,7 @@ class Problem:
         F = np.zeros(self.n)
         rows, cols, vals = [], [], []
         flags = 0
-        for t in ("stereo", "gp"):
+        for t in self.fac:
             f = self.fac[t]
             k = f["keep"]
             mi = f["midx"][k]

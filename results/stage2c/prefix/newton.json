@@ -1,0 +1,6 @@
+{
+ "dataset": "prefix",
+ "run": "exports/stage2c/prefix/corrected",
+ "certified_stop": null,
+ "note": "no certified stop by round 300: there is no stop state to check"
+}

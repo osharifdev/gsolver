@@ -8,7 +8,9 @@
  *   eval    (double): t1_F_<type>.npy (n_f x d), t1_dF_<type>.npy (n_f x d x d), t1_flags_<type>.npy (n_f)
  *   enclose (intervals): F over the point z  -> t1_Flo_/t1_Fhi_<type>.npy,
  *                        F' over the box z +- rad -> t1_dFlo_/t1_dFhi_<type>.npy, flags over the box
- * then t1_done = "<id>". Types in graph order: "gp", "stereo" (the export's f_<type> order). t1_quit ends it.
+ * then t1_done = "<id>". Types in graph order: "gp", "stereo", "prior" (Stage 2c's anchor) (the export's f_<type> order);
+ * t1_types.txt lists the types present. t1_quit ends it.
+ * The prior (Stage 2c) is served in eval mode only (no enclosures; interval work is Stage 2d).
  * Flags: 1 division by an interval containing 0, 2 a series outside its domain, 4 a stereo factor whose inlier conditions
  * (z > 0, disparity > 0, u - disparity >= 0) are not guaranteed.
  */
@@ -32,8 +34,14 @@ namespace certify {
       Eigen::Matrix<double, 12, 12> Lam;
       int vi, vj;
     };
+    struct PF {
+      t1::PriorConst k;
+      Eigen::Matrix<double, 6, 6> Lam;
+      int vp;
+    };
     std::vector<SF> stereo;
     std::vector<GF> gp;
+    std::vector<PF> prior;
 
     T1Server(FactorGraph& graph, const std::string& d) : g(graph), dir(d) {
       makeDirs(dir);
@@ -46,6 +54,7 @@ namespace certify {
     void setup() {
       stereo.clear();
       gp.clear();
+      prior.clear();
       for (auto& f : g.factor_nodes_)
         withFactor(f, [&](auto fp, const std::string& type) {
           using FT = typename std::decay_t<decltype(*fp)>;
@@ -78,6 +87,17 @@ namespace certify {
             q.k.dt = fp->dt_;
             q.Lam  = fp->Sigma_.inverse();
             gp.push_back(q);
+          } else if constexpr (std::is_same_v<FT, SE3PoseVelPrior>) {
+            PF q;
+            q.vp   = index.at(fp->edges_.template at<0>()->variable_id_);
+            auto a = std::dynamic_pointer_cast<SE3PoseVel>(vars[q.vp].node)->mu_lin_;
+            q.k.Rc = a.pose.linear();
+            q.k.tc = a.pose.translation();
+            q.k.vc = a.vel;
+            q.k.Rz = fp->z_.linear();
+            q.k.tz = fp->z_.translation();
+            q.Lam  = fp->Sigma_.inverse();
+            prior.push_back(q);
           } else {
             throw std::runtime_error("t1: factor type " + type + " is not supported");
           }
@@ -88,6 +108,18 @@ namespace certify {
     void gather(const std::vector<T>& zall, int v, T* out) {
       const int off = vars[v].offset, d = vars[v].dim;
       for (int k = 0; k < d; ++k) out[k] = zall[off + k];
+    }
+
+    template <class T>
+    void runPrior(const std::vector<T>& zall, std::vector<T>& Fp, std::vector<T>& dFp, std::vector<int64_t>& flp) {
+      Fp.resize(prior.size() * 12);
+      dFp.resize(prior.size() * 144);
+      flp.assign(prior.size(), 0);
+      for (size_t k = 0; k < prior.size(); ++k) {
+        T z[12];
+        gather(zall, prior[k].vp, z);
+        flp[k] = t1::priorF<T>(prior[k].k, prior[k].Lam, z, &Fp[12 * k], &dFp[144 * k]);
+      }
     }
 
     template <class T>
@@ -137,6 +169,14 @@ namespace certify {
         writeNpy(dir + "/t1_F_gp.npy", Fg, {ng, 24});
         writeNpy(dir + "/t1_dF_gp.npy", dFg, {ng, 24, 24});
         writeNpy(dir + "/t1_flags_gp.npy", flg, {ng});
+        if (!prior.empty()) {
+          std::vector<double> Fp, dFp;
+          std::vector<int64_t> flp;
+          runPrior<double>(Z.f, Fp, dFp, flp);
+          writeNpy(dir + "/t1_F_prior.npy", Fp, {prior.size(), 12});
+          writeNpy(dir + "/t1_dF_prior.npy", dFp, {prior.size(), 12, 12});
+          writeNpy(dir + "/t1_flags_prior.npy", flp, {prior.size()});
+        }
       } else if (mode == "enclose") {
         const NpyArray Rd = readNpy(dir + "/t1_rad.npy");
         std::vector<t1::Iv> zpt(Z.f.size()), zbox(Z.f.size());
